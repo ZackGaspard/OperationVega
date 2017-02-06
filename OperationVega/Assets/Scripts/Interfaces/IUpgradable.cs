@@ -4,8 +4,9 @@ using UnityEngine;
 
 
 
-namespace Interfaces
+namespace Assets.Scripts.Interfaces
 {
+
     #region -- PUBLIC INTERFACE --
     public interface IUpgradable
     {

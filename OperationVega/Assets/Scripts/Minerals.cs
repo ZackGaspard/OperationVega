@@ -1,69 +1,125 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Resource;
+﻿
 
-public class Minerals : MonoBehaviour, IResources
+namespace Assets.Scripts
 {
-	int iMaxAmount;
-	int iAmount;
-	bool bRefill;
-	bool bState;
+	using System.Collections;
+	using System.Collections.Generic;
 
-	public int Count
+	using Assets.Scripts.Interfaces;
+
+	using UnityEngine;
+
+	/// <summary>
+	/// The minerals.
+	/// </summary>
+	public class Minerals : MonoBehaviour, IResources
 	{
-		get { return iAmount; }
-		set { iAmount = value; }
-	}
+		/// <summary>
+		/// The i max amount.
+		/// </summary>
+		private int maxAmount;
 
-	public bool Renewable
-	{
-		get { return bRefill; }
-		set { bRefill = value; }
-	}
+		/// <summary>
+		/// The amount.
+		/// </summary>
+		private int amount;
 
-	public bool Taint
-	{
-		get { return bState; }
-		set { bState = value; }
-	}
+		/// <summary>
+		/// The b refill.
+		/// </summary>
+		private bool refill;
 
-	// Use this for initialization
-	void Start()
-	{
-		iMaxAmount = 250;
-		iAmount = iMaxAmount;
-		bRefill = false;
-		bState = false;
-	}
+		/// <summary>
+		/// The b state.
+		/// </summary>
+		private bool state;
 
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
-
-	public int Refresh(int i, bool b)
-	{
-		float fTimer = 0.0f;
-		if (i < iMaxAmount && b == true)
+		/// <summary>
+		/// Gets or sets the count.
+		/// </summary>
+		public int Count
 		{
-			fTimer += Time.fixedDeltaTime;
-			if (fTimer >= 15.0f)
+			get
 			{
-				i += 15;
-				fTimer = 0.0f;
+				return this.amount;
+			}
+
+			set
+			{
+				this.amount = value;
 			}
 		}
-		return i;
-	}
 
-	public void Reset()
-	{
-		float fTimer = 0.0f;
-		if (fTimer >= 60.0f)
+		/// <summary>
+		/// Gets or sets a value indicating whether renewable.
+		/// </summary>
+		public bool Renewable
 		{
-			bState = false;
+			get
+			{
+				return this.refill;
+			}
+			set
+			{
+				this.refill = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether taint.
+		/// </summary>
+		public bool Taint
+		{
+			get
+			{
+				return this.state;
+			}
+
+			set
+			{
+				this.state = value;
+			}
+		}
+
+		public int Refresh(int i, bool b)
+		{
+			var timer = 0.0f;
+			if (i < this.maxAmount && b == true)
+			{
+				timer += Time.fixedDeltaTime;
+				if (timer >= 15.0f)
+				{
+					i += 15;
+					timer = 0.0f;
+				}
+			}
+			return i;
+		}
+
+		public void Reset()
+		{
+			var timer = 0.0f;
+			if (timer >= 60.0f)
+			{
+				state = false;
+			}
+		}
+
+		/// <summary>
+		/// Use this for initialization
+		/// </summary>
+		private void Start()
+		{
+			this.maxAmount = 250;
+			this.amount = this.maxAmount;
+			this.refill = false;
+			this.state = false;
+		}
+
+		// Update is called once per frame
+		private void Update()
+		{
+
 		}
 	}
 }

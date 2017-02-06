@@ -1,9 +1,8 @@
 ﻿
 namespace Assets.Scripts
 {
-    // Namespace to use for the Resource script
-    using Resource;
-
+    using Controllers;
+    using Interfaces;
     using UnityEngine;
 
     /// <summary>
@@ -15,7 +14,7 @@ namespace Assets.Scripts
         /// The harvester finite state machine.
         /// Used to keep track of the harvesters states.
         /// </summary>
-        public FiniteStateMachine<string> TheHarvesterFSM = new FiniteStateMachine<string>();
+        public FiniteStateMachine<string> TheHarvesterFsm = new FiniteStateMachine<string>();
 
         /// <summary>
         /// The target to heal/stun.
@@ -96,6 +95,23 @@ namespace Assets.Scripts
         public uint Resourcecount;
 
         /// <summary>
+        /// The battle delegate.
+        /// This delegate contains the functions for the battle state.
+        /// </summary>
+        private Handler battleDelegate;
+
+        /// <summary>
+        /// The harvest delegate.
+        /// This delegate contains the functions for the harvest state.
+        /// </summary>
+        private Handler harvestDelegate;
+
+        /// <summary>
+        /// The handler delegate.
+        /// </summary>
+        private delegate void Handler();
+
+        /// <summary>
         /// The move function providing movement functionality.
         /// </summary>
         public void Move()
@@ -152,6 +168,44 @@ namespace Assets.Scripts
         public void HealStun()
         {
           
+        }
+
+        /// <summary>
+        /// The initialize unit function.
+        /// This will initialize the unit with the appropriate values for stats.
+        /// </summary>
+        private void InitUnit()
+        {
+            Debug.Log("Harvester Initialized");
+        }
+
+        /// <summary>
+        /// The awake function.
+        /// </summary>
+        private void Awake()
+        {
+            this.battleDelegate = this.HealStun;
+            this.harvestDelegate = this.Harvest;
+
+            this.TheHarvesterFsm.CreateState("Init", null);
+            this.TheHarvesterFsm.CreateState("Idle", null);
+            this.TheHarvesterFsm.CreateState("Battle", this.battleDelegate);
+            this.TheHarvesterFsm.CreateState("Harvest", this.harvestDelegate);
+
+            this.TheHarvesterFsm.AddTransition("Init", "Idle", "auto");
+            this.TheHarvesterFsm.AddTransition("Idle", "Battle", "IdleToBattle");
+            this.TheHarvesterFsm.AddTransition("Battle", "Idle", "BattleToIdle");
+            this.TheHarvesterFsm.AddTransition("Idle", "Harvest", "IdleToHarvest");
+            this.TheHarvesterFsm.AddTransition("Harvest", "Idle", "HarvestToIdle");
+        }
+
+        /// <summary>
+        /// The start function.
+        /// </summary>
+        private void Start()
+        {
+            this.TheHarvesterFsm.Feed("auto");
+            this.InitUnit();
         }
 
         /// <summary>

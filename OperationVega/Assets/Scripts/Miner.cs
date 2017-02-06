@@ -1,9 +1,8 @@
 ﻿
 namespace Assets.Scripts
 {
-    // Namespace to use for the Resource script
-    using Resource;
-
+    using Controllers;
+    using Interfaces;
     using UnityEngine;
 
     /// <summary>
@@ -15,7 +14,7 @@ namespace Assets.Scripts
         /// The miner finite state machine.
         /// Used to keep track of the miners states.
         /// </summary>
-        public FiniteStateMachine<string> TheMinerFSM = new FiniteStateMachine<string>();
+        public FiniteStateMachine<string> TheMinerFsm = new FiniteStateMachine<string>();
 
         /// <summary>
         /// The target to attack.
@@ -87,7 +86,7 @@ namespace Assets.Scripts
         /// The attack range of the miner.
         /// </summary>
         [HideInInspector]
-        public uint Attackrange;
+        public float Attackrange;
 
         /// <summary>
         /// The resource count of the miner.
@@ -96,11 +95,34 @@ namespace Assets.Scripts
         public uint Resourcecount;
 
         /// <summary>
+        /// The idle delegate.
+        /// This delegate contains the functions for the idle state.
+        /// </summary>
+        private Handler idleDelegate;
+
+        /// <summary>
+        /// The battle delegate.
+        /// This delegate contains the functions for the battle state.
+        /// </summary>
+        private Handler battleDelegate;
+
+        /// <summary>
+        /// The harvest delegate.
+        /// This delegate contains the functions for the harvest state.
+        /// </summary>
+        private Handler harvestDelegate;
+
+        /// <summary>
+        /// The handler delegate.
+        /// </summary>
+        private delegate void Handler();
+
+        /// <summary>
         /// The move function providing movement functionality.
         /// </summary>
         public void Move()
         {
-            if (Vector3.Magnitude(this.transform.position - this.TargetClickPosition) > 0.1)
+            if (Vector3.Magnitude(this.transform.position - this.TargetClickPosition) > this.Attackrange)
             {
                 this.transform.position += this.TargetDirection * 2 * Time.deltaTime;
             }
@@ -127,7 +149,9 @@ namespace Assets.Scripts
         /// </summary>
         public void Attack()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Attacking");
+            this.Target.TakeDamage(5);
+            this.Attackrange = 5.0f;
         }
 
         /// <summary>
@@ -160,6 +184,56 @@ namespace Assets.Scripts
             this.TargetClickPosition = targetPos;
             this.TargetDirection = (this.TargetClickPosition - this.transform.position).normalized;
 
+        }
+
+        /// <summary>
+        /// The initialize unit function.
+        /// This will initialize the unit with the appropriate values for stats.
+        /// </summary>
+        private void InitUnit()
+        {
+            this.Attackrange = 0.1f;
+            Debug.Log("Miner Initialized");
+        }
+
+        /// <summary>
+        /// The reset range function.
+        /// This resets the range of distance the unit stands from the clicked position.
+        /// </summary>
+        private void ResetRange()
+        {
+            Debug.Log("In Idle State");
+            this.Attackrange = 0.1f;
+        }
+
+        /// <summary>
+        /// The awake function.
+        /// </summary>
+        private void Awake()
+        {
+            this.idleDelegate = this.ResetRange;
+            this.battleDelegate = this.Attack;
+            this.harvestDelegate = this.Harvest;
+
+            this.TheMinerFsm.CreateState("Init", null);
+            this.TheMinerFsm.CreateState("Idle", this.idleDelegate);
+            this.TheMinerFsm.CreateState("Battle", this.battleDelegate);
+            this.TheMinerFsm.CreateState("Harvest", this.harvestDelegate);
+
+            this.TheMinerFsm.AddTransition("Init", "Idle", "auto");
+            this.TheMinerFsm.AddTransition("Idle", "Battle", "IdleToBattle");
+            this.TheMinerFsm.AddTransition("Battle", "Idle", "BattleToIdle");
+            this.TheMinerFsm.AddTransition("Idle", "Harvest", "IdleToHarvest");
+            this.TheMinerFsm.AddTransition("Harvest", "Idle", "HarvestToIdle");
+        }
+
+        /// <summary>
+        /// The start function.
+        /// </summary>
+        private void Start()
+        {
+            this.TheMinerFsm.Feed("auto");
+            this.InitUnit();
         }
 
         /// <summary>

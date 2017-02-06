@@ -1,6 +1,8 @@
 ﻿
 namespace Assets.Scripts
 {
+    using Interfaces;
+
     using UnityEngine;
 
     /// <summary>
