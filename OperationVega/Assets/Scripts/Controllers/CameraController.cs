@@ -57,15 +57,15 @@ namespace Assets.Scripts.Controllers
             {
                 this.transform.position += this.transform.forward * this.MoveSpeed * Time.deltaTime;
             }
-            else if (Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.S))
             {
                 this.transform.position -= this.transform.forward * this.MoveSpeed * Time.deltaTime;
             }
-            else if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(KeyCode.A))
             {
                 this.transform.position -= this.transform.right * this.MoveSpeed * Time.deltaTime;
             }
-            else if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.D))
             {
                 this.transform.position += this.transform.right * this.MoveSpeed * Time.deltaTime;
             }
@@ -76,13 +76,13 @@ namespace Assets.Scripts.Controllers
         /// </summary>
         private void ZoomCamera()
         {
-           if (Input.mouseScrollDelta.y < 0)
+            if (Input.mouseScrollDelta.y < 0)
             {
                 Camera.main.orthographicSize += 0.25f;
             }
-            if (Input.mouseScrollDelta.y > 0)
+            else if (Input.mouseScrollDelta.y > 0)
             {
-                Camera.main.orthographicSize -= 0.25f;
+                 Camera.main.orthographicSize -= 0.25f;
             }
 
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 3, 10);

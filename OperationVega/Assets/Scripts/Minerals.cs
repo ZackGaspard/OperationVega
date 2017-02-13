@@ -1,38 +1,55 @@
 ﻿
-
 namespace Assets.Scripts
 {
-	using System.Collections;
-	using System.Collections.Generic;
-
 	using Assets.Scripts.Interfaces;
 
 	using UnityEngine;
 
 	/// <summary>
-	/// The minerals.
+	/// The minerals class.
 	/// </summary>
 	public class Minerals : MonoBehaviour, IResources
 	{
 		/// <summary>
-		/// The i max amount.
+		/// The max amount.
+		/// The max amount of the resource available.
 		/// </summary>
 		private int maxAmount;
 
 		/// <summary>
 		/// The amount.
+		/// The current amount of the resource available.
+		/// Accessible through the Count property.
 		/// </summary>
 		private int amount;
 
 		/// <summary>
-		/// The b refill.
+		/// The refill.
+		/// Boolean for if the resource is renewable.
+		/// Accessible through the Renewable property.
 		/// </summary>
 		private bool refill;
 
 		/// <summary>
-		/// The b state.
+		/// The state.
+		/// Boolean for if the resource is tainted.
+		/// Accessible through the Taint property.
 		/// </summary>
 		private bool state;
+
+		/// <summary>
+		/// The refill timer.
+		/// Float to represent a timer.
+		/// Used to calculate when the amount will be increased.
+		/// </summary>
+		private float refillTimer;
+
+		/// <summary>
+		/// The reset timer.
+		/// Float to represent a timer.
+		/// Used to calculate when the state should be set to false.
+		/// </summary>
+		private float resetTimer;
 
 		/// <summary>
 		/// Gets or sets the count.
@@ -59,6 +76,7 @@ namespace Assets.Scripts
 			{
 				return this.refill;
 			}
+
 			set
 			{
 				this.refill = value;
@@ -81,27 +99,41 @@ namespace Assets.Scripts
 			}
 		}
 
-		public int Refresh(int i, bool b)
+		/// <summary>
+		/// The refresh.
+		/// Checks if the current amount of Minerals.
+		/// Checks if Minerals is renewable.
+		/// Starts a timer that will increment the amount.
+		/// if it is renewable and less than a specified amount.
+		/// </summary>
+		public void Refresh()
 		{
-			var timer = 0.0f;
-			if (i < this.maxAmount && b == true)
+			if (this.amount < this.maxAmount && this.refill)
 			{
-				timer += Time.fixedDeltaTime;
-				if (timer >= 15.0f)
+				this.refillTimer += Time.fixedDeltaTime;
+				if (this.refillTimer >= 15.0f)
 				{
-					i += 15;
-					timer = 0.0f;
+					this.amount += 0;
+					this.refillTimer = 0.0f;
 				}
 			}
-			return i;
 		}
 
+		/// <summary>
+		/// The reset.
+		/// Checks if Minerals are tainted.
+		/// And starts a timer that will reset its state.
+		/// </summary>
 		public void Reset()
 		{
-			var timer = 0.0f;
-			if (timer >= 60.0f)
+			if (this.state)
 			{
-				state = false;
+				this.resetTimer += Time.fixedDeltaTime * 2;
+				if (this.resetTimer >= 60.0f)
+				{
+					this.state = false;
+					this.resetTimer = 0.0f;
+				}
 			}
 		}
 
@@ -116,10 +148,12 @@ namespace Assets.Scripts
 			this.state = false;
 		}
 
-		// Update is called once per frame
+		/// <summary>
+		/// Update is called once per frame
+		/// </summary>
 		private void Update()
 		{
-
+			this.Reset();
 		}
 	}
 }

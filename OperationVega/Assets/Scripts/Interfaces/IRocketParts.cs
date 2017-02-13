@@ -1,5 +1,4 @@
-﻿// Interface for the rocket parts
-
+﻿
 namespace Assets.Scripts.Interfaces
 {
 	using System.Collections;
@@ -15,16 +14,16 @@ namespace Assets.Scripts.Interfaces
 		/// <summary>
 		/// Gets or sets the quality.
 		/// </summary>
-		int Quality { get; set; }
+		uint Quality { get; set; }
 
 		/// <summary>
 		/// Gets or sets the steel cost.
 		/// </summary>
-		int SteelCost { get; set; }
+		uint SteelCost { get; set; }
 
 		/// <summary>
 		/// Gets or sets the fuel cost.
 		/// </summary>
-		int FuelCost { get; set; }
+		uint FuelCost { get; set; }
 	}
 }

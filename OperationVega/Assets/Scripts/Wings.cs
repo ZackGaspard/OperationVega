@@ -3,6 +3,7 @@ namespace Assets.Scripts
 {
 	using System.Collections;
 	using System.Collections.Generic;
+	using System.Linq;
 
 	using Assets.Scripts.Interfaces;
 
@@ -16,17 +17,21 @@ namespace Assets.Scripts
 		/// <summary>
 		/// The quality.
 		/// </summary>
-		private int quality;
+		private uint quality;
 
 		/// <summary>
 		/// The steel.
+		/// The amount of steel required to build the part.
+		/// Accessible through the SteelCost property.
 		/// </summary>
-		private int steel;
+		private uint steel;
 
 		/// <summary>
 		/// The fuel.
+		/// The amount of Fuel required to build the part.
+		/// Accessible through the FuelCost property.
 		/// </summary>
-		private int fuel;
+		private uint fuel;
 
 		/// <summary>
 		/// The ship.
@@ -36,7 +41,7 @@ namespace Assets.Scripts
 		/// <summary>
 		/// Gets or sets the quality.
 		/// </summary>
-		public int Quality
+		public uint Quality
 		{
 			get
 			{
@@ -52,7 +57,7 @@ namespace Assets.Scripts
 		/// <summary>
 		/// Gets or sets the steel cost.
 		/// </summary>
-		public int SteelCost
+		public uint SteelCost
 		{
 			get
 			{
@@ -68,7 +73,7 @@ namespace Assets.Scripts
 		/// <summary>
 		/// Gets or sets the fuel cost.
 		/// </summary>
-		public int FuelCost
+		public uint FuelCost
 		{
 			get
 			{
@@ -82,6 +87,49 @@ namespace Assets.Scripts
 		}
 
 		/// <summary>
+		/// Function for adding the parts to the list.
+		/// Need to work on removing parts if one of the same type is selected.
+		/// </summary>
+		/// <param name="secondaryList">
+		/// The secondaryList. A second list of the parts.
+		/// Solves error that's thrown when a part is removed from the list.
+		/// </param>
+		public void AddParts(List<IRocketParts> secondaryList)
+		{
+			if (User.SteelCount >= this.steel && User.FuelCount >= this.fuel)
+			{
+				if (this.ship.PartList.OfType<Wings>().Any())
+				{
+					foreach (var go in secondaryList)
+					{
+						if (go as Wings)
+						{
+							this.ship.PartList.Remove(go);
+						}
+					}
+
+					// Debug.Log("Removed");
+				}
+				else if (!this.ship.PartList.OfType<Wings>().Any())
+				{
+					this.ship.PartList.Add(this);
+					User.SteelCount -= this.steel;
+					User.FuelCount -= this.fuel;
+
+					// Debug.Log("Added");
+				}
+			}
+			if (User.SteelCount < this.steel)
+			{
+				Debug.Log("You don't have enough steel.");
+			}
+			if (User.FuelCount < this.fuel)
+			{
+				Debug.Log("You don't have enough fuel.");
+			}
+		}
+
+		/// <summary>
 		/// Use this for initialization
 		/// </summary>
 		private void Start()
@@ -89,6 +137,7 @@ namespace Assets.Scripts
 			this.quality = 20;
 			this.steel = 200;
 			this.fuel = 0;
+			this.ship = FindObjectOfType<Rocket>();
 		}
 
 		/// <summary>
@@ -96,6 +145,11 @@ namespace Assets.Scripts
 		/// </summary>
 		private void Update()
 		{
+			var wingsList = this.ship.PartList.ToList();
+			if (Input.GetKeyDown(KeyCode.Keypad1))
+			{
+				this.AddParts(wingsList);
+			}
 		}
 	}
 }

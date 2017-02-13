@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using Assets.Scripts.Managers;
+
 
 namespace UI
 {
@@ -174,7 +176,8 @@ namespace UI
             EventManager.Publish("NewGame");
         }
         public void NewGame()
-        {            
+        {
+            SceneManager.LoadScene(1);
             //Function will begin game from main menu
             Debug.Log("New Game");
         }
@@ -206,6 +209,7 @@ namespace UI
         }
         public void OnQuitGame()
         {
+            Application.Quit();
             //Function will quit game upon click.
             Debug.Log("Quit Game");
         }

@@ -106,6 +106,16 @@ namespace Assets.Scripts
         }
 
         /// <summary>
+        /// The change states function.
+        /// This function changes the state to the passed in state.
+        /// <para></para>
+        /// <remarks><paramref name="destinationState"></paramref> -The state to transition to.</remarks>
+        /// </summary>
+        public void ChangeStates(string destinationState)
+        {
+        }
+
+        /// <summary>
         /// The taint function allows the enemy to taint a resource.
         /// </summary>
         public void Taint()

@@ -24,16 +24,7 @@ namespace Assets.Scripts.Interfaces
 		/// <summary>
 		/// The refresh.
 		/// </summary>
-		/// <param name="value">
-		/// The value.
-		/// </param>
-		/// <param name="check">
-		/// The check.
-		/// </param>
-		/// <returns>
-		/// The <see cref="int"/>.
-		/// </returns>
-		int Refresh(int value, bool check);
+		void Refresh();
 
 		/// <summary>
 		/// The reset.
