@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d0e22f172261cd84ba406ef5b89ba3ff
-timeCreated: 1486499290
+timeCreated: 1487025052
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
@@ -12,6 +12,8 @@ TextureImporter:
     21300010: SELECTALLMINERBUTTON
     21300012: SELECTALLHARVESTERBUTTON
     21300014: SELECTALLUNITBUTTON
+    21300016: ACTIONSBUTTON
+    21300018: SELECTALLUNITSBUTTON
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -78,13 +80,26 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
+      name: ACTIONSBUTTON
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 223
+        width: 272
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
       name: HARVESTBUTTON
       rect:
         serializedVersion: 2
         x: 16
-        y: 116
-        width: 127
-        height: 98
+        y: 119
+        width: 126
+        height: 95
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -94,10 +109,10 @@ TextureImporter:
       name: RALLYBUTTON
       rect:
         serializedVersion: 2
-        x: 179
-        y: 115
-        width: 125
-        height: 97
+        x: 177
+        y: 119
+        width: 127
+        height: 95
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -107,10 +122,10 @@ TextureImporter:
       name: CANCELACTIONBUTTON
       rect:
         serializedVersion: 2
-        x: 348
-        y: 116
-        width: 128
-        height: 98
+        x: 346
+        y: 119
+        width: 127
+        height: 95
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -120,10 +135,10 @@ TextureImporter:
       name: CALLHOMEBUTTON
       rect:
         serializedVersion: 2
-        x: 510
-        y: 116
+        x: 511
+        y: 119
         width: 127
-        height: 98
+        height: 95
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -146,7 +161,7 @@ TextureImporter:
       name: SELECTALLMINERBUTTON
       rect:
         serializedVersion: 2
-        x: 180
+        x: 176
         y: 8
         width: 128
         height: 96
@@ -159,9 +174,9 @@ TextureImporter:
       name: SELECTALLHARVESTERBUTTON
       rect:
         serializedVersion: 2
-        x: 348
+        x: 344
         y: 8
-        width: 128
+        width: 129
         height: 96
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -169,12 +184,12 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SELECTALLUNITBUTTON
+      name: SELECTALLUNITSBUTTON
       rect:
         serializedVersion: 2
-        x: 508
+        x: 511
         y: 8
-        width: 128
+        width: 129
         height: 96
       alignment: 0
       pivot: {x: 0.5, y: 0.5}

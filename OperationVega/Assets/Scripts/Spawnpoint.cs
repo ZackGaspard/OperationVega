@@ -43,7 +43,7 @@ namespace Assets.Scripts
         /// </param>
         private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent(typeof(IGather)))
+            if (other.GetComponent(typeof(IUnit)))
             {
                 // Spawn
             }

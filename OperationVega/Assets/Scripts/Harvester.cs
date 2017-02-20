@@ -3,24 +3,21 @@ namespace Assets.Scripts
 {
     using Controllers;
     using Interfaces;
-
-    using UnityEditor;
-
     using UnityEngine;
     using UnityEngine.AI;
 
     /// <summary>
     /// The harvester class.
     /// </summary>
-    public class Harvester : MonoBehaviour, IUnit, IGather, IDamageable
+    public class Harvester : MonoBehaviour, IUnit, ICombat
     {
         /// <summary>
-        /// Reference to the clean food pefab
+        /// Reference to the clean food prefab.
         /// </summary>
         public GameObject cleanfood;
 
         /// <summary>
-        /// Reference to the dirty food pefab
+        /// Reference to the dirty food prefab.
         /// </summary>
         public GameObject dirtyfood;
 
@@ -33,23 +30,23 @@ namespace Assets.Scripts
         /// <summary>
         /// The target to heal/stun.
         /// </summary>
-        [HideInInspector]
-        public IDamageable Target;
+        public ICombat Target;
 
         /// <summary>
         /// The enemy gameobject reference.
         /// </summary>
+        [HideInInspector]
         public GameObject theEnemy;
 
         /// <summary>
         /// The recent tree reference that we were farming from.
         /// </summary>
+        [HideInInspector]
         public GameObject theRecentTree;
 
         /// <summary>
-        /// The resource to taint.
+        /// The resource to harvest from.
         /// </summary>
-        [HideInInspector]
         public IResources TargetResource;
 
         /// <summary>
@@ -57,12 +54,6 @@ namespace Assets.Scripts
         /// </summary>
         [HideInInspector]
         public Vector3 TargetClickPosition;
-
-        /// <summary>
-        /// The target direction to move at.
-        /// </summary>
-        [HideInInspector]
-        public Vector3 TargetDirection;
 
         /// <summary>
         /// The health of the harvester.
@@ -116,7 +107,7 @@ namespace Assets.Scripts
         /// The resource count of the harvester.
         /// </summary>
         [HideInInspector]
-        public uint Resourcecount;
+        public int Resourcecount;
 
         /// <summary>
         /// The navigation agent reference.
@@ -124,8 +115,18 @@ namespace Assets.Scripts
         private NavMeshAgent navagent;
 
         /// <summary>
+        /// The reference to the physical item dropped.
+        /// </summary>
+        private GameObject theitemdropped;
+
+        /// <summary>
+        /// The object to pickup.
+        /// </summary>
+        private GameObject objecttopickup;
+
+        /// <summary>
         /// The time between attacks reference.
-        /// Stores the reference to the timer between attacks
+        /// Stores the reference to the timer between attacks.
         /// </summary>
         private float timebetweenattacks;
 
@@ -146,6 +147,12 @@ namespace Assets.Scripts
         /// How long it takes to drop off the resource at the silo.
         /// </summary>
         private float dropofftime;
+
+        /// <summary>
+        /// The already stocked count reference.
+        /// This holds the count of a resource already stocked to keep track.
+        /// </summary>
+        private int alreadystockedcount;
 
         /// <summary>
         /// Instance of the RangeHandler delegate.
@@ -178,12 +185,45 @@ namespace Assets.Scripts
         private RangeHandler decontaminationHandler;
 
         /// <summary>
+        /// Instance of the RangeHandler delegate.
+        /// Called in changing to the pickup state.
+        /// </summary>
+        private RangeHandler pickupHandler;
+
+        /// <summary>
         /// The range handler delegate.
-        /// The delegate handles setting the attack range upon changing state.
+        /// The delegate handles setting the stopping distance upon changing state.
         /// <para></para>
-        /// <remarks><paramref name="number"></paramref> -The number to set the attack range to.</remarks>
+        /// <remarks><paramref name="number"></paramref> -The number to set the stopping distance to.</remarks>
         /// </summary>
         private delegate void RangeHandler(float number);
+
+        /// <summary>
+        /// The attack function houses the Heal Stun ability function.
+        /// </summary>
+        public void Attack()
+        {
+            if (this.timebetweenattacks >= this.Attackspeed)
+            {
+                Vector3 thedisplacement = (this.transform.position - this.theEnemy.transform.position).normalized;
+                if (Vector3.Dot(thedisplacement, this.theEnemy.transform.forward) < 0)
+                {
+                    Debug.Log("Harvester hit crit!");
+                    this.Target.TakeDamage(10);
+                    Enemy e = this.Target as Enemy;
+                    Debug.Log(e.Health);
+                    this.timebetweenattacks = 0;
+                }
+                else
+                {
+                    Debug.Log("Harvester attacking normal damage");
+                    this.Target.TakeDamage(5);
+                    Enemy e = this.Target as Enemy;
+                    Debug.Log(e.Health);
+                    this.timebetweenattacks = 0;
+                }
+            }
+        }
 
         /// <summary>
         /// The harvest function provides functionality of the harvester to harvest a resource.
@@ -199,22 +239,25 @@ namespace Assets.Scripts
                 Debug.Log("My Resource count " + this.Resourcecount);
 
                 this.harvesttime = 0;
-                if (this.Resourcecount >= 5 && !this.TargetResource.Taint)
-                { // Create the clean food object and parent it to the front of the harvester
+                if (this.Resourcecount == 5 && !this.TargetResource.Taint)
+                {
+                    // Create the clean food object and parent it to the front of the harvester
                     var clone = Instantiate(this.cleanfood, this.transform.position + (this.transform.forward * 0.6f), this.transform.rotation);
                     clone.transform.SetParent(this.transform);
+                    clone.name = "Food";
+                    this.Resourcecount = 0;
                     this.ChangeStates("Stock");
                     GameObject thesilo = GameObject.Find("Silo");
                     Vector3 destination = new Vector3(thesilo.transform.position.x + (this.transform.forward.x * 2), 0.5f, thesilo.transform.position.z + (this.transform.forward.z * 2));
                     this.navagent.SetDestination(destination);
                 }
-                else if (this.Resourcecount >= 5 && this.TargetResource.Taint)
+                else if (this.Resourcecount == 5 && this.TargetResource.Taint)
                 {
                     // The resource is tainted go to decontamination center
                     // Create the dirty food object and parent it to the front of the harvester
                     var clone = Instantiate(this.dirtyfood, this.transform.position + (this.transform.forward * 0.6f), this.transform.rotation);
                     clone.transform.SetParent(this.transform);
-                    clone.name = "PickupFoodTaint";
+                    clone.name = "FoodTainted";
                     this.ChangeStates("Decontaminate");
                     GameObject thedecontaminationbuilding = GameObject.Find("Decontamination");
                     Transform thedoor = thedecontaminationbuilding.transform.GetChild(1);
@@ -237,14 +280,33 @@ namespace Assets.Scripts
 
                 if (this.Resourcecount <= 0)
                 {
+                    this.Resourcecount = 0;
+                    this.alreadystockedcount = 0;
+                    int counter = 0;
+
                     for (int i = 0; i < this.transform.childCount; i++)
                     {
-                        Destroy(this.transform.GetChild(i).gameObject);
+                        if (this.transform.GetChild(i).name == "FoodTainted")
+                        {
+                            Destroy(this.transform.GetChild(i).gameObject);
+                            counter++;
+                        }
                     }
 
-                    this.Resourcecount = 5;
-                    var clone = Instantiate(this.cleanfood, this.transform.position + (this.transform.forward * 0.6f), this.transform.rotation);
-                    clone.transform.SetParent(this.transform);
+                    for (int i = 0; i < counter; i++)
+                    {
+                        var clone = Instantiate(
+                        this.cleanfood,
+                        this.transform.position + (this.transform.forward * 0.6f),
+                        this.transform.rotation);
+                        clone.transform.SetParent(this.transform);
+                        clone.name = "Food";
+                        if (i > 0)
+                        {
+                            clone.transform.gameObject.SetActive(false);
+                        }
+                    }
+
                     this.ChangeStates("Stock");
                     GameObject thesilo = GameObject.Find("Silo");
                     Vector3 destination = new Vector3(thesilo.transform.position.x + (this.transform.forward.x * 2), 0.5f, thesilo.transform.position.z + (this.transform.forward.z * 2));
@@ -254,22 +316,31 @@ namespace Assets.Scripts
         }
 
         /// <summary>
-        /// The set the target position function.
+        /// The set move position function.
+        /// Sets the destination for the unit.
+        /// <para></para>
+        /// <remarks><paramref name="theClickPosition"></paramref> -The object that will be set as the position to move to.</remarks>
         /// </summary>
-        /// <param name="targetPos">
-        /// The target position to go to when clicked.
-        /// </param>
-        public void SetTheTargetPosition(Vector3 targetPos)
+        public void SetTheMovePosition(Vector3 targetPos)
         {
             this.navagent.SetDestination(targetPos);
         }
 
         /// <summary>
-        /// The take damage function allows a harvester to take damage.
+        /// The heal stun ability for the harvester.
+        /// This function will be the ability to allow the harvester to
+        /// stun enemies and heal other units.
         /// </summary>
-        /// <param name="damage">
-        /// The amount of damage.
-        /// </param>
+        public void HealStun()
+        {
+
+        }
+
+        /// <summary>
+        /// The take damage function allows a miner to take damage.
+        /// <para></para>
+        /// <remarks><paramref name="damage"></paramref> -The amount to be calculated when the object takes damage.</remarks>
+        /// </summary>
         public void TakeDamage(uint damage)
         {
             throw new System.NotImplementedException();
@@ -301,37 +372,60 @@ namespace Assets.Scripts
                 case "Decontaminate":
                     this.TheHarvesterFsm.Feed(thecurrentstate + "To" + destinationState, 1.0f);
                     break;
+                case "PickUp":
+                    this.TheHarvesterFsm.Feed(thecurrentstate + "To" + destinationState, 1.0f);
+                    break;
                 default:
                     break;
             }
         }
 
         /// <summary>
-        /// The heal stun function gives the harvester functionality to heal units and stun enemies.
+        /// The set target function.
+        /// Sets the object as the target for the unit.
+        /// <para></para>
+        /// <remarks><paramref name="theTarget"></paramref> -The object that will be set as the target for attacking.</remarks>
         /// </summary>
-        public void HealStun()
+        public void SetTarget(GameObject theTarget)
         {
-            if (this.timebetweenattacks >= this.Attackspeed)
+            this.theEnemy = theTarget;
+            if (this.theEnemy != null)
             {
-                Vector3 thedisplacement = (this.transform.position - this.theEnemy.transform.position).normalized;
-                if (Vector3.Dot(thedisplacement, this.theEnemy.transform.forward) < 0)
-                {
-                    Debug.Log("Harvester hit crit!");
-                    this.Target.TakeDamage(10);
-                    Enemy e = this.Target as Enemy;
-                    Debug.Log(e.Health);
-                    this.timebetweenattacks = 0;
-                }
-                else
-                {
-                    Debug.Log("Harvester attacking normal damage");
-                    this.Target.TakeDamage(5);
-                    Enemy e = this.Target as Enemy;
-                    Debug.Log(e.Health);
-                    this.timebetweenattacks = 0;
-                }
+                this.Target = (ICombat)theTarget.GetComponent(typeof(ICombat));
             }
+        }
 
+        /// <summary>
+        /// The set target resource function.
+        /// The function sets the unit with the resource.
+        /// <para></para>
+        /// <remarks><paramref name="theResource"></paramref> -The object that will be set as the target resource.</remarks>
+        /// </summary>
+        public void SetTargetResource(GameObject theResource)
+        {
+            if (theResource.GetComponent<Food>())
+            {
+                this.TargetResource = (IResources)theResource.GetComponent(typeof(IResources));
+                this.navagent.SetDestination(theResource.transform.position);
+                this.theRecentTree = theResource;
+                this.ChangeStates("Harvest");
+            }
+        }
+
+        /// <summary>
+        /// The go to pickup function.
+        /// Parses and sends the unit to pickup a dropped resource.
+        /// <para></para>
+        /// <remarks><paramref name="thepickup"></paramref> -The object that will be set as the item to pick up.</remarks>
+        /// </summary>
+        public void GoToPickup(GameObject thepickup)
+        {
+            if (thepickup.name == "Food" || thepickup.name == "FoodTainted")
+            {
+                this.objecttopickup = thepickup;
+                this.navagent.SetDestination(thepickup.transform.position);
+                this.ChangeStates("PickUp");
+            }
         }
 
         /// <summary>
@@ -347,6 +441,7 @@ namespace Assets.Scripts
             switch (this.TheHarvesterFsm.CurrentState.Statename)
             {
                 case "Idle":
+                    this.IdleState();
                     break;
                 case "Battle":
                     this.BattleState();
@@ -359,6 +454,9 @@ namespace Assets.Scripts
                     break;
                 case "Decontaminate":
                     this.DecontaminationState();
+                    break;
+                case "PickUp":
+                    this.PickUpState();
                     break;
                 default:
                     break;
@@ -386,13 +484,81 @@ namespace Assets.Scripts
         /// <summary>
         /// The reset range function.
         /// This resets the range of distance the unit stands from the clicked position.
+        /// <para></para>
+        /// <remarks><paramref name="num"></paramref> -The amount to set the stopping distance to.</remarks>
         /// </summary>
-        /// <param name="num">
-        /// The number to set the attack range to.
-        /// </param>
         private void ResetStoppingDistance(float num)
         {
             this.navagent.stoppingDistance = num;
+        }
+
+        /// <summary>
+        /// The tally resources function.
+        /// This function tallies up the resources in hand.
+        /// <para></para>
+        /// <remarks><paramref name="num"></paramref> -The number to set the stopping distance to.</remarks>
+        /// </summary>
+        private void TallyResources(float num)
+        {
+            this.navagent.stoppingDistance = num;
+
+            this.Resourcecount = 0;
+
+            foreach (Transform t in this.transform)
+            {
+                if (t.name == "Food")
+                {
+                    this.Resourcecount += 5;
+                }
+            }
+
+            this.Resourcecount -= this.alreadystockedcount;
+
+            Debug.Log("Total to stock" + this.Resourcecount);
+        }
+
+        /// <summary>
+        /// The idle state function.
+        /// Has the funtionality of checking for dropped items.
+        /// </summary>
+        private void IdleState()
+        {
+            if (this.theitemdropped != null && this.objecttopickup == null)
+            {
+                if (this.transform.Find("Food") && this.theitemdropped.name == "FoodTainted")
+                {
+                    return;
+                }
+                else if (this.transform.Find("FoodTainted") && this.theitemdropped.name == "Food")
+                {
+                    return;
+                }
+
+                this.navagent.SetDestination(this.theitemdropped.transform.position);
+
+                if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+                {
+                    Debug.Log("Found my food");
+                    this.theitemdropped.transform.SetParent(this.transform);
+                    this.theitemdropped.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                    this.theitemdropped = null;
+
+                    if (this.transform.Find("FoodTainted"))
+                    {
+                        this.ChangeStates("Decontaminate");
+                        GameObject thedecontaminationbuilding = GameObject.Find("Decontamination");
+                        Transform thedoor = thedecontaminationbuilding.transform.GetChild(1);
+                        this.navagent.SetDestination(thedoor.position);
+                    }
+                    else
+                    {
+                        this.ChangeStates("Stock");
+                        GameObject thesilo = GameObject.Find("Silo");
+                        Vector3 destination = new Vector3(thesilo.transform.position.x + (this.transform.forward.x * 2), 0.5f, thesilo.transform.position.z + (this.transform.forward.z * 2));
+                        this.navagent.SetDestination(destination);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -403,9 +569,31 @@ namespace Assets.Scripts
         {
             if (this.Target != null)
             {
+                Transform cleanfood = this.transform.Find("Food");
+                Transform dirtyfood = this.transform.Find("FoodTainted");
+
+                if (cleanfood != null)
+                {
+                    cleanfood.position = new Vector3(cleanfood.position.x, 0f, cleanfood.position.z);
+                    this.theitemdropped = cleanfood.gameObject;
+                    this.theitemdropped.tag = "PickUp";
+                    cleanfood.gameObject.SetActive(true);
+                    cleanfood.transform.parent = null;
+                    this.Resourcecount = 0;
+                }
+                else if (dirtyfood != null)
+                {
+                    dirtyfood.position = new Vector3(dirtyfood.position.x, 0f, dirtyfood.position.z);
+                    this.theitemdropped = dirtyfood.gameObject;
+                    this.theitemdropped.tag = "PickUp";
+                    dirtyfood.gameObject.SetActive(true);
+                    dirtyfood.transform.parent = null;
+                    this.Resourcecount = 0;
+                }
+
                 if (this.navagent.remainingDistance <= this.Healrange && !this.navagent.pathPending)
                 {
-                    this.HealStun();
+                    this.Attack();
                 }
             }
         }
@@ -418,9 +606,12 @@ namespace Assets.Scripts
         {
             if (this.TargetResource != null && this.TargetResource.Count > 0)
             {
-                if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+                if (!this.transform.Find("Food") && !this.transform.Find("FoodTainted"))
                 {
-                    this.Harvest();
+                    if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+                    {
+                        this.Harvest();
+                    }
                 }
             }
         }
@@ -431,49 +622,107 @@ namespace Assets.Scripts
         /// </summary>
         private void StockState()
         {
-            if (this.Resourcecount <= 0)
+            if (this.transform.Find("Food"))
             {
-                for (int i = 0; i < this.transform.childCount; i++)
+                if (this.Resourcecount <= 0)
                 {
-                    Destroy(this.transform.GetChild(i).gameObject);
+                    this.Resourcecount = 0;
+                    this.alreadystockedcount = 0;
+
+                    for (int i = 0; i < this.transform.childCount; i++)
+                    {
+                        if (this.transform.GetChild(i).name == "Food")
+                        {
+                            Destroy(this.transform.GetChild(i).gameObject);
+                        }
+                    }
+
+                    if (this.TargetResource != null && this.TargetResource.Count > 0)
+                    {
+                        this.navagent.SetDestination(this.theRecentTree.transform.position);
+                        this.ChangeStates("Harvest");
+                    }
+                    else
+                    {
+                        this.ChangeStates("Idle");
+                    }
                 }
 
-                if (this.TargetResource != null && this.TargetResource.Count > 0)
-                {
-                    this.navagent.SetDestination(this.theRecentTree.transform.position);
-                    this.ChangeStates("Harvest");
-                }
-                else
-                {
-                    this.ChangeStates("Idle");
-                }
-            }
+                dropofftime += 1 * Time.deltaTime;
 
-            dropofftime += 1 * Time.deltaTime;
-
-            if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
-            {
-                if (this.dropofftime >= 1.0f)
+                if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
                 {
-                    Debug.Log("Dropping off the goods");
-                    this.Resourcecount--;
-                    Debug.Log("My resource count " + this.Resourcecount);
-                    User.FoodCount++;
-                    Debug.Log("I have now stocked " + User.FoodCount + " food");
-                    this.dropofftime = 0;
+                    if (this.dropofftime >= 1.0f)
+                    {
+                        Debug.Log("Dropping off the goods");
+                        this.Resourcecount--;
+                        this.alreadystockedcount++;
+                        Debug.Log("My resource count " + this.Resourcecount);
+                        User.FoodCount++;
+                        Debug.Log("I have now stocked " + User.FoodCount + " food");
+                        this.dropofftime = 0;
+                    }
                 }
+
             }
         }
 
+        /// <summary>
+        /// The pick up state function.
+        /// Regulates game flow while in the pick up state.
+        /// </summary>
+        private void PickUpState()
+        {
+            if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+            {
+                Transform foodtainted = this.transform.Find("FoodTainted");
+                Transform food = this.transform.Find("Food");
+
+                if (food == null && foodtainted == null)
+                {
+                    this.objecttopickup.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                    this.objecttopickup.transform.SetParent(this.transform);
+                    if (this.objecttopickup.name == "FoodTainted")
+                    {
+                        this.Resourcecount = 5;
+                    }
+                }
+                else if (this.objecttopickup.name == "Food")
+                {
+                    if (food != null && foodtainted == null)
+                    {
+                        this.objecttopickup.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                        this.objecttopickup.transform.SetParent(this.transform);
+                        this.objecttopickup.gameObject.SetActive(false);
+                    }
+                }
+                else if (this.objecttopickup.name == "FoodTainted")
+                {
+                    if (foodtainted != null && food == null)
+                    {
+                        this.objecttopickup.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                        this.objecttopickup.transform.SetParent(this.transform);
+                        this.objecttopickup.gameObject.SetActive(false);
+                        this.Resourcecount = 5;
+                    }
+                }
+
+                this.ChangeStates("Idle");
+            }
+        }
+        
         /// <summary>
         /// The decontamination state function.
         /// Handles the decontamination of resources at the decontamination building.
         /// </summary>
         private void DecontaminationState()
         {
-            if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+            if (this.transform.Find("FoodTainted"))
             {
-                this.Decontaminate();
+                if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+                {
+                    this.Decontaminate();
+                }
             }
         }
 
@@ -485,8 +734,9 @@ namespace Assets.Scripts
             this.idleHandler = this.ResetStoppingDistance;
             this.battleHandler = this.ResetStoppingDistance;
             this.harvestHandler = this.ResetStoppingDistance;
-            this.stockHandler = this.ResetStoppingDistance;
+            this.stockHandler = this.TallyResources;
             this.decontaminationHandler = this.ResetStoppingDistance;
+            this.pickupHandler = this.ResetStoppingDistance;
 
             this.TheHarvesterFsm.CreateState("Init", null);
             this.TheHarvesterFsm.CreateState("Idle", this.idleHandler);
@@ -494,6 +744,7 @@ namespace Assets.Scripts
             this.TheHarvesterFsm.CreateState("Harvest", this.harvestHandler);
             this.TheHarvesterFsm.CreateState("Stock", this.stockHandler);
             this.TheHarvesterFsm.CreateState("Decontaminate", this.decontaminationHandler);
+            this.TheHarvesterFsm.CreateState("PickUp", this.pickupHandler);
 
             this.TheHarvesterFsm.AddTransition("Init", "Idle", "auto");
             this.TheHarvesterFsm.AddTransition("Idle", "Battle", "IdleToBattle");
@@ -509,9 +760,22 @@ namespace Assets.Scripts
             this.TheHarvesterFsm.AddTransition("Stock", "Battle", "StockToBattle");
             this.TheHarvesterFsm.AddTransition("Stock", "Harvest", "StockToHarvest");
             this.TheHarvesterFsm.AddTransition("Harvest", "Decontaminate", "HarvestToDecontaminate");
+            this.TheHarvesterFsm.AddTransition("Stock", "Decontaminate", "StockToDecontaminate");
             this.TheHarvesterFsm.AddTransition("Decontaminate", "Stock", "DecontaminateToStock");
             this.TheHarvesterFsm.AddTransition("Decontaminate", "Idle", "DecontaminateToIdle");
             this.TheHarvesterFsm.AddTransition("Idle", "Decontaminate", "IdleToDecontaminate");
+            this.TheHarvesterFsm.AddTransition("Decontaminate", "Battle", "DecontaminateToBattle");
+            this.TheHarvesterFsm.AddTransition("Battle", "Decontaminate", "BattleToDecontaminate");
+            this.TheHarvesterFsm.AddTransition("PickUp", "Idle", "PickUpToIdle");
+            this.TheHarvesterFsm.AddTransition("PickUp", "Battle", "PickUpToBattle");
+            this.TheHarvesterFsm.AddTransition("PickUp", "Harvest", "PickUpToHarvest");
+            this.TheHarvesterFsm.AddTransition("PickUp", "Decontaminate", "PickUpToDecontaminate");
+            this.TheHarvesterFsm.AddTransition("PickUp", "Stock", "PickUpToStock");
+            this.TheHarvesterFsm.AddTransition("Idle", "PickUp", "IdleToPickUp");
+            this.TheHarvesterFsm.AddTransition("Battle", "PickUp", "BattleToPickUp");
+            this.TheHarvesterFsm.AddTransition("Harvest", "PickUp", "HarvestToPickUp");
+            this.TheHarvesterFsm.AddTransition("Stock", "PickUp", "StockToPickUp");
+            this.TheHarvesterFsm.AddTransition("Decontaminate", "PickUp", "DecontaminateToPickUp");
         }
 
         /// <summary>

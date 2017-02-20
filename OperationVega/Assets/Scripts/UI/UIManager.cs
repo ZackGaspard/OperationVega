@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
+using Text = UnityEngine.UI.Text;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Assets.Scripts.Managers;
 
 
+
 namespace UI
 {
+    using Assets.Scripts;
+    
     public class UIManager : MonoBehaviour
     {     
         #region -- VARIABLES --
@@ -32,7 +36,40 @@ namespace UI
         [SerializeField]
         private Button m_CancelAction;
         [SerializeField]
+        private Button m_Minerals;
+        [SerializeField]
+        private Button m_Food;
+        [SerializeField]
+        private Button m_CookedFood;
+        [SerializeField]
+        private Button m_Gas;
+        [SerializeField]
+        private Button m_Fuel;
+        [SerializeField]
         private Canvas m_BackgroundUI;
+        [SerializeField]
+        private RectTransform m_ActionsTAB;
+        [SerializeField]
+        private RectTransform m_CraftingTAB;
+        [SerializeField]
+        private RectTransform m_WorkshopUI;
+        [SerializeField]
+        private RectTransform m_OptionsUI;
+
+        [SerializeField]
+        private Text m_MineralsT;
+        [SerializeField]
+        private Text m_FoodT;
+        [SerializeField]
+        private Text m_CookedFoodT;
+        [SerializeField]
+        private Text m_GasT;
+        [SerializeField]
+        private Text m_FuelT;
+        [SerializeField]
+       
+
+
         #endregion
 
         #region -- PROPERTIES --
@@ -54,13 +91,22 @@ namespace UI
             EventManager.Subscribe("Clear", this.OnClear);
             EventManager.Subscribe("Mine", this.OnMine);
             EventManager.Subscribe("Extract", this.OnExtract);
+            EventManager.Subscribe("Crafting", this.OnCrafting);
             #endregion
 
             #region -- Main Menu Subscribers --
-            EventManager.Subscribe("NewGame", this.NewGame);
-            EventManager.Subscribe("Options", this.OnOptions);
+            EventManager.Subscribe("NewGame", this.NewGameClick);
+            EventManager.Subscribe("Options", this.OnOptionsClick);
             EventManager.Subscribe("Instructions", this.OnInstructions);
             EventManager.Subscribe("QuitGame", this.OnQuitGame);
+            #endregion
+
+            #region -- Crafting Subscribers --
+            EventManager.Subscribe("Minerals", this.Minerals);
+            EventManager.Subscribe("Food", this.Food);
+            EventManager.Subscribe("CookedFood", this.CookedFood);
+            EventManager.Subscribe("Gas", this.Gas);
+            EventManager.Subscribe("Fuel", this.Fuel);
             #endregion
 
         }
@@ -77,6 +123,7 @@ namespace UI
             EventManager.UnSubscribe("Clear", this.OnClear);
             EventManager.UnSubscribe("Mine", this.OnMine);
             EventManager.UnSubscribe("Extract", this.OnExtract);
+            EventManager.UnSubscribe("Crafting", this.OnCrafting);
             #endregion
 
             #region -- Main Menu Unsubscribers --
@@ -84,15 +131,63 @@ namespace UI
             EventManager.UnSubscribe("Options", this.OnOptions);
             EventManager.UnSubscribe("Instructions", this.OnInstructions);
             EventManager.UnSubscribe("QuitGame", this.OnQuitGame);
-            #endregion 
+            #endregion
+
+            #region -- Crafting Unsubscribers --
+            EventManager.UnSubscribe("Minerals", this.OnMinerals);
+            EventManager.UnSubscribe("Food", this.OnFood);
+            EventManager.UnSubscribe("CookedFood", this.OnCookedFood);
+            EventManager.UnSubscribe("Gas", this.OnGas);
+            EventManager.UnSubscribe("Fuel", this.OnFuel);
+            #endregion
         }
         #region -- VOID FUNCTIONS --
+
+        void Update()
+        {
+            //Updates the amount of resources the player has.
+            m_MineralsT.text = " " + User.MineralsCount;
+            m_FoodT.text = " " + User.FoodCount;
+            m_CookedFoodT.text = "" + User.CookedFoodCount;
+            m_GasT.text = " " + User.GasCount;
+            m_FuelT.text = "" + User.FuelCount;
+
+
+            
+        }
+
+
+        public void OnActionsClick()
+        {
+            EventManager.Publish("Actions");
+        }
+
+        public void OnActions()
+        {
+            m_ActionsTAB.offsetMax = new Vector2(m_CraftingTAB.offsetMax.x, 0);
+            m_ActionsTAB.offsetMin = new Vector2(m_CraftingTAB.offsetMin.x, 0);
+            Debug.Log("Move Actions Tab down");
+        }
+
+        public void OnCraftingClick()
+        {
+           
+            EventManager.Publish("Crafting");
+        }
+
+        public void OnCrafting()
+        {     
+            m_CraftingTAB.offsetMax = new Vector2(m_CraftingTAB.offsetMax.x, 0);
+            m_CraftingTAB.offsetMin = new Vector2(m_CraftingTAB.offsetMin.x, 0);
+
+            Debug.Log("Move Crafting Tab down");
+        }
         public void OnRallyClick()
         {
             EventManager.Publish("Rally");
         }
         public void OnRally()
-        {            
+        {    
             //Function will be use to rally upon click.
             Debug.Log("Begin Rallying ");
         }
@@ -127,11 +222,13 @@ namespace UI
 
         public void OnCraftClick()
         {
+
             //This function will run the craft function
             EventManager.Publish("Craft");
         }
         void OnCraft()
         {
+           
             Debug.Log("Craft");
         }
         public void OnClearClick()
@@ -148,7 +245,8 @@ namespace UI
             EventManager.Publish("Workshop");
         }
         public void OnWorkShop()
-        {          
+        {
+            m_WorkshopUI.gameObject.SetActive(true);
             //This function will bring up the workshop within the game.
             Debug.Log("Workshop");
         }
@@ -170,7 +268,37 @@ namespace UI
             Debug.Log("Begin Extracting");
         }
         #region -- Main Menu Functions --
+        public void OnOptionsClick()
+        {
+            EventManager.Publish("Options Menu");
+        }
+        public void OnOptions()
+        {
+            m_OptionsUI.gameObject.SetActive(true);
+            Debug.Log("Options Menu");
+        }
+        public void CloseOptionsClick()
+        {
+            EventManager.Publish("Close Options");
+        }
 
+        public void CloseOptions()
+        {
+            m_OptionsUI.gameObject.SetActive(false);
+            Debug.Log("Close Options");
+        }
+
+        public void CloseWorkShopClick()
+        {
+            EventManager.Publish("Close WorkShop");
+        }
+        public void CloseWorkShop()
+        {
+           //This function will close work shop menu
+            m_WorkshopUI.gameObject.SetActive(false);
+            Debug.Log("Close Workshop Menu");
+
+        }
         public void NewGameClick()
         {
             EventManager.Publish("NewGame");
@@ -180,16 +308,6 @@ namespace UI
             SceneManager.LoadScene(1);
             //Function will begin game from main menu
             Debug.Log("New Game");
-        }
-
-        public void OnOptionsClick()
-        {
-            EventManager.Publish("Options");
-        }
-        public void OnOptions()
-        {         
-            //Function will acess the options menu
-            Debug.Log("Options");
         }
 
         public void OnInstructionsClick()
@@ -214,6 +332,82 @@ namespace UI
             Debug.Log("Quit Game");
         }
         #endregion
+
+        #region -- Crafting -- 
+        public void Minerals()
+        {
+            EventManager.Publish("Minerals");
+        }
+        public void OnMinerals()
+        {
+            //Will Change the source image to the first craft slot
+            //Second Slot if first one is selected.
+            Debug.Log("Minerals");
+        }
+        
+        public void Food()
+        {
+
+            EventManager.Publish("Food");
+        }
+        public void OnFood()
+        {
+            //Will Change the source image to the first craft slot
+            //Second Slot if first one is selected.
+            User.FoodCount++;
+            Debug.Log("Food");
+        }
+        
+        public void CookedFood()
+        {
+            EventManager.Publish("CookedFood");
+        }
+
+        public void OnCookedFood()
+        {
+            //Will Change the source image to the first craft slot
+            //Second Slot if first one is selected.
+            Debug.Log("Cooked Food");
+        }
+
+        public void Gas()
+        {
+            EventManager.Publish("Gas");
+        }
+
+        public void OnGas()
+        {
+            //Will Change the source image to the first craft slot
+            //Second Slot if first one is selected.
+            User.GasCount++;
+            Debug.Log("Gas");
+        }
+
+        public void Fuel()
+        {
+            EventManager.Publish("Fuel");
+        }
+
+        public void OnFuel()
+        {
+            //Will Change the source image to the first craft slot
+            //Second Slot if first one is selected.
+            User.FuelCount++;
+            
+            Debug.Log("Fuel");
+        }
+
+        public void OnThrustersClick()
+        {
+            EventManager.Publish("Thursters");
+        }
+        public void OnThrusters()
+        {
+
+        }
+
         #endregion
+        #endregion
+     
     }
 }

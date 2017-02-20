@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 5438fabbd6d079d4096ad1ed8b02c3b4
-timeCreated: 1486504364
+timeCreated: 1487177568
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
@@ -72,6 +72,22 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -92,9 +108,9 @@ TextureImporter:
       name: BUILDBUTTON
       rect:
         serializedVersion: 2
-        x: 761
+        x: 767
         y: 378
-        width: 228
+        width: 222
         height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -106,9 +122,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 371
-        y: 120
-        width: 223
-        height: 66
+        y: 118
+        width: 222
+        height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,10 +134,10 @@ TextureImporter:
       name: CHASSISBUTTON
       rect:
         serializedVersion: 2
-        x: 636
-        y: 121
-        width: 223
-        height: 65
+        x: 641
+        y: 118
+        width: 222
+        height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,10 +147,10 @@ TextureImporter:
       name: COCKPITBUTTON
       rect:
         serializedVersion: 2
-        x: 901
-        y: 121
-        width: 223
-        height: 65
+        x: 906
+        y: 118
+        width: 222
+        height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,10 +160,10 @@ TextureImporter:
       name: WINGSBUTTON
       rect:
         serializedVersion: 2
-        x: 1171
-        y: 120
-        width: 223
-        height: 66
+        x: 1170
+        y: 118
+        width: 222
+        height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

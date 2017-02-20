@@ -41,7 +41,7 @@ namespace Assets.Scripts.Managers
 
         /// <summary>
         /// Gets the instance.
-        /// Returns the GameManager
+        /// Returns the GameManager.
         /// </summary>
         public static GameManager Instance
         {
@@ -56,7 +56,7 @@ namespace Assets.Scripts.Managers
 
         /// <summary>
         /// The check for win function.
-        /// Checks if the user has met the win condition
+        /// Checks if the user has met the win condition.
         /// </summary>
         /// <returns>
         /// The <see cref="bool"/>.

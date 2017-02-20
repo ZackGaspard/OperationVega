@@ -36,7 +36,7 @@ namespace Assets.Scripts
 		/// Boolean for if the resource is tainted.
 		/// Accessible through the Taint property.
 		/// </summary>
-		private bool state;
+		public bool state;
 
 		/// <summary>
 		/// The refill timer.

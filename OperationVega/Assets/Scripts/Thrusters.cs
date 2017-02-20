@@ -34,11 +34,6 @@ namespace Assets.Scripts
 		private uint fuel;
 
 		/// <summary>
-		/// The ship.
-		/// </summary>
-		private Rocket ship;
-
-		/// <summary>
 		/// Gets or sets the quality.
 		/// </summary>
 		public uint Quality
@@ -87,53 +82,13 @@ namespace Assets.Scripts
 		}
 
 		/// <summary>
-		/// Function for adding the parts to the list.
-		/// Need to work on removing parts if one of the same type is selected.
-		/// </summary>
-		/// <param name="secondaryList">
-		/// The secondaryList. A second list of the parts.
-		///	Solves error that's thrown when a part is removed from the list.
-		/// </param>
-		public void AddParts(List<IRocketParts> secondaryList)
-		{
-			if (User.SteelCount >= this.steel && User.FuelCount >= this.fuel)
-			{
-				if (this.ship.PartList.OfType<Thrusters>().Any())
-				{
-					foreach (var go in secondaryList)
-					{
-						if (go as Thrusters)
-						{
-							this.ship.PartList.Remove(go);
-						}
-					}
-				}
-				else if (!this.ship.PartList.OfType<Thrusters>().Any())
-				{
-					this.ship.PartList.Add(this);
-					User.SteelCount -= this.steel;
-					User.FuelCount -= this.fuel;
-				}
-			}
-			if (User.SteelCount < this.steel)
-			{
-				Debug.Log("You don't have enough steel.");
-			}
-			if (User.FuelCount < this.fuel)
-			{
-				Debug.Log("You don't have enough fuel.");
-			}
-		}
-
-		/// <summary>
 		/// Use this for initialization
 		/// </summary>
 		private void Start()
 		{
 			this.quality = 20;
 			this.steel = 200;
-			this.fuel = 200;
-			this.ship = FindObjectOfType<Rocket>();
+			this.fuel = 50;
 		}
 
 		/// <summary>
@@ -141,12 +96,6 @@ namespace Assets.Scripts
 		/// </summary>
 		private void Update()
 		{
-			var thrustersList = this.ship.PartList.ToList();
-
-			if (Input.GetMouseButtonDown(1))
-			{
-				this.AddParts(thrustersList);
-			}
 		}
 	}
 }

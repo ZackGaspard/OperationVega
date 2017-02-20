@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4028522845888152}
   - component: {fileID: 95057164720652390}
+  - component: {fileID: 65795441294455830}
   m_Layer: 0
   m_Name: Minerals
   m_TagString: Untagged
@@ -37,7 +38,6 @@ GameObject:
   - component: {fileID: 4524385719880678}
   - component: {fileID: 33225476274319946}
   - component: {fileID: 23860364094724060}
-  - component: {fileID: 65568939670735518}
   m_Layer: 0
   m_Name: Minerals:RoadKillOut2
   m_TagString: Untagged
@@ -55,7 +55,6 @@ GameObject:
   - component: {fileID: 4678731770703294}
   - component: {fileID: 33384704182928938}
   - component: {fileID: 23381657963379946}
-  - component: {fileID: 65420632248936768}
   m_Layer: 0
   m_Name: Minerals:RoadKillOut
   m_TagString: Untagged
@@ -73,7 +72,6 @@ GameObject:
   - component: {fileID: 4332004307458166}
   - component: {fileID: 33760408822048256}
   - component: {fileID: 23358874397251656}
-  - component: {fileID: 65379767793785578}
   m_Layer: 0
   m_Name: Minerals:RoadKillOut1
   m_TagString: Untagged
@@ -250,42 +248,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1468068109574954}
   m_Mesh: {fileID: 4300002, guid: 13c547ce58b8a0448b8d9e317399285e, type: 3}
---- !u!65 &65379767793785578
+--- !u!65 &65795441294455830
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1468068109574954}
+  m_GameObject: {fileID: 1127023133715584}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.14572614, y: 0.18262851, z: 0.24935097}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65420632248936768
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1430997498381260}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.14572614, y: 0.16938369, z: 0.18659432}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65568939670735518
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1187257825289784}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.14572614, y: 0.18706432, z: 0.25088254}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.3, y: 0.3, z: 1}
+  m_Center: {x: 0, y: 0.13, z: 0}
 --- !u!95 &95057164720652390
 Animator:
   serializedVersion: 3

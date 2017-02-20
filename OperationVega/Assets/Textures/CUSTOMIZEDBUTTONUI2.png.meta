@@ -1,0 +1,482 @@
+fileFormatVersion: 2
+guid: 535a464d6fdbb9747a48037f123142ae
+timeCreated: 1487009546
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: FBUTTON
+    21300002: 4BUTTON
+    21300004: 3BUTTON
+    21300006: GBUTTON
+    21300008: 5BUTTON
+    21300010: 2BUTTON
+    21300012: IBUTTON
+    21300014: 6BUTTON
+    21300016: 1BUTTON
+    21300018: JBUTTON
+    21300020: 7BUTTON
+    21300022: F8BUTTON
+    21300024: KBUTTON
+    21300026: 8BUTTON
+    21300028: F7BUTTON
+    21300030: PBUTTON
+    21300032: F6BUTTON
+    21300034: QBUTTON
+    21300036: ENTERBUTTON
+    21300038: ZBUTTON
+    21300040: NBUTTON
+    21300042: EBUTTON
+    21300044: XBUTTON
+    21300046: LBUTTON
+    21300048: 9BUTTON
+    21300050: VBUTTON
+    21300052: BBUTTON
+    21300054: 0BUTTON
+    21300056: UBUTTON
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FBUTTON
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 891
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 4BUTTON
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 891
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 3BUTTON
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 891
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: GBUTTON
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 796
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 5BUTTON
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 796
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 2BUTTON
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 796
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: IBUTTON
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 702
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 6BUTTON
+      rect:
+        serializedVersion: 2
+        x: 961
+        y: 702
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 1BUTTON
+      rect:
+        serializedVersion: 2
+        x: 1251
+        y: 702
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: JBUTTON
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 607
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 7BUTTON
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 607
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: F8BUTTON
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 607
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KBUTTON
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 515
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 8BUTTON
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 515
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: F7BUTTON
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 515
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PBUTTON
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 423
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: F6BUTTON
+      rect:
+        serializedVersion: 2
+        x: 1253
+        y: 423
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: QBUTTON
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 333
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ENTERBUTTON
+      rect:
+        serializedVersion: 2
+        x: 963
+        y: 333
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ZBUTTON
+      rect:
+        serializedVersion: 2
+        x: 1253
+        y: 333
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: NBUTTON
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 243
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: EBUTTON
+      rect:
+        serializedVersion: 2
+        x: 963
+        y: 243
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XBUTTON
+      rect:
+        serializedVersion: 2
+        x: 1253
+        y: 243
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LBUTTON
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 153
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 9BUTTON
+      rect:
+        serializedVersion: 2
+        x: 963
+        y: 153
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: VBUTTON
+      rect:
+        serializedVersion: 2
+        x: 1253
+        y: 153
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BBUTTON
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 61
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 0BUTTON
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 60
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UBUTTON
+      rect:
+        serializedVersion: 2
+        x: 1253
+        y: 61
+        width: 279
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

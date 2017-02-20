@@ -7,7 +7,7 @@ namespace Assets.Scripts.Managers
     using UnityEngine.Events;
 
     /// <summary>
-    /// The event manager class. It is used to handle events and is a singleton
+    /// The event manager class. It is used to handle events and is a singleton.
     /// </summary>
     public class EventManager : MonoBehaviour
     {

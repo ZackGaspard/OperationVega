@@ -9,7 +9,7 @@ namespace Assets.Scripts
     /// The enemy class.
     /// </summary>
     [RequireComponent(typeof(MeshCollider))]
-    public class Enemy : MonoBehaviour, IUnit, ICombat, IDamageable
+    public class Enemy : MonoBehaviour, ICombat
     {
         /// <summary>
         /// The enemy finite state machine.
@@ -20,13 +20,11 @@ namespace Assets.Scripts
         /// <summary>
         /// The target to attack.
         /// </summary>
-        [HideInInspector]
-        public IDamageable Target;
+        public ICombat Target;
 
         /// <summary>
         /// The resource to taint.
         /// </summary>
-        [HideInInspector]
         public IResources TargetResource;
 
         /// <summary>
@@ -78,14 +76,6 @@ namespace Assets.Scripts
         public uint Attackrange;
 
         /// <summary>
-        /// The move function providing move functionality to the enemy.
-        /// </summary>
-        public void Move()
-        {
-            Debug.Log("I Am Moving");
-        }
-
-        /// <summary>
         /// The attack function gives the enemy functionality to attack.
         /// </summary>
         public void Attack()
@@ -95,24 +85,13 @@ namespace Assets.Scripts
 
         /// <summary>
         /// The take damage function allows an enemy to take damage.
+        /// <para></para>
+        /// <remarks><paramref name="damage"></paramref> -The amount to be calculated when the object takes damage.</remarks>
         /// </summary>
-        /// <param name="damage">
-        /// The amount of damage.
-        /// </param>
         public void TakeDamage(uint damage)
         {
             Debug.Log("Enemy took damage");
             this.Health -= damage;
-        }
-
-        /// <summary>
-        /// The change states function.
-        /// This function changes the state to the passed in state.
-        /// <para></para>
-        /// <remarks><paramref name="destinationState"></paramref> -The state to transition to.</remarks>
-        /// </summary>
-        public void ChangeStates(string destinationState)
-        {
         }
 
         /// <summary>

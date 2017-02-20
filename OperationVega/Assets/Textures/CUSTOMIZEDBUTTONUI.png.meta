@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3dafbff404235d94da41fd52b17a0a03
-timeCreated: 1486583173
+timeCreated: 1487006942
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
@@ -293,7 +293,7 @@ TextureImporter:
       name: RBUTTON
       rect:
         serializedVersion: 2
-        x: 651
+        x: 654
         y: 423
         width: 279
         height: 84
@@ -319,8 +319,8 @@ TextureImporter:
       name: HBUTTON
       rect:
         serializedVersion: 2
-        x: 652
-        y: 330
+        x: 654
+        y: 333
         width: 279
         height: 84
       alignment: 0

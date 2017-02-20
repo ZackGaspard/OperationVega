@@ -9,18 +9,18 @@ namespace Assets.Scripts
     /// <summary>
     /// The miner class.
     /// </summary>
-    public class Miner : MonoBehaviour, IUnit, IGather, ICombat, IDamageable
+    public class Miner : MonoBehaviour, IUnit, ICombat
     {
         /// <summary>
-        /// Reference to the clean mineral pefab
+        /// Reference to the clean mineral prefab.
         /// </summary>
         public GameObject cleanmineral;
 
         /// <summary>
-        /// Reference to the dirty mineral pefab
+        /// Reference to the dirty mineral prefab.
         /// </summary>
         public GameObject dirtymineral;
-        
+
         /// <summary>
         /// The miner finite state machine.
         /// Used to keep track of the miners states.
@@ -30,23 +30,23 @@ namespace Assets.Scripts
         /// <summary>
         /// The target to attack.
         /// </summary>
-        [HideInInspector]
-        public IDamageable Target;
+        public ICombat Target;
 
         /// <summary>
         /// The enemy gameobject reference.
         /// </summary>
+        [HideInInspector]
         public GameObject theEnemy;
 
         /// <summary>
         /// The reference to the most recent mineral deposit.
         /// </summary>
+        [HideInInspector]
         public GameObject theRecentMineralDeposit;
 
         /// <summary>
-        /// The target resource.
+        /// The target resource to harvest from.
         /// </summary>
-        [HideInInspector]
         public IResources TargetResource;
 
         /// <summary>
@@ -54,12 +54,6 @@ namespace Assets.Scripts
         /// </summary>
         [HideInInspector]
         public Vector3 TargetClickPosition;
-
-        /// <summary>
-        /// The target direction to move at.
-        /// </summary>
-        [HideInInspector]
-        public Vector3 TargetDirection;
 
         /// <summary>
         /// The health of the miner.
@@ -113,12 +107,22 @@ namespace Assets.Scripts
         /// The resource count of the miner.
         /// </summary>
         [HideInInspector]
-        public uint Resourcecount;
+        public int Resourcecount;
 
         /// <summary>
         /// The navigation agent reference.
         /// </summary>
         private NavMeshAgent navagent;
+
+        /// <summary>
+        /// The reference to the physical item dropped.
+        /// </summary>
+        private GameObject theitemdropped;
+
+        /// <summary>
+        /// The object to pickup.
+        /// </summary>
+        private GameObject objecttopickup;
 
         /// <summary>
         /// The time between attacks reference.
@@ -143,6 +147,12 @@ namespace Assets.Scripts
         /// How long it takes to drop off the resource at the silo.
         /// </summary>
         private float dropofftime;
+
+        /// <summary>
+        /// The already stocked count reference.
+        /// This holds the count of a resource already stocked to keep track.
+        /// </summary>
+        private int alreadystockedcount;
 
         /// <summary>
         /// Instance of the RangeHandler delegate.
@@ -175,10 +185,16 @@ namespace Assets.Scripts
         private RangeHandler decontaminationHandler;
 
         /// <summary>
+        /// Instance of the RangeHandler delegate.
+        /// Called in changing to the pickup state.
+        /// </summary>
+        private RangeHandler pickupHandler;
+
+        /// <summary>
         /// The range handler delegate.
-        /// The delegate handles setting the attack range upon changing state.
+        /// The delegate handles setting the stopping distance upon changing state.
         /// <para></para>
-        /// <remarks><paramref name="number"></paramref> -The number to set the attack range to.</remarks>
+        /// <remarks><paramref name="number"></paramref> -The number to set the stopping distance to.</remarks>
         /// </summary>
         private delegate void RangeHandler(float number);
 
@@ -196,22 +212,26 @@ namespace Assets.Scripts
                 Debug.Log("My Resource count " + this.Resourcecount);
 
                 this.harvesttime = 0;
-                if (this.Resourcecount >= 5 && !this.TargetResource.Taint)
-                { // Create the clean mineral object and parent it to the front of the miner
+
+                if (this.Resourcecount == 5 && !this.TargetResource.Taint)
+                {
+                    // Create the clean mineral object and parent it to the front of the miner
                     var clone = Instantiate(this.cleanmineral, this.transform.position + (this.transform.forward * 0.6f), this.transform.rotation);
                     clone.transform.SetParent(this.transform);
+                    clone.name = "Minerals";
+                    this.Resourcecount = 0;
                     this.ChangeStates("Stock");
                     GameObject thesilo = GameObject.Find("Silo");
                     Vector3 destination = new Vector3(thesilo.transform.position.x + (this.transform.forward.x * 2), 0.5f, thesilo.transform.position.z + (this.transform.forward.z * 2));
                     this.navagent.SetDestination(destination);
                 }
-                else if (this.Resourcecount >= 5 && this.TargetResource.Taint)
+                else if (this.Resourcecount == 5 && this.TargetResource.Taint)
                 {
                     // The resource is tainted go to decontamination center
                     // Create the dirty mineral object and parent it to the front of the miner
                     var clone = Instantiate(this.dirtymineral, this.transform.position + (this.transform.forward * 0.6f), this.transform.rotation);
                     clone.transform.SetParent(this.transform);
-                    clone.name = "MineralsTaint";
+                    clone.name = "MineralsTainted";
                     this.ChangeStates("Decontaminate");
                     GameObject thedecontaminationbuilding = GameObject.Find("Decontamination");
                     Transform thedoor = thedecontaminationbuilding.transform.GetChild(1);
@@ -233,17 +253,39 @@ namespace Assets.Scripts
 
                 if (this.Resourcecount <= 0)
                 {
+                    this.Resourcecount = 0;
+                    this.alreadystockedcount = 0;
+                    int counter = 0;
+
                     for (int i = 0; i < this.transform.childCount; i++)
                     {
-                        Destroy(this.transform.GetChild(i).gameObject);
+                        if (this.transform.GetChild(i).name == "MineralsTainted")
+                        {
+                            Destroy(this.transform.GetChild(i).gameObject);
+                            counter++;
+                        }
                     }
 
-                    this.Resourcecount = 5;
-                    var clone = Instantiate(this.cleanmineral, this.transform.position + (this.transform.forward * 0.6f), this.transform.rotation);
-                    clone.transform.SetParent(this.transform);
+                    for (int i = 0; i < counter; i++)
+                    {
+                        var clone = Instantiate(
+                        this.cleanmineral,
+                        this.transform.position + (this.transform.forward * 0.6f),
+                        this.transform.rotation);
+                        clone.transform.SetParent(this.transform);
+                        clone.name = "Minerals";
+                        if (i > 0)
+                        {
+                            clone.transform.gameObject.SetActive(false);
+                        }
+                    }
+
                     this.ChangeStates("Stock");
                     GameObject thesilo = GameObject.Find("Silo");
-                    Vector3 destination = new Vector3(thesilo.transform.position.x + (this.transform.forward.x * 2), 0.5f, thesilo.transform.position.z + (this.transform.forward.z * 2));
+                    Vector3 destination = new Vector3(
+                        thesilo.transform.position.x + (this.transform.forward.x * 2),
+                        0.5f,
+                        thesilo.transform.position.z + (this.transform.forward.z * 2));
                     this.navagent.SetDestination(destination);
                 }
             }
@@ -278,10 +320,9 @@ namespace Assets.Scripts
 
         /// <summary>
         /// The take damage function allows a miner to take damage.
+        /// <para></para>
+        /// <remarks><paramref name="damage"></paramref> -The amount to be calculated when the object takes damage.</remarks>
         /// </summary>
-        /// <param name="damage">
-        /// The amount of damage.
-        /// </param>
         public void TakeDamage(uint damage)
         {
             throw new System.NotImplementedException();
@@ -292,16 +333,16 @@ namespace Assets.Scripts
         /// </summary>
         public void Taunt()
         {
-            
+
         }
 
         /// <summary>
-        /// The set the target position function.
+        /// The set move position function.
+        /// Sets the destination for the unit.
+        /// <para></para>
+        /// <remarks><paramref name="theClickPosition"></paramref> -The object that will be set as the position to move to.</remarks>
         /// </summary>
-        /// <param name="targetPos">
-        /// The target position to go to when clicked.
-        /// </param>
-        public void SetTheTargetPosition(Vector3 targetPos)
+        public void SetTheMovePosition(Vector3 targetPos)
         {
             this.navagent.SetDestination(targetPos);
         }
@@ -332,8 +373,59 @@ namespace Assets.Scripts
                 case "Decontaminate":
                     this.TheMinerFsm.Feed(thecurrentstate + "To" + destinationState, 1.0f);
                     break;
+                case "PickUp":
+                    this.TheMinerFsm.Feed(thecurrentstate + "To" + destinationState, 1.0f);
+                    break;
                 default:
                     break;
+            }
+        }
+
+        /// <summary>
+        /// The set target function.
+        /// Sets the object as the target for the unit.
+        /// <para></para>
+        /// <remarks><paramref name="theTarget"></paramref> -The object that will be set as the target for attacking.</remarks>
+        /// </summary>
+        public void SetTarget(GameObject theTarget)
+        {
+            this.theEnemy = theTarget;
+            if (this.theEnemy != null)
+            {
+                this.Target = (ICombat)theTarget.GetComponent(typeof(ICombat));
+            }
+        }
+
+        /// <summary>
+        /// The set target resource function.
+        /// The function sets the unit with the resource.
+        /// <para></para>
+        /// <remarks><paramref name="theResource"></paramref> -The object that will be set as the target resource.</remarks>
+        /// </summary>
+        public void SetTargetResource(GameObject theResource)
+        {
+            if (theResource.GetComponent<Minerals>())
+            {
+                this.TargetResource = (IResources)theResource.GetComponent(typeof(IResources));
+                this.navagent.SetDestination(theResource.transform.position);
+                this.theRecentMineralDeposit = theResource;
+                this.ChangeStates("Harvest");
+            }
+        }
+
+        /// <summary>
+        /// The go to pickup function.
+        /// Parses and sends the unit to pickup a dropped resource.
+        /// <para></para>
+        /// <remarks><paramref name="thepickup"></paramref> -The object that will be set as the item to pick up.</remarks>
+        /// </summary>
+        public void GoToPickup(GameObject thepickup)
+        {
+            if (thepickup.name == "Minerals" || thepickup.name == "MineralsTainted")
+            {
+                this.objecttopickup = thepickup;
+                this.navagent.SetDestination(thepickup.transform.position);
+                this.ChangeStates("PickUp");
             }
         }
 
@@ -350,6 +442,7 @@ namespace Assets.Scripts
             switch (this.TheMinerFsm.CurrentState.Statename)
             {
                 case "Idle":
+                    this.IdleState();
                     break;
                 case "Battle":
                     this.BattleState();
@@ -362,6 +455,9 @@ namespace Assets.Scripts
                     break;
                 case "Decontaminate":
                     this.DecontaminationState();
+                    break;
+                case "PickUp":
+                    this.PickUpState();
                     break;
                 default:
                     break;
@@ -389,13 +485,82 @@ namespace Assets.Scripts
         /// <summary>
         /// The reset range function.
         /// This resets the range of distance the unit stands from the clicked position.
+        /// <para></para>
+        /// <remarks><paramref name="num"></paramref> -The amount to set the stopping distance to.</remarks>
         /// </summary>
-        /// <param name="num">
-        /// The number to set the attack range to.
-        /// </param>
         private void ResetStoppingDistance(float num)
         {
             this.navagent.stoppingDistance = num;
+        }
+
+        /// <summary>
+        /// The tally resources function.
+        /// This function tallies up the resources in hand.
+        /// <para></para>
+        /// <remarks><paramref name="num"></paramref> -The number to set the stopping distance to.</remarks>
+        /// </summary>
+        private void TallyResources(float num)
+        {
+            this.navagent.stoppingDistance = num;
+
+            this.Resourcecount = 0;
+
+            foreach (Transform t in this.transform)
+            {
+                if (t.name == "Minerals")
+                {
+                    this.Resourcecount += 5;
+                }
+            }
+
+            this.Resourcecount -= this.alreadystockedcount;
+
+            Debug.Log("Total to stock" + this.Resourcecount);
+        }
+
+        /// <summary>
+        /// The idle state function.
+        /// Has the funtionality of checking for dropped items.
+        /// </summary>
+        private void IdleState()
+        {
+            if (this.theitemdropped != null && this.objecttopickup == null)
+            {
+
+                if (this.transform.Find("Minerals") && this.theitemdropped.name == "MineralsTainted")
+                {
+                    return;
+                }
+                else if (this.transform.Find("MineralsTainted") && this.theitemdropped.name == "Minerals")
+                {
+                    return;
+                }
+
+                this.navagent.SetDestination(this.theitemdropped.transform.position);
+
+                if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+                {
+                    Debug.Log("Found my mineral");
+                    this.theitemdropped.transform.SetParent(this.transform);
+                    this.theitemdropped.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                    this.theitemdropped = null;
+
+                    if (this.transform.Find("MineralsTainted"))
+                    {
+                        this.ChangeStates("Decontaminate");
+                        GameObject thedecontaminationbuilding = GameObject.Find("Decontamination");
+                        Transform thedoor = thedecontaminationbuilding.transform.GetChild(1);
+                        this.navagent.SetDestination(thedoor.position);
+                    }
+                    else
+                    {
+                        this.ChangeStates("Stock");
+                        GameObject thesilo = GameObject.Find("Silo");
+                        Vector3 destination = new Vector3(thesilo.transform.position.x + (this.transform.forward.x * 2), 0.5f, thesilo.transform.position.z + (this.transform.forward.z * 2));
+                        this.navagent.SetDestination(destination);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -406,6 +571,28 @@ namespace Assets.Scripts
         {
             if (this.Target != null)
             {
+                Transform cleanminerals = this.transform.Find("Minerals");
+                Transform dirtyminerals = this.transform.Find("MineralsTainted");
+
+                if (cleanminerals != null)
+                {
+                    cleanminerals.position = new Vector3(cleanminerals.position.x, 0f, cleanminerals.position.z);
+                    this.theitemdropped = cleanminerals.gameObject;
+                    this.theitemdropped.tag = "PickUp";
+                    cleanminerals.gameObject.SetActive(true);
+                    cleanminerals.transform.parent = null;
+                    this.Resourcecount = 0;
+                }
+                else if (dirtyminerals != null)
+                {
+                    dirtyminerals.position = new Vector3(dirtyminerals.position.x, 0f, dirtyminerals.position.z);
+                    this.theitemdropped = dirtyminerals.gameObject;
+                    this.theitemdropped.tag = "PickUp";
+                    dirtyminerals.gameObject.SetActive(true);
+                    dirtyminerals.transform.parent = null;
+                    this.Resourcecount = 0;
+                }
+
                 if (this.navagent.remainingDistance <= this.Attackrange && !this.navagent.pathPending)
                 {
                     this.Attack();
@@ -421,10 +608,12 @@ namespace Assets.Scripts
         {
             if (this.TargetResource != null && this.TargetResource.Count > 0)
             {
-               
-                if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+                if (!this.transform.Find("Minerals") && !this.transform.Find("MineralsTainted"))
                 {
-                    this.Harvest();
+                    if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+                    {
+                        this.Harvest();
+                    }
                 }
             }
         }
@@ -435,37 +624,91 @@ namespace Assets.Scripts
         /// </summary>
         private void StockState()
         {
-            if (this.Resourcecount <= 0)
+            if (this.transform.Find("Minerals"))
             {
-                for (int i = 0; i < this.transform.childCount; i++)
+                if (this.Resourcecount <= 0)
                 {
-                    Destroy(this.transform.GetChild(i).gameObject);
+                    this.Resourcecount = 0;
+                    this.alreadystockedcount = 0;
+
+                    for (int i = 0; i < this.transform.childCount; i++)
+                    {
+                        if (this.transform.GetChild(i).name == "Minerals")
+                        {
+                            Destroy(this.transform.GetChild(i).gameObject);
+                        }
+                    }
+
+                    if (this.TargetResource != null && this.TargetResource.Count > 0)
+                    {
+                        this.navagent.SetDestination(this.theRecentMineralDeposit.transform.position);
+                        this.ChangeStates("Harvest");
+                    }
+                    else
+                    {
+                        this.ChangeStates("Idle");
+                    }
                 }
 
-                if (this.TargetResource != null && this.TargetResource.Count > 0)
+                dropofftime += 1 * Time.deltaTime;
+
+                if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
                 {
-                    this.navagent.SetDestination(this.theRecentMineralDeposit.transform.position);
-                    this.ChangeStates("Harvest");
-                }
-                else
-                {
-                    this.ChangeStates("Idle");
+                    if (this.dropofftime >= 1.0f)
+                    {
+                        Debug.Log("Dropping off the goods");
+                        this.Resourcecount--;
+                        this.alreadystockedcount++;
+                        Debug.Log("My resource count " + this.Resourcecount);
+                        User.MineralsCount++;
+                        Debug.Log("I have now stocked " + User.MineralsCount + " minerals");
+                        this.dropofftime = 0;
+                    }
                 }
             }
+        }
 
-            dropofftime += 1 * Time.deltaTime;
-
+        /// <summary>
+        /// The pick up state function.
+        /// Regulates game flow while in the pick up state.
+        /// </summary>
+        private void PickUpState()
+        {
             if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
             {
-                if (this.dropofftime >= 1.0f)
+                Transform mineraltainted = this.transform.Find("MineralsTainted");
+                Transform mineral = this.transform.Find("Minerals");
+
+                if (mineral == null && mineraltainted == null)
                 {
-                    Debug.Log("Dropping off the goods");
-                    this.Resourcecount--;
-                    Debug.Log("My resource count " + this.Resourcecount);
-                    User.MineralsCount++;
-                    Debug.Log("I have now stocked " + User.MineralsCount + " minerals");
-                    this.dropofftime = 0;
+                    this.objecttopickup.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                    this.objecttopickup.transform.SetParent(this.transform);
+                    if (this.objecttopickup.name == "MineralsTainted")
+                    {
+                        this.Resourcecount = 5;
+                    }
                 }
+                else if (this.objecttopickup.name == "Minerals")
+                {
+                    if (mineral != null && mineraltainted == null)
+                    {
+                        this.objecttopickup.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                        this.objecttopickup.transform.SetParent(this.transform);
+                        this.objecttopickup.gameObject.SetActive(false);
+                    }
+                }
+                else if (this.objecttopickup.name == "MineralsTainted")
+                {
+                    if (mineraltainted != null && mineral == null)
+                    {
+                        this.objecttopickup.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                        this.objecttopickup.transform.SetParent(this.transform);
+                        this.objecttopickup.gameObject.SetActive(false);
+                        this.Resourcecount = 5;
+                    }
+                }
+
+                this.ChangeStates("Idle");
             }
         }
 
@@ -475,9 +718,12 @@ namespace Assets.Scripts
         /// </summary>
         private void DecontaminationState()
         {
-            if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+            if (this.transform.Find("MineralsTainted"))
             {
-                this.Decontaminate();
+                if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
+                {
+                    this.Decontaminate();
+                }
             }
         }
 
@@ -489,8 +735,9 @@ namespace Assets.Scripts
             this.idleHandler = this.ResetStoppingDistance;
             this.battleHandler = this.ResetStoppingDistance;
             this.harvestHandler = this.ResetStoppingDistance;
-            this.stockHandler = this.ResetStoppingDistance;
+            this.stockHandler = this.TallyResources;
             this.decontaminationHandler = this.ResetStoppingDistance;
+            this.pickupHandler = this.ResetStoppingDistance;
 
             this.TheMinerFsm.CreateState("Init", null);
             this.TheMinerFsm.CreateState("Idle", this.idleHandler);
@@ -498,6 +745,7 @@ namespace Assets.Scripts
             this.TheMinerFsm.CreateState("Harvest", this.harvestHandler);
             this.TheMinerFsm.CreateState("Stock", this.stockHandler);
             this.TheMinerFsm.CreateState("Decontaminate", this.decontaminationHandler);
+            this.TheMinerFsm.CreateState("PickUp", this.pickupHandler);
 
             this.TheMinerFsm.AddTransition("Init", "Idle", "auto");
             this.TheMinerFsm.AddTransition("Idle", "Battle", "IdleToBattle");
@@ -513,9 +761,23 @@ namespace Assets.Scripts
             this.TheMinerFsm.AddTransition("Stock", "Battle", "StockToBattle");
             this.TheMinerFsm.AddTransition("Stock", "Harvest", "StockToHarvest");
             this.TheMinerFsm.AddTransition("Harvest", "Decontaminate", "HarvestToDecontaminate");
+            this.TheMinerFsm.AddTransition("Stock", "Decontaminate", "StockToDecontaminate");
             this.TheMinerFsm.AddTransition("Decontaminate", "Stock", "DecontaminateToStock");
+            this.TheMinerFsm.AddTransition("Decontaminate", "Harvest", "DecontaminateToHarvest");
             this.TheMinerFsm.AddTransition("Decontaminate", "Idle", "DecontaminateToIdle");
             this.TheMinerFsm.AddTransition("Idle", "Decontaminate", "IdleToDecontaminate");
+            this.TheMinerFsm.AddTransition("Decontaminate", "Battle", "DecontaminateToBattle");
+            this.TheMinerFsm.AddTransition("Battle", "Decontaminate", "BattleToDecontaminate");
+            this.TheMinerFsm.AddTransition("PickUp", "Idle", "PickUpToIdle");
+            this.TheMinerFsm.AddTransition("PickUp", "Battle", "PickUpToBattle");
+            this.TheMinerFsm.AddTransition("PickUp", "Harvest", "PickUpToHarvest");
+            this.TheMinerFsm.AddTransition("PickUp", "Decontaminate", "PickUpToDecontaminate");
+            this.TheMinerFsm.AddTransition("PickUp", "Stock", "PickUpToStock");
+            this.TheMinerFsm.AddTransition("Idle", "PickUp", "IdleToPickUp");
+            this.TheMinerFsm.AddTransition("Battle", "PickUp", "BattleToPickUp");
+            this.TheMinerFsm.AddTransition("Harvest", "PickUp", "HarvestToPickUp");
+            this.TheMinerFsm.AddTransition("Stock", "PickUp", "StockToPickUp");
+            this.TheMinerFsm.AddTransition("Decontaminate", "PickUp", "DecontaminateToPickUp");
         }
 
         /// <summary>
