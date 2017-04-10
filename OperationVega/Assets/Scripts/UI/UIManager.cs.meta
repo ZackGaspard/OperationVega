@@ -1,10 +1,51 @@
 fileFormatVersion: 2
 guid: 67518c994ab768d48a46113768dd594e
-timeCreated: 1485972485
+timeCreated: 1488842392
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - m_NewGame: {instanceID: 0}
+  - m_LoadGame: {instanceID: 0}
+  - m_QuitGame: {instanceID: 0}
+  - m_Instructions: {instanceID: 0}
+  - m_Options: {instanceID: 0}
+  - m_Workshop: {instanceID: 0}
+  - m_Craft: {instanceID: 0}
+  - m_Clear: {instanceID: 0}
+  - m_CancelAction: {instanceID: 0}
+  - m_Minerals: {instanceID: 0}
+  - m_Food: {instanceID: 0}
+  - m_CookedFood: {instanceID: 0}
+  - m_Gas: {instanceID: 0}
+  - m_Fuel: {instanceID: 0}
+  - m_BackgroundUI: {instanceID: 0}
+  - m_ActionsTAB: {instanceID: 0}
+  - m_CraftingTAB: {instanceID: 0}
+  - m_UnitTAB: {instanceID: 0}
+  - m_WorkshopUI: {instanceID: 0}
+  - m_OptionsUI: {instanceID: 0}
+  - m_ThrusterChoice: {instanceID: 0}
+  - m_CockpitChoice: {instanceID: 0}
+  - m_WingChoice: {instanceID: 0}
+  - m_SettingsUI: {instanceID: 0}
+  - m_CustomizeUI: {instanceID: 0}
+  - m_ObjectiveUI: {instanceID: 0}
+  - m_MainUI: {instanceID: 0}
+  - m_AreyousureUI: {instanceID: 0}
+  - m_MineralsT: {instanceID: 0}
+  - m_FoodT: {instanceID: 0}
+  - m_CookedFoodT: {instanceID: 0}
+  - m_GasT: {instanceID: 0}
+  - m_FuelT: {instanceID: 0}
+  - m_SteelT: {instanceID: 0}
+  - m_KillT: {instanceID: 0}
+  - m_CraftT: {instanceID: 0}
+  - m_MainT: {instanceID: 0}
+  - foodinstance: {fileID: 100000, guid: d91dd13a1323f9d49b25c69d0465d9be, type: 3}
+  - cookedfoodPrefab: {instanceID: 0}
+  - m_Input1: {instanceID: 0}
+  - m_Input2: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

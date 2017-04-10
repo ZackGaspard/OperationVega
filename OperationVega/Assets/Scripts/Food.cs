@@ -4,6 +4,8 @@ namespace Assets.Scripts
 {
 	using Assets.Scripts.Interfaces;
 
+	using UI;
+
 	using UnityEngine;
 
 	/// <summary>
@@ -157,5 +159,29 @@ namespace Assets.Scripts
 			this.Refresh();
 			this.Reset();
 		}
-	}
+
+        /// <summary>
+		/// On Mouse Enter function.
+		/// Handles when the mouse just started hovering over an object.
+		/// </summary>
+	    public void OnMouseEnter()
+        {
+            if (ToolTip.Istooltipactive)
+            {
+                UIManager.Self.Tooltipobjectpanel.gameObject.SetActive(true);
+                ToolTip.Self.Objectdescription = "Tree.\n This resource provides " +
+                " food when harvested. Food is used in crafting and purchasing units.";
+            }
+        }
+
+        /// <summary>
+		/// On Mouse Exit function.
+		/// Handles when the mouse stops being over an object.
+		/// </summary>
+	    public void OnMouseExit()
+        {
+            ToolTip.Self.Objectdescription = " ";
+            UIManager.Self.Tooltipobjectpanel.gameObject.SetActive(false);
+        }
+    }
 }

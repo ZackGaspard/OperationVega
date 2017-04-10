@@ -16,6 +16,6 @@ namespace Assets.Scripts.Interfaces
         /// <para></para>
         /// <remarks><paramref name="damage"></paramref> -The amount to be calculated when the object takes damage.</remarks>
         /// </summary>
-        void TakeDamage(uint damage);
+        void TakeDamage(int damage);
     }
 }

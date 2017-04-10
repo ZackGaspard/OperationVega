@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 6e648bf3eb0877c4197bce64c46b0a1b
-timeCreated: 1486398894
+guid: 6ab9ea0dcec07784099fb49d3e37c9d1
+timeCreated: 1490205453
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -10,7 +10,6 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: WorkshopCollider
-    4300002: Workshop:pCylinder3
     9500000: //RootNode
   materials:
     importMaterials: 1

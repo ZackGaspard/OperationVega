@@ -1,0 +1,175 @@
+fileFormatVersion: 2
+guid: 9b04e7cca5635bf45942db4dbed7a434
+timeCreated: 1491239720
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: MinerTool
+    100004: Unit_base_head__TopSHJnt
+    100006: Unit_base_l_arm_ClavicleSHJnt
+    100008: Unit_base_l_arm_ElbowSHJnt
+    100010: Unit_base_l_arm_ShoulderSHJnt
+    100012: Unit_base_l_arm_WristSHJnt
+    100014: Unit_base_l_hand_01_01SHJnt
+    100016: Unit_base_l_hand_01_02SHJnt
+    100018: Unit_base_l_hand_02_01SHJnt
+    100020: Unit_base_l_hand_02_02SHJnt
+    100022: Unit_base_l_leg_AnkleSHJnt
+    100024: Unit_base_l_leg_BallSHJnt
+    100026: Unit_base_l_leg_HipSHJnt
+    100028: Unit_base_l_leg_KneeSHJnt
+    100030: Unit_base_l_leg_ToeSHJnt
+    100032: Unit_base_neck_01SHJnt
+    100034: Unit_base_neck_TopSHJnt
+    100036: Unit_base_pack_01_01SHJnt
+    100038: Unit_base_pack_01_02SHJnt
+    100040: Unit_base_pack_01_03SHJnt
+    100042: Unit_base_pack_01_04SHJnt
+    100044: Unit_base_pack_01_05SHJnt
+    100046: Unit_base_pack_01_06SHJnt
+    100048: Unit_base_r_arm_ClavicleSHJnt
+    100050: Unit_base_r_arm_ElbowSHJnt
+    100052: Unit_base_r_arm_ShoulderSHJnt
+    100054: Unit_base_r_arm_WristSHJnt
+    100056: Unit_base_r_hand_01_01SHJnt
+    100058: Unit_base_r_hand_01_02SHJnt
+    100060: Unit_base_r_hand_02_01SHJnt
+    100062: Unit_base_r_hand_02_02SHJnt
+    100064: Unit_base_r_leg_AnkleSHJnt
+    100066: Unit_base_r_leg_BallSHJnt
+    100068: Unit_base_r_leg_HipSHJnt
+    100070: Unit_base_r_leg_KneeSHJnt
+    100072: Unit_base_r_leg_ToeSHJnt
+    100074: Unit_base_ROOTSHJnt
+    100076: Unit_base_spine_01SHJnt
+    100078: Unit_base_spine_TopSHJnt
+    100080: Unit_body
+    100082: Unit_head
+    100084: Unit_orb
+    100086: Unit_pack
+    400000: //RootNode
+    400002: MinerTool
+    400004: Unit_base_head__TopSHJnt
+    400006: Unit_base_l_arm_ClavicleSHJnt
+    400008: Unit_base_l_arm_ElbowSHJnt
+    400010: Unit_base_l_arm_ShoulderSHJnt
+    400012: Unit_base_l_arm_WristSHJnt
+    400014: Unit_base_l_hand_01_01SHJnt
+    400016: Unit_base_l_hand_01_02SHJnt
+    400018: Unit_base_l_hand_02_01SHJnt
+    400020: Unit_base_l_hand_02_02SHJnt
+    400022: Unit_base_l_leg_AnkleSHJnt
+    400024: Unit_base_l_leg_BallSHJnt
+    400026: Unit_base_l_leg_HipSHJnt
+    400028: Unit_base_l_leg_KneeSHJnt
+    400030: Unit_base_l_leg_ToeSHJnt
+    400032: Unit_base_neck_01SHJnt
+    400034: Unit_base_neck_TopSHJnt
+    400036: Unit_base_pack_01_01SHJnt
+    400038: Unit_base_pack_01_02SHJnt
+    400040: Unit_base_pack_01_03SHJnt
+    400042: Unit_base_pack_01_04SHJnt
+    400044: Unit_base_pack_01_05SHJnt
+    400046: Unit_base_pack_01_06SHJnt
+    400048: Unit_base_r_arm_ClavicleSHJnt
+    400050: Unit_base_r_arm_ElbowSHJnt
+    400052: Unit_base_r_arm_ShoulderSHJnt
+    400054: Unit_base_r_arm_WristSHJnt
+    400056: Unit_base_r_hand_01_01SHJnt
+    400058: Unit_base_r_hand_01_02SHJnt
+    400060: Unit_base_r_hand_02_01SHJnt
+    400062: Unit_base_r_hand_02_02SHJnt
+    400064: Unit_base_r_leg_AnkleSHJnt
+    400066: Unit_base_r_leg_BallSHJnt
+    400068: Unit_base_r_leg_HipSHJnt
+    400070: Unit_base_r_leg_KneeSHJnt
+    400072: Unit_base_r_leg_ToeSHJnt
+    400074: Unit_base_ROOTSHJnt
+    400076: Unit_base_spine_01SHJnt
+    400078: Unit_base_spine_TopSHJnt
+    400080: Unit_body
+    400082: Unit_head
+    400084: Unit_orb
+    400086: Unit_pack
+    4300000: Unit_body
+    4300002: Unit_head
+    4300004: Unit_pack
+    4300006: Unit_orb
+    4300008: MinerTool
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: MinerTool
+    13700002: Unit_body
+    13700004: Unit_head
+    13700006: Unit_orb
+    13700008: Unit_pack
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

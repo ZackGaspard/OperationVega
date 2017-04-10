@@ -9,20 +9,20 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1753390111381368}
+  m_RootGameObject: {fileID: 1205876600776164}
   m_IsPrefabParent: 1
---- !u!1 &1753390111381368
+--- !u!1 &1205876600776164
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4500614641082240}
-  - component: {fileID: 33681061146372816}
-  - component: {fileID: 23988567484729250}
-  - component: {fileID: 95202376372555896}
-  - component: {fileID: 136454036224511098}
+  - component: {fileID: 4224556039336540}
+  - component: {fileID: 33898503007321900}
+  - component: {fileID: 23205680858738594}
+  - component: {fileID: 95817081955516570}
+  - component: {fileID: 136961128775289256}
   m_Layer: 0
   m_Name: MineralOreVeinNode
   m_TagString: Untagged
@@ -30,12 +30,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4500614641082240
+--- !u!4 &4224556039336540
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1753390111381368}
+  m_GameObject: {fileID: 1205876600776164}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 5.78, y: 0.68618536, z: 0.02247631}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -43,12 +43,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23988567484729250
+--- !u!23 &23205680858738594
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1753390111381368}
+  m_GameObject: {fileID: 1205876600776164}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -74,22 +74,22 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &33681061146372816
+--- !u!33 &33898503007321900
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1753390111381368}
-  m_Mesh: {fileID: 4300000, guid: b9b0154071f287944bad9a9c4399bdd4, type: 3}
---- !u!95 &95202376372555896
+  m_GameObject: {fileID: 1205876600776164}
+  m_Mesh: {fileID: 4300000, guid: 7eca23e4e248fe049809e478d14980c4, type: 3}
+--- !u!95 &95817081955516570
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1753390111381368}
+  m_GameObject: {fileID: 1205876600776164}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b9b0154071f287944bad9a9c4399bdd4, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 7eca23e4e248fe049809e478d14980c4, type: 3}
   m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -98,12 +98,12 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!136 &136454036224511098
+--- !u!136 &136961128775289256
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1753390111381368}
+  m_GameObject: {fileID: 1205876600776164}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1

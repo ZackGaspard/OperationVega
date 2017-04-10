@@ -5,97 +5,23 @@ namespace Assets.Scripts
 	using System.Collections.Generic;
 	using System.Linq;
 
-	using Assets.Scripts.Interfaces;
+	using Assets.Scripts.BaseClasses;
 
 	using UnityEngine;
 
 	/// <summary>
 	/// The thrusters class.
 	/// </summary>
-	public class Thrusters : MonoBehaviour, IRocketParts
+	public class Thrusters : MonoBehaviour
 	{
 		/// <summary>
-		/// The quality.
+		/// The accessed.
 		/// </summary>
-		private uint quality;
-
-		/// <summary>
-		/// The steel.
-		/// The amount of steel required to build the part.
-		/// Accessible through the SteelCost property.
-		/// </summary>
-		private uint steel;
-
-		/// <summary>
-		/// The fuel.
-		/// The amount of Fuel required to build the part.
-		/// Accessible through the FuelCost property.
-		/// </summary>
-		private uint fuel;
-
-		/// <summary>
-		/// Gets or sets the quality.
-		/// </summary>
-		public uint Quality
+		[SerializeField]
+		private BaseThrusters Accessed;
+		public void Create(BaseThrusters t)
 		{
-			get
-			{
-				return this.quality;
-			}
-
-			set
-			{
-				this.quality = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the steel cost.
-		/// </summary>
-		public uint SteelCost
-		{
-			get
-			{
-				return this.steel;
-			}
-
-			set
-			{
-				this.steel = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the fuel cost.
-		/// </summary>
-		public uint FuelCost
-		{
-			get
-			{
-				return this.fuel;
-			}
-
-			set
-			{
-				this.fuel = value;
-			}
-		}
-
-		/// <summary>
-		/// Use this for initialization
-		/// </summary>
-		private void Start()
-		{
-			this.quality = 20;
-			this.steel = 200;
-			this.fuel = 50;
-		}
-
-		/// <summary>
-		/// Update is called once per frame
-		/// </summary>
-		private void Update()
-		{
+			Accessed = t;
 		}
 	}
 }

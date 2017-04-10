@@ -7,23 +7,39 @@ namespace Assets.Scripts
 
     /// <summary>
     /// The spawn point class.
-    /// It requires a rigidbody to perform collision detection.
+    /// It requires a rigid body to perform collision detection.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(BoxCollider))]
+    [RequireComponent(typeof(SphereCollider))]
     public class Spawnpoint : MonoBehaviour
     {
         /// <summary>
-        /// The the enemy to spawn.
+        /// The spawn count reference.
+        /// The number of enemies to spawn at a time.
         /// </summary>
-        public GameObject TheEnemyToSpawn;
+        private int spawncount;
+
+        /// <summary>
+        /// The spawn timer reference.
+        /// How long before the spawn point becomes active again.
+        /// </summary>
+        private float spawntimer;
+
+        /// <summary>
+        /// The enemy prefab reference.
+        /// </summary>
+        [SerializeField]
+        private GameObject enemyPrefab;
 
         /// <summary>
         /// The start function.
-        /// It sets up the rigidbody characteristics.
+        /// It sets up the rigid body characteristics.
         /// </summary>
         private void Start()
         {
+            this.spawncount = 3;
+            this.spawntimer = 15;
+
             Rigidbody theRigidbody = this.GetComponent<Rigidbody>();
 
             theRigidbody = this.GetComponent<Rigidbody>();
@@ -31,8 +47,17 @@ namespace Assets.Scripts
             theRigidbody.isKinematic = true;
             theRigidbody.constraints = RigidbodyConstraints.FreezeAll;
 
-            BoxCollider theBoxCollider = this.GetComponent<BoxCollider>();
-            theBoxCollider.isTrigger = true;
+            SphereCollider thesphereCollider = this.GetComponent<SphereCollider>();
+            thesphereCollider.radius = 1.5f;
+            thesphereCollider.isTrigger = true;
+        }
+
+        /// <summary>
+        /// The update function.
+        /// </summary>
+        private void Update()
+        {
+            this.spawntimer += 1 * Time.deltaTime;
         }
 
         /// <summary>
@@ -43,9 +68,20 @@ namespace Assets.Scripts
         /// </param>
         private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent(typeof(IUnit)))
+            if (this.spawntimer >= 15 && other.GetComponent(typeof(IUnit)))
             {
-                // Spawn
+                for (int i = 0; i < this.spawncount; i++)
+                {
+                    float angle = i * (2 * 3.14159f / this.spawncount);
+                    float x = Mathf.Cos(angle) * 1.5f;
+                    float z = Mathf.Sin(angle) * 1.5f;
+
+                    Vector3 spawnposition = new Vector3(this.transform.position.x + x, 0, this.transform.position.z + z);
+                    // Spawn
+                    Instantiate(this.enemyPrefab, spawnposition, Quaternion.LookRotation(-other.transform.forward));
+                }
+
+                this.spawntimer = 0;
             }
         }
     }

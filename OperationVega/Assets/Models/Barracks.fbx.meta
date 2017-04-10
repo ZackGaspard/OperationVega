@@ -11,6 +11,7 @@ ModelImporter:
     3300000: //RootNode
     4300000: Barracks:pCube1
     4300002: Barracks2
+    4300004: Barracks3
     9500000: //RootNode
   materials:
     importMaterials: 1

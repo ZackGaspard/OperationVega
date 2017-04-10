@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 9e6eb7fd39e66e04da5cfc69b5716502
-timeCreated: 1487007346
+guid: dcfdc0ab28b5a6e4997ef8c82027ccf5
+timeCreated: 1487701833
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Cockpit1:Cockpit1
+    4300000: Cockpit6
     9500000: //RootNode
   materials:
     importMaterials: 1

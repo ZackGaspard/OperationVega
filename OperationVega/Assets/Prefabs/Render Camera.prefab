@@ -1,0 +1,164 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1849911758686796}
+  m_IsPrefabParent: 1
+--- !u!1 &1849911758686796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4977263220237170}
+  - component: {fileID: 20662316109673864}
+  - component: {fileID: 124067268750038854}
+  - component: {fileID: 92684771139471590}
+  m_Layer: 0
+  m_Name: Render Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1914189457600488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4765647141380502}
+  - component: {fileID: 114509517467405078}
+  m_Layer: 0
+  m_Name: RocketObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4765647141380502
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1914189457600488}
+  m_LocalRotation: {x: -0.2588191, y: -0, z: -0, w: 0.9659258}
+  m_LocalPosition: {x: 1.77, y: -1.6863437, z: 8.479165}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4977263220237170}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4977263220237170
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849911758686796}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: -20, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4765647141380502}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+--- !u!20 &20662316109673864
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849911758686796}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 8400000, guid: 7f7e1267fcb66dc468bb6bfdf9102ae3, type: 2}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
+--- !u!92 &92684771139471590
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849911758686796}
+  m_Enabled: 1
+--- !u!114 &114509517467405078
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1914189457600488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b1f0d847f018be46992c217745e8eb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  builtParts: []
+  totalQuality: 0
+  currentCockpit:
+    capacity: 0
+    steel: 0
+    fuel: 0
+    quality: 0
+    name: 
+  currentThrusters:
+    steel: 0
+    fuel: 0
+    quality: 0
+    name: 
+  currentWings:
+    steel: 0
+    fuel: 0
+    quality: 0
+    name: 
+  cockpitOne: {fileID: 1319332556061512, guid: def828c8491876c4f97c3dbd741fc2af, type: 2}
+  cockpitTwo: {fileID: 1461431263578688, guid: 2e26880bf3755da438ce926df08f89c2, type: 2}
+  cockpitThree: {fileID: 1899368784065916, guid: 3f351b8b3af0d5140a7f3799d7b67be9,
+    type: 2}
+  thrustersOne: {fileID: 1640132710569588, guid: 5360ca139b3587748806b8d5930d4ce9,
+    type: 2}
+  thrustersTwo: {fileID: 1427477490778242, guid: 8bb2ab4ddca0a0c4cb3f4555f7a47140,
+    type: 2}
+  thrustersThree: {fileID: 1446019287677240, guid: a56f50f2942a7b443a92f1df76cc4a82,
+    type: 2}
+  wingsOne: {fileID: 1171875384828884, guid: dfc84ca6a012bb24ea3ffc8355a6ade9, type: 2}
+  wingsTwo: {fileID: 1568762578423162, guid: 5fd901652b033d34898a2e27dc09cf68, type: 2}
+  wingsThree: {fileID: 1808507592937574, guid: a8fe6e608bb082b45a8406e443c4f92d, type: 2}
+--- !u!124 &124067268750038854
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849911758686796}
+  m_Enabled: 1

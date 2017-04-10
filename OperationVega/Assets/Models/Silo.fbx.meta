@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: b006608f4fdbefc4abee77e7b92a7776
-timeCreated: 1486395782
+guid: 0bf99bbe8f5aa8a40b12ee5aec134820
+timeCreated: 1490197082
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Silo:pCylinder4
+    4300000: Silo_polySurface12
     9500000: //RootNode
   materials:
     importMaterials: 1

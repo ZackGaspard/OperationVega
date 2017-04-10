@@ -12,6 +12,7 @@ namespace Assets.Scripts.BaseClasses
 	/// <summary>
 	/// The base wings.
 	/// </summary>
+	[System.Serializable]
 	public class BaseWings : IRocketParts
 	{
 		/// <summary>
@@ -19,6 +20,7 @@ namespace Assets.Scripts.BaseClasses
 		/// The amount of steel required to build the part.
 		/// Accessible through the SteelCost property.
 		/// </summary>
+		[SerializeField]
 		private uint steel;
 
 		/// <summary>
@@ -26,12 +28,17 @@ namespace Assets.Scripts.BaseClasses
 		/// The amount of Fuel required to build the part.
 		/// Accessible through the FuelCost property.
 		/// </summary>
+		[SerializeField]
 		private uint fuel;
 
 		/// <summary>
 		/// The quality.
 		/// </summary>
+		[SerializeField]
 		private uint quality;
+
+		[SerializeField]
+		private string name;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BaseWings"/> class.
@@ -52,11 +59,12 @@ namespace Assets.Scripts.BaseClasses
 		/// <param name="qualities">
 		/// The quality.
 		/// </param>
-		public BaseWings(uint steelcost, uint fuelcost, uint qualities)
+		public BaseWings(uint steelcost, uint fuelcost, uint qualities, string identity)
 		{
 			this.steel = steelcost;
 			this.fuel = fuelcost;
 			this.quality = qualities;
+			this.name = identity;
 		}
 
 		/// <summary>
@@ -104,6 +112,18 @@ namespace Assets.Scripts.BaseClasses
 			set
 			{
 				this.fuel = value;
+			}
+		}
+
+		public string Name
+		{
+			get
+			{
+				return this.name;
+			}
+			set
+			{
+				this.name = value;
 			}
 		}
 	}

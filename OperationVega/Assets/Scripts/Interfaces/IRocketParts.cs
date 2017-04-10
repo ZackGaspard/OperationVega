@@ -25,5 +25,7 @@ namespace Assets.Scripts.Interfaces
 		/// Gets or sets the fuel cost.
 		/// </summary>
 		uint FuelCost { get; set; }
+
+		string Name { get; set; }
 	}
 }

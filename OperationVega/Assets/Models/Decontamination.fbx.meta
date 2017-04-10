@@ -10,8 +10,11 @@ ModelImporter:
     400000: //RootNode
     400002: polySurface4
     2300000: polySurface4
+    2300002: //RootNode
     3300000: polySurface4
+    3300002: //RootNode
     4300000: polySurface4
+    4300002: ContaminationTent
     9500000: //RootNode
   materials:
     importMaterials: 1

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: fa5998e746116ba448d63dfa472f693e
-timeCreated: 1487007290
+guid: c4abf37ea76467a419ffb5c7518b938b
+timeCreated: 1490642440
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Thruster2:pPipe1
+    4300000: thruster1
     9500000: //RootNode
   materials:
     importMaterials: 1
