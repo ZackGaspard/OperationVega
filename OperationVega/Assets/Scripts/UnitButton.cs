@@ -26,6 +26,12 @@ namespace Assets.Scripts
         /// </param>
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (this.Unit == null)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+
             Color thecolor = new Color();
 
             GameObject selectionsquare = this.Unit.transform.FindChild("SelectionHighlight").gameObject;

@@ -31,8 +31,7 @@ namespace Assets.Scripts.Managers
         /// The text prefab reference.
         /// This is the text to be instantiated.
         /// </summary>
-        [SerializeField]
-        private GameObject textprefab;
+        public GameObject textprefab;
 
         /// <summary>
         /// The instance of the ObjectiveManager.

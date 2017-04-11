@@ -183,6 +183,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &101427206 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114761794081231500, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 1403955404}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!224 &198793668 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224204719968751398, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
@@ -297,9 +303,9 @@ MonoBehaviour:
   m_KillT: {fileID: 345743285}
   m_CraftT: {fileID: 482590102}
   m_MainT: {fileID: 1114899991}
-  m_minertext: {fileID: 0}
-  m_extractortext: {fileID: 0}
-  m_harvestertext: {fileID: 0}
+  m_minertext: {fileID: 101427206}
+  m_extractortext: {fileID: 1203390561}
+  m_harvestertext: {fileID: 589097316}
   foodinstance: {fileID: 100000, guid: d91dd13a1323f9d49b25c69d0465d9be, type: 3}
   cookedfoodPrefab: {fileID: 1131821788970860, guid: 90373d2eb11a33443a6ea48eece04ea6,
     type: 2}
@@ -317,6 +323,7 @@ MonoBehaviour:
   fuel: {fileID: 1533376372}
   gas: {fileID: 1915688372}
   skillIcon: {fileID: 0}
+  Xbutton: {fileID: 1608708089}
   tooltiptoggle: {fileID: 0}
   currentcooldown: 0
   contentfield: {fileID: 0}
@@ -361,6 +368,12 @@ RectTransform:
 --- !u!114 &482590102 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114207442404790268, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 1403955404}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &589097316 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114975641412444608, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
     type: 2}
   m_PrefabInternal: {fileID: 1403955404}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
@@ -698,6 +711,12 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224874589520420008, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
     type: 2}
   m_PrefabInternal: {fileID: 1403955404}
+--- !u!114 &1203390561 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114721234628445068, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 1403955404}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!114 &1224539076 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114103116634986714, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
@@ -1899,6 +1918,12 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224157088012627228, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
     type: 2}
   m_PrefabInternal: {fileID: 1403955404}
+--- !u!114 &1608708089 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114292992044608878, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 1403955404}
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1662815873
 GameObject:
   m_ObjectHideFlags: 0

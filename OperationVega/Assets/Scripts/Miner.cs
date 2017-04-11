@@ -6,6 +6,7 @@ namespace Assets.Scripts
     using UI;
 
     using UnityEngine;
+    using UnityEngine.UI;
     using UnityEngine.AI;
 
     /// <summary>
@@ -315,13 +316,13 @@ namespace Assets.Scripts
                 if (Vector3.Dot(thedisplacement, this.theEnemy.transform.forward) < 0)
                 {
                     Debug.Log("Miner crit hit!");
-                    this.target.TakeDamage(10);
+                    this.target.TakeDamage(this.mystats.Strength * 2);
                     this.timebetweenattacks = 0;
                 }
                 else
                 {
                     Debug.Log("Miner Attacking for normal damage");
-                    this.target.TakeDamage(5);
+                    this.target.TakeDamage(this.mystats.Strength);
                     this.timebetweenattacks = 0;
                 }
             }
@@ -336,6 +337,7 @@ namespace Assets.Scripts
         {
             this.mystats.Health -= damage;
 
+            UnitController.Self.unithit = this.gameObject;
             this.UpdateOrb();
            
             // Check if unit dies

@@ -148,6 +148,8 @@ namespace UI
         public Image gas;
         [SerializeField]
         private Image skillIcon;
+        [SerializeField]
+        private Image Xbutton;
 
 
         private Image defaultInput1;
@@ -231,6 +233,10 @@ namespace UI
 
         protected void Awake()
         {
+
+            User.FoodCount = 20;
+            User.GasCount = 20;
+            User.MineralsCount = 20;
             //Bool use to manage action tab
             revertactionstab = true;
             //Bool use to manage crafting tab
@@ -840,51 +846,141 @@ namespace UI
             if(Input1.sprite == minerals.sprite && Input2.sprite == gas.sprite)
             {
                 Output.sprite = fuel.sprite;
-                User.MineralsCount--;
-                User.GasCount--;
-                User.FuelCount++;
+                if (User.MineralsCount > 0 && User.GasCount > 0)
+                {
+                    User.MineralsCount--;
+                    User.GasCount--;
+                    User.FuelCount++;
+                }
+                else if (User.MineralsCount <= 0 && User.GasCount <= 0)
+                {
+                    User.MineralsCount = 0;
+                    User.GasCount = 0;
+                    Output.sprite = Xbutton.sprite;
+
+                }
+                else
+                {
+                    Output.sprite = Xbutton.sprite;
+                }
+                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Craft].Currentvalue++;
             }
             if(Input2.sprite == minerals.sprite && Input1.sprite == gas.sprite)
             {
                 Output.sprite = fuel.sprite;
-                User.MineralsCount--;
-                User.GasCount--;
-                User.FuelCount++;
+                if (User.MineralsCount > 0 && User.GasCount > 0)
+                {
+                    User.MineralsCount--;
+                    User.GasCount--;
+                    User.FuelCount++;
+                }
+                else if (User.MineralsCount <= 0 && User.GasCount <= 0)
+                {
+                    User.MineralsCount = 0;
+                    User.GasCount = 0;
+                    Output.sprite = Xbutton.sprite;
+
+                }
+                else
+                {
+                    Output.sprite = Xbutton.sprite;
+                }
+                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Craft].Currentvalue++;
             }
 
             //If Input is minerals and food, produce steel.
             if(Input1.sprite == minerals.sprite && Input2.sprite == food.sprite)
             {
                 Output.sprite = steel.sprite;
-                User.MineralsCount--;
-                User.FoodCount--;
-                User.SteelCount++;
+                if (User.MineralsCount > 0 && User.FoodCount > 0)
+                {
+                    User.MineralsCount--;
+                    User.FoodCount--;
+                    User.SteelCount++;
+                }
+                else if (User.MineralsCount <= 0 && User.FoodCount <= 0)
+                {
+                    User.MineralsCount = 0;
+                    User.FoodCount = 0;
+                    Output.sprite = Xbutton.sprite;
+
+                }
+                else
+                {
+                    Output.sprite = Xbutton.sprite;
+                }
+                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Craft].Currentvalue++;
             }
             if(Input2.sprite == minerals.sprite && Input1.sprite == food.sprite)
             {
                 Output.sprite = steel.sprite;
-                User.MineralsCount--;
-                User.FoodCount--;
-                User.SteelCount++;
+                if (User.MineralsCount > 0 && User.FoodCount > 0)
+                {
+                    User.MineralsCount--;
+                    User.FoodCount--;
+                    User.SteelCount++;
+                }
+                else if (User.MineralsCount <= 0 && User.FoodCount <= 0)
+                {
+                    User.MineralsCount = 0;
+                    User.FoodCount = 0;
+                    Output.sprite = Xbutton.sprite;
+
+                }
+                else
+                {
+                    Output.sprite = Xbutton.sprite;
+                }
+                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Craft].Currentvalue++;
             }
 
             //If Input is food and gas, produce Cooked Food.
             if(Input1.sprite == food.sprite && Input2.sprite == gas.sprite)
             {
                 Output.sprite = cookedFood.sprite;
-                User.FoodCount--;
-                User.GasCount--;
-                User.CookedFoodCount++;
+                if (User.FoodCount > 0 && User.GasCount > 0)
+                {
+                    User.FoodCount--;
+                    User.GasCount--;
+                    User.CookedFoodCount++;
+                }
+                else if (User.FoodCount <= 0 && User.GasCount <= 0)
+                {
+                    User.FoodCount = 0;
+                    User.GasCount = 0;
+                    Output.sprite = Xbutton.sprite;
+
+                }
+                else
+                {
+                    Output.sprite = Xbutton.sprite;
+                }
+                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Craft].Currentvalue++;
             }
 
             if(Input2.sprite == food.sprite && Input1.sprite == gas.sprite)
             {
                 Output.sprite = cookedFood.sprite;
-                User.FoodCount--;
-                User.GasCount--;
-                User.CookedFoodCount++;
-            }
+                if (User.FoodCount > 0 && User.GasCount > 0)
+                {
+                    User.FoodCount--;
+                    User.GasCount--;
+                    User.CookedFoodCount++;
+                }
+                else if (User.FoodCount <= 0 && User.GasCount <= 0)
+                {
+                    User.FoodCount = 0;
+                    User.GasCount = 0;
+                    Output.sprite = Xbutton.sprite;
 
+                }
+                else
+                {
+                    Output.sprite = Xbutton.sprite;
+                }
+                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Craft].Currentvalue++;
+            }
+            
             
             
             Debug.Log("Craft");
@@ -1290,18 +1386,6 @@ namespace UI
 
         private void OnSteel()
         {
-            if (input1b)
-            {
-                Input1.sprite = steel.sprite;
-
-                input1b = false;
-            }
-            else if (!input1b)
-            {
-                Input2.sprite = steel.sprite;
-
-                input1b = true;
-            }
             Debug.Log("Steel");
         }
 

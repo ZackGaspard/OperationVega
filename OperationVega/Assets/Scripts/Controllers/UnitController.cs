@@ -2,14 +2,19 @@
 namespace Assets.Scripts.Controllers
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
     using Interfaces;
+
     using Managers;
+
     using UI;
+
     using UnityEngine;
     using UnityEngine.EventSystems;
+    using UnityEngine.UI;
 
     /// <summary>
     /// The unit controller class.
@@ -52,6 +57,16 @@ namespace Assets.Scripts.Controllers
         /// Reference to a Extractor prefab.
         /// </summary>
         public GameObject Extractor;
+
+        /// <summary>
+        /// The combat text reference.
+        /// Reference to the combat text prefab.
+        /// </summary>
+        [SerializeField]
+        public GameObject combattext;
+
+        [HideInInspector]
+        public GameObject unithit;
 
         /// <summary>
         /// The instance of the class.
@@ -433,6 +448,29 @@ namespace Assets.Scripts.Controllers
             Instantiate(theunit, spawnposition, Quaternion.AngleAxis(-180, Vector3.up));
         }
 
+        public Queue<GameObject> textobjs = new Queue<GameObject>();
+
+        /// <summary>
+        /// The combat text function.
+        /// <para></para>
+        /// <remarks><paramref name="unit"></paramref> -The unit to display is taking damage.</remarks>
+        /// </summary>
+        public IEnumerator CombatText(GameObject unit)
+        {
+            yield return new WaitForSeconds(0.5f);
+            Stats thestats = unit.GetComponent<Stats>();
+            Vector3 spawnposition = unit.transform.position;
+            spawnposition.y += 0.5f;
+
+            GameObject textobj = this.textobjs.Dequeue();
+
+            // Create text object to display unit health
+            GameObject theTextGo = Instantiate(textobj, Camera.main.WorldToScreenPoint(spawnposition), Quaternion.identity);
+            Text thetext = theTextGo.GetComponent<Text>();
+            theTextGo.transform.SetParent(UIManager.Self.BackgroundUI.GetComponent<RectTransform>());
+            thetext.text = thestats.Health + "/" + thestats.Maxhealth;
+        }
+
         /// <summary>
         /// The start function.
         /// </summary>
@@ -476,6 +514,9 @@ namespace Assets.Scripts.Controllers
             // If the left mouse button is pressed and its not clicking on a UI element
             if (Input.GetKeyDown(KeyCode.Mouse0) && !EventSystem.current.IsPointerOverGameObject())
             {
+                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Craft].Currentvalue++;
+                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Kill].Currentvalue++;
+
                 this.ClearSelectedUnits();
                 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -818,6 +859,11 @@ namespace Assets.Scripts.Controllers
                     // Heal unit
                     stats.Health += 20;
 
+                    if (stats.Health >= stats.Maxhealth)
+                    {
+                        stats.Health = stats.Maxhealth;
+                    }
+
                     if (theorb != null)
                     {
                         int halfhealth = stats.Maxhealth / 2;
@@ -836,12 +882,32 @@ namespace Assets.Scripts.Controllers
                             theorb.GetComponent<SkinnedMeshRenderer>().material.color = Color.green;
                         }
                     }
+
+                    Vector3 spawnposition = hit.transform.position;
+                    spawnposition.y += 0.5f;
+
+                    // Create text object to display unit health
+                    GameObject theTextGo = Instantiate(this.combattext, Camera.main.WorldToScreenPoint(spawnposition), Quaternion.identity);
+                    Text thetext = theTextGo.GetComponent<Text>();
+                    theTextGo.transform.SetParent(UIManager.Self.BackgroundUI.GetComponent<RectTransform>());
+                    thetext.text = stats.Health + "/" + stats.Maxhealth;
+                    Destroy(UIManager.Self.foodinstance);
+
                 } // If the current clicked units health is equal to or greater than its max health..
                 else if (stats.Health >= stats.Maxhealth)
                 {
                     // Destroy the cooked food object and refund the cooked food point.
                     Destroy(UIManager.Self.foodinstance);
                     User.CookedFoodCount++;
+
+                    Vector3 spawnposition = hit.transform.position;
+                    spawnposition.y += 0.5f;
+
+                    // Create text object to display unit health
+                    GameObject theTextGo = Instantiate(this.combattext, Camera.main.WorldToScreenPoint(spawnposition), Quaternion.identity);
+                    Text thetext = theTextGo.GetComponent<Text>();
+                    theTextGo.transform.SetParent(UIManager.Self.BackgroundUI.GetComponent<RectTransform>());
+                    thetext.text = stats.Health + "/" + stats.Maxhealth;
                 }
             }
         }

@@ -7,8 +7,11 @@ namespace Assets.Scripts
 
     using Managers;
 
+    using UI;
+
     using UnityEngine;
     using UnityEngine.AI;
+    using UnityEngine.UI;
 
     /// <summary>
     /// The enemy class.
@@ -63,6 +66,12 @@ namespace Assets.Scripts
         private NavMeshAgent navagent;
 
         /// <summary>
+        /// The enemy controller reference.\
+        /// Reference to Animator Controller.
+        /// </summary>
+        private Animator enemycontroller;
+
+        /// <summary>
         /// The attack function gives the enemy functionality to attack.
         /// </summary>
         public void Attack()
@@ -72,7 +81,7 @@ namespace Assets.Scripts
                 Debug.Log("Enemy attacked!");
                 IUnit u = this.target as IUnit;
                 u.AutoTarget(this.gameObject);
-                this.target.TakeDamage(5);
+                this.target.TakeDamage(this.mystats.Strength);
 
                 this.timebetweenattacks = 0;
             }
@@ -90,7 +99,8 @@ namespace Assets.Scripts
             // Check if unit dies
             if (this.mystats.Health <= 0)
             {
-                Destroy(this.gameObject);
+                // Switch to death animation
+                this.enemycontroller.SetBool("Death", true);
             }
         }
 
@@ -121,7 +131,18 @@ namespace Assets.Scripts
                     break;
             }
         }
-        
+
+        /// <summary>
+        /// The on death function.
+        /// Provides the functionality on when the enemy dies.
+        /// This function is called in the animator, under events for the death animation.
+        /// </summary>
+        public void OnDeath()
+        {
+            ObjectiveManager.Instance.TheObjectives[ObjectiveType.Kill].Currentvalue++;
+            Destroy(this.gameObject);
+        }
+
         /// <summary>
         /// The taint function allows the enemy to taint a resource.
         /// </summary>
@@ -176,9 +197,7 @@ namespace Assets.Scripts
             this.timebetweenattacks = this.mystats.Attackspeed;
             this.navagent = this.GetComponent<NavMeshAgent>();
             this.navagent.speed = this.mystats.Speed;
-
-            MeshCollider mc = this.GetComponent<MeshCollider>();
-            mc.sharedMesh = this.GetComponentsInChildren<MeshFilter>()[1].mesh;
+            this.enemycontroller = this.GetComponent<Animator>();
             this.theEnemyFSM.Feed("auto");
         }
 
@@ -201,10 +220,15 @@ namespace Assets.Scripts
                 // If unit is alive but out of range
                 else if (Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) > this.GetComponent<EnemyAI>().Radius)
                 {
+                    this.enemycontroller.SetBool("Attack", false);
                     this.Currenttarget = null;
                     this.target = null;
                     this.ChangeStates("Idle");
                     this.GetComponent<EnemyAI>().taunted = false;
+                }
+                else if (Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) > this.mystats.Attackrange && this.enemycontroller.GetBool("Attack"))
+                {
+                    this.enemycontroller.SetBool("Attack", false);
                 }
             }
         }
@@ -267,14 +291,6 @@ namespace Assets.Scripts
         {
             this.UpdateEnemy();
             this.UpdateRotation();
-        }
-
-        /// <summary>
-        /// The on destroy function.
-        /// </summary>
-        private void OnDestroy()
-        {
-           ObjectiveManager.Instance.TheObjectives[ObjectiveType.Kill].Currentvalue++;
         }
     }
 }

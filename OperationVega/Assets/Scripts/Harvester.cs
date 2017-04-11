@@ -194,13 +194,13 @@ namespace Assets.Scripts
                 if (Vector3.Dot(thedisplacement, this.theEnemy.transform.forward) < 0)
                 {
                     Debug.Log("Harvester hit crit!");
-                    this.target.TakeDamage(10);
+                    this.target.TakeDamage(this.mystats.Strength * 2);
                     this.timebetweenattacks = 0;
                 }
                 else
                 {
                     Debug.Log("Harvester attacking normal damage");
-                    this.target.TakeDamage(5);
+                    this.target.TakeDamage(this.mystats.Strength);
                     this.timebetweenattacks = 0;
                 }
             }
@@ -366,6 +366,7 @@ namespace Assets.Scripts
         {
             this.mystats.Health -= damage;
 
+            UnitController.Self.unithit = this.gameObject;
             this.UpdateOrb();
 
             // Check if unit dies

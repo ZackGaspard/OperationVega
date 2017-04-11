@@ -3,6 +3,8 @@ namespace Assets.Scripts
 {
     using System.Collections.Generic;
 
+    using Controllers;
+
     using Interfaces;
 
     using UnityEngine;
@@ -67,6 +69,12 @@ namespace Assets.Scripts
         private NavMeshAgent mynavagent;
 
         /// <summary>
+        /// The enemy controller reference.\
+        /// Reference to Animator Controller.
+        /// </summary>
+        private Animator enemycontroller;
+
+        /// <summary>
         /// The check rate reference.
         /// Reference to how long between casting the overlap sphere.
         /// </summary>
@@ -79,6 +87,25 @@ namespace Assets.Scripts
         private float nextcheck;
 
         /// <summary>
+        /// The on unit hit function.
+        /// This function is called as an animation event function in the attack animation.
+        /// </summary>
+        public void OnUnitHit()
+        {
+            // If unit is not null
+            if (UnitController.Self.unithit != null)
+            {
+                // Queue up a text object
+                UnitController.Self.textobjs.Enqueue(UnitController.Self.combattext);
+                
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(UnitController.Self.unithit));
+            }
+        }
+
+        /// <summary>
         /// The start.
         /// </summary>
         private void Start()
@@ -86,6 +113,7 @@ namespace Assets.Scripts
             this.enemyreference = this.GetComponent<Enemy>();
             this.mynavagent = this.GetComponent<NavMeshAgent>();
             this.mynavagent.stoppingDistance = 1.2f;
+            this.enemycontroller = this.GetComponent<Animator>();
             this.checkrate = Random.Range(0.5f, 1.0f);
             this.stunned = false;
             this.taunted = false;
@@ -105,6 +133,11 @@ namespace Assets.Scripts
             else if (this.taunted && this.enemyreference.Currenttarget != null)
             {
                 this.mynavagent.SetDestination(this.enemyreference.Currenttarget.transform.position);
+
+                if (!this.enemycontroller.GetBool("Walk"))
+                {
+                    this.enemycontroller.SetBool("Walk", true);
+                }
             }
             else if (this.scared && !this.stunned)
             {
@@ -112,12 +145,59 @@ namespace Assets.Scripts
 
                 this.mynavagent.SetDestination(this.transform.position * this.runtimer);
 
+                if (!this.enemycontroller.GetBool("Walk"))
+                {
+                    this.enemycontroller.SetBool("Walk", true);
+                }
+
                 // If the enemy has been scared for 5 seconds then the effect wore off
                 if (this.runtimer >= 5.0f)
                 {
                     this.scared = false;
                     this.runtimer = 1;
                     this.mynavagent.SetDestination(this.transform.position);
+
+                    if (!this.enemycontroller.GetBool("Walk"))
+                    {
+                        this.enemycontroller.SetBool("Walk", true);
+                    }
+                }
+            }
+            else if (this.stunned)
+            {
+                if (this.enemycontroller.GetBool("Walk"))
+                {
+                    this.enemycontroller.SetBool("Walk", false);
+                }
+            }
+
+            // If the navagent isnt looking for a current path - this helps prevent any lag when the enemy is already stopped then starting to animating,
+            // if the navagent is within stopping distance...
+            if (!this.mynavagent.pathPending && this.mynavagent.remainingDistance <= this.mynavagent.stoppingDistance)
+            {
+                // If the enemy is not attacking and the enemy has a target
+                if (!this.enemycontroller.GetBool("Attack") && this.enemyreference.Currenttarget != null)
+                {
+                    // Switch to attack animation
+                    this.enemycontroller.SetBool("Attack", true);
+
+                    // Incase the unit was walking before attacking, set it to false
+                    this.enemycontroller.SetBool("Walk", false);
+
+                    // Incase the unit was idling before attacking, set it to false
+                    this.enemycontroller.SetBool("Idle", false);
+                }
+                // Else if the enemy is attacking and the target has become null
+                else if (this.enemycontroller.GetBool("Attack") && this.enemyreference.Currenttarget == null)
+                {
+                    // Switch to idle
+                    this.enemycontroller.SetBool("Attack", false);
+                }
+                // Else if the enemy is walking and the target has become null
+                else if (this.enemycontroller.GetBool("Walk") && this.enemyreference.Currenttarget == null)
+                {
+                    // Switch to idle
+                    this.enemycontroller.SetBool("Walk", false);
                 }
             }
         }
@@ -163,6 +243,12 @@ namespace Assets.Scripts
                 }
 
                 this.mynavagent.SetDestination(this.enemyreference.Currenttarget.transform.position);
+
+                // Only Set the animator to walk if its not in any other state
+                if (!this.enemycontroller.GetBool("Walk") && !this.enemycontroller.GetBool("Attack"))
+                {
+                    this.enemycontroller.SetBool("Walk", true);
+                }
             }
         }
 
