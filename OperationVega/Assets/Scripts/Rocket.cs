@@ -25,12 +25,9 @@ namespace Assets.Scripts
 		[SerializeField]
 		private List<GameObject> builtParts = new List<GameObject>();
 
-		public List<Transform> wingParts = new List<Transform>();
+		private List<Transform> wingParts = new List<Transform>();
 
 		public float movementSpeed;
-		private float step;
-
-		public Transform example;
 
 		/// <summary>
 		/// The total quality.
@@ -225,86 +222,20 @@ namespace Assets.Scripts
 			}
 		}
 
-		float startTime;
-		float journeyLength;
-		float distCovered;
-		float fracJourney;
-
 		/// <summary>
 		/// Use this for initialization
 		/// </summary>
 		private void Start()
 		{
-			step = 0.0f;
-			startTime = Time.time;
-			//User.SteelCount = 9000;
-			//User.FuelCount = 9000;
 			this.allParts = new List<IRocketParts>();
 		}
 
 		/// <summary>
 		/// Update is called once per frame
 		/// </summary>
-		private void Update()
+		private void TestingRocket()
 		{
-			step = movementSpeed * Time.deltaTime;
-			if (FindObjectOfType<Cockpit>() == true && FindObjectOfType<Wings>() == true)
-			{
-				moveWingsBase();
-			}
-
-
-
-			if (Input.GetMouseButtonDown(0))
-			{
-				this.CreateCockpit1();
-			}
-
-			if (Input.GetMouseButtonDown(1))
-			{
-				this.CreateCockpit2();
-			}
-
-			if (Input.GetKeyDown(KeyCode.Keypad0))
-			{
-				this.CreateCockpit3();
-			}
-
-			if (Input.GetKeyDown(KeyCode.Keypad1))
-			{
-				this.CreateThrusters1();
-			}
-
-			if (Input.GetKeyDown(KeyCode.Keypad2))
-			{
-				this.CreateThrusters2();
-			}
-
-			if (Input.GetKeyDown(KeyCode.Keypad3))
-			{
-				this.CreateThrusters3();
-			}
-
-			if (Input.GetKeyDown(KeyCode.Keypad4))
-			{
-				this.CreateWings1();
-			}
-
-			if (Input.GetKeyDown(KeyCode.Keypad5))
-			{
-				this.CreateWings2();
-			}
-
-			if (Input.GetKeyDown(KeyCode.Keypad6))
-			{
-				this.CreateWings3();
-			}
-
-			if (Input.GetKeyDown(KeyCode.Keypad7))
-			{
-				this.BuildRocket();
-			}
-			Debug.Log(Time.deltaTime);
+			this.BuildRocket();
 		}
 
 		private void BuildParts(IRocketParts thePart, GameObject selectedPart, List<GameObject> building)
@@ -323,7 +254,7 @@ namespace Assets.Scripts
 				}
 				else if (building.Contains(builtCockpit))
 				{
-
+					builtCockpit.transform.DetachChildren();
 					building.Remove(builtCockpit);
 					Destroy(builtCockpit);
 					BuildParts(thePart, selectedPart, building);
@@ -401,7 +332,6 @@ namespace Assets.Scripts
 			AssembleParts(cp, cockpitThree);
 		}
 
-
 		public void CreateThrusters1()
 		{
 			BaseThrusters thruster = new BaseThrusters(200, 50, 20, "Thrusters Rust");
@@ -434,62 +364,120 @@ namespace Assets.Scripts
 			AssembleParts(wing, wingsThree);
 		}
 
-		private void moveWingsBase()
+		private void moveWings()
 		{
-			journeyLength = Vector3.Distance(new Vector3(5, 0, 4), builtCockpit.transform.localPosition);
-			distCovered = (Time.deltaTime - startTime) * movementSpeed;
-			fracJourney = distCovered / journeyLength;
-			builtWings.transform.localPosition = Vector3.Lerp(builtWings.transform.localPosition, builtCockpit.transform.localPosition, fracJourney);
-			if (Vector3.Distance(builtWings.transform.localPosition, builtCockpit.transform.localPosition) <= journeyLength * 0.9f)
+			builtWings.transform.parent = builtCockpit.transform;
+			float journeyLength = Vector3.Distance(new Vector3(7, 0, 9), builtCockpit.transform.localPosition);
+			float distCovered = Time.deltaTime * movementSpeed;
+			float fracJourney = distCovered / journeyLength;
+			builtWings.transform.localPosition = Vector3.Lerp(builtWings.transform.localPosition, Vector3.zero, fracJourney);
+
+			if (Vector3.Distance(builtWings.transform.localPosition, Vector3.zero) <= journeyLength * 0.9f)
 			{
 				if (builtCockpit.name == "Cockpit Rust")
 				{
-					wingParts[0].transform.localPosition = Vector3.Lerp(wingParts[0].transform.localPosition, new Vector3(1.6f, -0.15f, 1.9f), fracJourney);
-					wingParts[1].transform.localPosition = Vector3.Lerp(wingParts[1].transform.localPosition, new Vector3(-1.6f, -0.15f, -1.9f), fracJourney);
-					wingParts[2].transform.localPosition = Vector3.Lerp(wingParts[2].transform.localPosition, new Vector3(-1.6f, -0.15f, 1.9f), fracJourney);
-					wingParts[3].transform.localPosition = Vector3.Lerp(wingParts[3].transform.localPosition, new Vector3(1.6f, -0.15f, -1.9f), fracJourney);
+					wingParts[0].transform.localPosition = Vector3.Lerp(wingParts[0].transform.localPosition, new Vector3(1.6f, -0.15f, 1.9f), fracJourney * 3f);
+					wingParts[1].transform.localPosition = Vector3.Lerp(wingParts[1].transform.localPosition, new Vector3(-1.6f, -0.15f, -1.9f), fracJourney * 3f);
+					wingParts[2].transform.localPosition = Vector3.Lerp(wingParts[2].transform.localPosition, new Vector3(-1.6f, -0.15f, 1.9f), fracJourney * 3f);
+					wingParts[3].transform.localPosition = Vector3.Lerp(wingParts[3].transform.localPosition, new Vector3(1.6f, -0.15f, -1.9f), fracJourney * 3f);
 
-					if (Vector3.Distance(builtWings.transform.localPosition, builtCockpit.transform.localPosition) <= journeyLength * 0.5f)
+					if (Vector3.Distance(builtWings.transform.localPosition, Vector3.zero) <= journeyLength * 0.5f)
 					{
-						wingParts[0].transform.rotation = Quaternion.Lerp(wingParts[0].transform.rotation, new Quaternion(0.0f, 0.0f, -0.1219f, 0.9925f), fracJourney);
-						wingParts[1].transform.rotation = Quaternion.Lerp(wingParts[1].transform.rotation, new Quaternion(0.0f, 0.9239f, 0.0f, 0.3827f), fracJourney);
-						wingParts[2].transform.rotation = Quaternion.Lerp(wingParts[2].transform.rotation, new Quaternion(0.0f, -0.9239f, 0.0f, 0.3827f), fracJourney);
-						wingParts[3].transform.rotation = Quaternion.Lerp(wingParts[3].transform.rotation, new Quaternion(0.0f, 0.3827f, 0.0f, 0.9239f), fracJourney);
+						wingParts[0].transform.rotation = Quaternion.Lerp(wingParts[0].transform.rotation, new Quaternion(0.0f, -0.3827f, 0.0f, 0.9239f), fracJourney * 1.5f);
+						wingParts[1].transform.rotation = Quaternion.Lerp(wingParts[1].transform.rotation, new Quaternion(0.0f, 0.9239f, 0.0f, 0.3827f), fracJourney * 1.5f);
+						wingParts[2].transform.rotation = Quaternion.Lerp(wingParts[2].transform.rotation, new Quaternion(0.0f, -0.9239f, 0.0f, 0.3827f), fracJourney * 1.5f);
+						wingParts[3].transform.rotation = Quaternion.Lerp(wingParts[3].transform.rotation, new Quaternion(0.0f, 0.3827f, 0.0f, 0.9239f), fracJourney * 1.5f);
 					}
 				}
-
 				else if (builtCockpit.name == "Cockpit Color")
 				{
-					wingParts[0].transform.localPosition = Vector3.Lerp(wingParts[0].transform.localPosition, new Vector3(2.07f, -1.8f, 1), fracJourney);
-					wingParts[1].transform.localPosition = Vector3.Lerp(wingParts[1].transform.localPosition, new Vector3(-2.07f, -1.8f, -1), fracJourney);
-					wingParts[2].transform.localPosition = Vector3.Lerp(wingParts[2].transform.localPosition, new Vector3(-2.07f, -1.8f, 1), fracJourney);
-					wingParts[3].transform.localPosition = Vector3.Lerp(wingParts[3].transform.localPosition, new Vector3(2.07f, -1.8f, -1), fracJourney);
+					wingParts[0].transform.localPosition = Vector3.Lerp(wingParts[0].transform.localPosition, new Vector3(2.07f, -1.8f, 1), fracJourney * 3f);
+					wingParts[1].transform.localPosition = Vector3.Lerp(wingParts[1].transform.localPosition, new Vector3(-2.07f, -1.8f, -1), fracJourney * 3f);
+					wingParts[2].transform.localPosition = Vector3.Lerp(wingParts[2].transform.localPosition, new Vector3(-2.07f, -1.8f, 1), fracJourney * 3f);
+					wingParts[3].transform.localPosition = Vector3.Lerp(wingParts[3].transform.localPosition, new Vector3(2.07f, -1.8f, -1), fracJourney * 3f);
 
-					if (Vector3.Distance(builtWings.transform.localPosition, builtCockpit.transform.localPosition) <= journeyLength * 0.5f)
+					if (Vector3.Distance(builtWings.transform.localPosition, Vector3.zero) <= journeyLength * 0.5f)
 					{
-						wingParts[0].transform.rotation = Quaternion.Lerp(wingParts[0].transform.rotation, new Quaternion(0.01805f, -0.2191f, -0.0801f, 0.9722f), fracJourney);
-						wingParts[1].transform.rotation = Quaternion.Lerp(wingParts[1].transform.rotation, new Quaternion(-0.0810f, 0.9830f, -0.0136f, 0.1645f), fracJourney);
-						wingParts[2].transform.rotation = Quaternion.Lerp(wingParts[2].transform.rotation, new Quaternion(0.0810f, -0.9829f, -0.0136f, 0.1645f), fracJourney);
-						wingParts[3].transform.rotation = Quaternion.Lerp(wingParts[3].transform.rotation, new Quaternion(-0.01805f, 0.2191f, -0.0801f, 0.9722f), fracJourney);
+						wingParts[0].transform.rotation = Quaternion.Lerp(wingParts[0].transform.rotation, new Quaternion(0.01805f, -0.2191f, -0.0801f, 0.9722f), fracJourney * 1.5f);
+						wingParts[1].transform.rotation = Quaternion.Lerp(wingParts[1].transform.rotation, new Quaternion(-0.0810f, 0.9830f, -0.0136f, 0.1645f), fracJourney * 1.5f);
+						wingParts[2].transform.rotation = Quaternion.Lerp(wingParts[2].transform.rotation, new Quaternion(0.0810f, -0.9829f, -0.0136f, 0.1645f), fracJourney * 1.5f);
+						wingParts[3].transform.rotation = Quaternion.Lerp(wingParts[3].transform.rotation, new Quaternion(-0.01805f, 0.2191f, -0.0801f, 0.9722f), fracJourney * 1.5f);
 					}
 				}
-
 				else if (builtCockpit.name == "Cockpit Flame")
 				{
-					builtWings.transform.GetChild(0).transform.localPosition = Vector3.Lerp(builtWings.transform.GetChild(0).transform.localPosition, new Vector3(2.5f, -1.7f, 0), fracJourney);
-					builtWings.transform.GetChild(1).transform.localPosition = Vector3.Lerp(builtWings.transform.GetChild(1).transform.localPosition, new Vector3(-2.5f, -1.7f, 0), fracJourney);
-					builtWings.transform.GetChild(2).transform.localPosition = Vector3.Lerp(builtWings.transform.GetChild(2).transform.localPosition, new Vector3(0, -1.7f, 2.5f), fracJourney);
-					builtWings.transform.GetChild(3).transform.localPosition = Vector3.Lerp(builtWings.transform.GetChild(3).transform.localPosition, new Vector3(0, -1.7f, -2.5f), fracJourney);
+					builtWings.transform.GetChild(0).transform.localPosition = Vector3.Lerp(builtWings.transform.GetChild(0).transform.localPosition, new Vector3(2.5f, -1.7f, 0), fracJourney * 3f);
+					builtWings.transform.GetChild(1).transform.localPosition = Vector3.Lerp(builtWings.transform.GetChild(1).transform.localPosition, new Vector3(-2.5f, -1.7f, 0), fracJourney * 3f);
+					builtWings.transform.GetChild(2).transform.localPosition = Vector3.Lerp(builtWings.transform.GetChild(2).transform.localPosition, new Vector3(0, -1.7f, 2.5f), fracJourney * 3f);
+					builtWings.transform.GetChild(3).transform.localPosition = Vector3.Lerp(builtWings.transform.GetChild(3).transform.localPosition, new Vector3(0, -1.7f, -2.5f), fracJourney * 3f);
 
-					if (Vector3.Distance(builtWings.transform.localPosition, builtCockpit.transform.localPosition) <= journeyLength * 0.5f)
+					if (Vector3.Distance(builtWings.transform.localPosition, Vector3.zero) <= journeyLength * 0.5f)
 					{
-						wingParts[0].transform.rotation = Quaternion.Lerp(wingParts[0].transform.rotation, new Quaternion(0.0f, 0.0f, -0.1219f, 0.9925f), fracJourney);
-						wingParts[1].transform.rotation = Quaternion.Lerp(wingParts[1].transform.rotation, new Quaternion(-0.1219f, 0.9925f, 0.0f, 0.0f), fracJourney);
-						wingParts[2].transform.rotation = Quaternion.Lerp(wingParts[2].transform.rotation, new Quaternion(0.0862f, -0.7018f, -0.0862f, 0.7018f), fracJourney);
-						wingParts[3].transform.rotation = Quaternion.Lerp(wingParts[3].transform.rotation, new Quaternion(-0.0862f, 0.7018f, -0.0862f, 0.7018f), fracJourney);
+						wingParts[0].transform.rotation = Quaternion.Lerp(wingParts[0].transform.rotation, new Quaternion(0.0f, 0.0f, -0.1219f, 0.9925f), fracJourney * 1.5f);
+						wingParts[1].transform.rotation = Quaternion.Lerp(wingParts[1].transform.rotation, new Quaternion(-0.1219f, 0.9925f, 0.0f, 0.0f), fracJourney * 1.5f);
+						wingParts[2].transform.rotation = Quaternion.Lerp(wingParts[2].transform.rotation, new Quaternion(0.0862f, -0.7018f, -0.0862f, 0.7018f), fracJourney * 1.5f);
+						wingParts[3].transform.rotation = Quaternion.Lerp(wingParts[3].transform.rotation, new Quaternion(-0.0862f, 0.7018f, -0.0862f, 0.7018f), fracJourney * 1.5f);
 					}
 				}
-				builtWings.transform.parent = builtCockpit.transform;
+			}
+
+			if (Vector3.Distance(builtWings.transform.localPosition, Vector3.zero) < journeyLength * 0.001f && builtWings.transform.localPosition.x != 0)
+			{
+				builtWings.transform.localPosition = Vector3.zero;
+			}
+		}
+
+		private void moveThrusters()
+		{
+			builtThrusters.transform.parent = builtCockpit.transform;
+			float journeyLength = Vector3.Distance(new Vector3(-6, 0, 0), builtCockpit.transform.localPosition);
+			float distCovered = Time.deltaTime * movementSpeed;
+			float fracJourney = (distCovered * 2) / journeyLength;
+
+			if (builtCockpit.name == "Cockpit Rust")
+			{
+				if (builtThrusters.name == "Thrusters Rust")
+				{
+					builtThrusters.transform.localPosition = Vector3.Lerp(builtThrusters.transform.localPosition, new Vector3(0, -4.35f, 0), fracJourney);
+				}
+				else if (builtThrusters.name == "Thrusters Color")
+				{
+					builtThrusters.transform.localPosition = Vector3.Lerp(builtThrusters.transform.localPosition, new Vector3(0, -4.4f, 0), fracJourney);
+				}
+				else if (builtThrusters.name == "Thrusters Flame")
+				{
+					builtThrusters.transform.localPosition = Vector3.Lerp(builtThrusters.transform.localPosition, new Vector3(0, -4.6f, 0), fracJourney);
+				}
+			}
+			else if (builtCockpit.name == "Cockpit Color")
+			{
+				if (builtThrusters.name == "Thrusters Rust")
+				{
+					builtThrusters.transform.localPosition = Vector3.Lerp(builtThrusters.transform.localPosition, new Vector3(0, -4.5f, 0), fracJourney);
+				}
+				else if (builtThrusters.name == "Thrusters Color")
+				{
+					builtThrusters.transform.localPosition = Vector3.Lerp(builtThrusters.transform.localPosition, new Vector3(0, -4.79f, 0), fracJourney);
+				}
+				else if (builtThrusters.name == "Thrusters Flame")
+				{
+					builtThrusters.transform.localPosition = Vector3.Lerp(builtThrusters.transform.localPosition, new Vector3(0, -4.95f, 0), fracJourney);
+				}
+			}
+			else if (builtCockpit.name == "Cockpit Flame")
+			{
+				if (builtThrusters.name == "Thrusters Rust")
+				{
+					builtThrusters.transform.localPosition = Vector3.Lerp(builtThrusters.transform.localPosition, new Vector3(0, -5.1f, 0), fracJourney);
+				}
+				else if (builtThrusters.name == "Thrusters Color")
+				{
+					builtThrusters.transform.localPosition = Vector3.Lerp(builtThrusters.transform.localPosition, new Vector3(0, -5.15f, 0), fracJourney);
+				}
+				else if (builtThrusters.name == "Thrusters Flame")
+				{
+					builtThrusters.transform.localPosition = Vector3.Lerp(builtThrusters.transform.localPosition, new Vector3(0, -5.3f, 0), fracJourney);
+				}
 			}
 		}
 
@@ -497,81 +485,9 @@ namespace Assets.Scripts
 		{
 			if(this.ShipBuild() == true)
 			{
-				if(builtCockpit.name == "Cockpit Rust")
-				{
-					builtWings.transform.GetChild(0).transform.localPosition = new Vector3(1.6f, -0.15f, 1.9f);
-					builtWings.transform.GetChild(1).transform.localPosition = new Vector3(-1.6f, -0.15f, -1.9f);
-					builtWings.transform.GetChild(2).transform.localPosition = new Vector3(-1.6f, -0.15f, 1.9f);
-					builtWings.transform.GetChild(3).transform.localPosition = new Vector3(1.6f, -0.15f, -1.9f);
-
-					builtWings.transform.GetChild(0).transform.eulerAngles = new Vector3(0, -45, 0);
-					builtWings.transform.GetChild(1).transform.eulerAngles = new Vector3(0, 135, 0);
-					builtWings.transform.GetChild(2).transform.eulerAngles = new Vector3(0, -135, 0);
-					builtWings.transform.GetChild(3).transform.eulerAngles = new Vector3(0, 45, 0);
-
-					if (builtThrusters.name == "Thrusters Rust")
-					{
-						builtThrusters.transform.localPosition = new Vector3(0, -4.35f, 0);
-					}
-					else if(builtThrusters.name == "Thrusters Color")
-					{
-						builtThrusters.transform.localPosition = new Vector3(0, -4.4f, 0);
-					}
-					else if (builtThrusters.name == "Thrusters Flame")
-					{
-						builtThrusters.transform.localPosition = new Vector3(0, -4.6f, 0);
-					}
-				}
-				else if(builtCockpit.name == "Cockpit Color")
-				{
-					builtWings.transform.GetChild(0).transform.localPosition = new Vector3(2.07f, -1.8f, 1);
-					builtWings.transform.GetChild(1).transform.localPosition = new Vector3(-2.07f, -1.8f, -1);
-					builtWings.transform.GetChild(2).transform.localPosition = new Vector3(-2.07f, -1.8f, 1);
-					builtWings.transform.GetChild(3).transform.localPosition = new Vector3(2.07f, -1.8f, -1);
-
-					builtWings.transform.GetChild(0).transform.eulerAngles = new Vector3(0, -25.4f, -9.42f);
-					builtWings.transform.GetChild(1).transform.eulerAngles = new Vector3(0, -199, -9.42f);
-					builtWings.transform.GetChild(2).transform.eulerAngles = new Vector3(0, 199, -9.42f);
-					builtWings.transform.GetChild(3).transform.eulerAngles = new Vector3(0, 25.4f, -9.42f);
-
-					if (builtThrusters.name == "Thrusters Rust")
-					{
-						builtThrusters.transform.localPosition = new Vector3(0, -4.5f, 0);
-					}
-					else if (builtThrusters.name == "Thrusters Color")
-					{
-						builtThrusters.transform.localPosition = new Vector3(0, -4.79f, 0);
-					}
-					else if (builtThrusters.name == "Thrusters Flame")
-					{
-						builtThrusters.transform.localPosition = new Vector3(0, -4.79f, 0);
-					}
-				}
-				else if(builtCockpit.name == "Cockpit Flame")
-				{
-					builtWings.transform.GetChild(0).transform.localPosition = new Vector3(2.5f, -1.7f, 0);
-					builtWings.transform.GetChild(1).transform.localPosition = new Vector3(-2.5f, -1.7f, 0);
-					builtWings.transform.GetChild(2).transform.localPosition = new Vector3(0, -1.7f, 2.5f);
-					builtWings.transform.GetChild(3).transform.localPosition = new Vector3(0, -1.7f, -2.5f);
-
-					builtWings.transform.GetChild(0).transform.eulerAngles = new Vector3(0, 0, -14);
-					builtWings.transform.GetChild(1).transform.eulerAngles = new Vector3(0, 180, -14);
-					builtWings.transform.GetChild(2).transform.eulerAngles = new Vector3(0, -90, -14);
-					builtWings.transform.GetChild(3).transform.eulerAngles = new Vector3(0, 90, -14f);
-
-					if (builtThrusters.name == "Thrusters Rust")
-					{
-						builtThrusters.transform.localPosition = new Vector3(0, -5.1f, 0);
-					}
-					else if (builtThrusters.name == "Thrusters Color")
-					{
-						builtThrusters.transform.localPosition = new Vector3(0, -5.15f, 0);
-					}
-					else if (builtThrusters.name == "Thrusters Flame")
-					{
-						builtThrusters.transform.localPosition = new Vector3(0, -5.3f, 0);
-					}
-				}
+				moveWings();
+				moveThrusters();
+				
 				//Assets.Scripts.Managers.GameManager.Instance.HasBuiltShip = true;
 				//Assets.Scripts.Managers.GameManager.Instance.CheckForWin();
 				Debug.Log("You Win!");
