@@ -197,7 +197,7 @@ namespace Assets.Scripts
                     GameObject thesilo = GameObject.Find("Silo");
                     Vector3 destination = new Vector3(thesilo.transform.position.x + (this.transform.forward.x * 2), 0.5f, thesilo.transform.position.z + (this.transform.forward.z * 2));
                     this.navagent.SetDestination(destination);
-                    this.animatorcontroller.SetBool("IsWalking", true);
+                    this.animatorcontroller.SetTrigger("Walk");
                 }
                 else if (this.mystats.Resourcecount == 5 && this.targetResource.Taint)
                 {
@@ -210,7 +210,7 @@ namespace Assets.Scripts
                     GameObject thedecontaminationbuilding = GameObject.Find("Decontamination");
                     Transform thedoor = thedecontaminationbuilding.transform.Find("FrontDoor");
                     this.navagent.SetDestination(thedoor.position);
-                    this.animatorcontroller.SetBool("IsWalking", true);
+                    this.animatorcontroller.SetTrigger("Walk");
                 }
             }
         }
@@ -293,7 +293,7 @@ namespace Assets.Scripts
                         0.5f,
                         thesilo.transform.position.z + (this.transform.forward.z * 2));
                     this.navagent.SetDestination(destination);
-                    this.animatorcontroller.SetBool("IsWalking", true);
+                    this.animatorcontroller.SetTrigger("Walk");
                 }
             }
         }
@@ -303,15 +303,18 @@ namespace Assets.Scripts
         /// </summary>
         public void Attack()
         {
+            
             if (this.theEnemy == null)
             {
                 this.gothitfirst = true;
                 this.target = null;
+                this.animatorcontroller.SetTrigger("Idle");
                 this.ChangeStates("Idle");
             }
-
-            if (this.timebetweenattacks >= this.mystats.Attackspeed)
+            else if (this.timebetweenattacks >= this.mystats.Attackspeed)
             {
+                this.animatorcontroller.SetTrigger("AttackTrigger");
+
                 Vector3 thedisplacement = (this.transform.position - this.theEnemy.transform.position).normalized;
                 if (Vector3.Dot(thedisplacement, this.theEnemy.transform.forward) < 0)
                 {
@@ -363,7 +366,7 @@ namespace Assets.Scripts
         public void SetTheMovePosition(Vector3 targetPos)
         {
             this.navagent.SetDestination(targetPos);
-            this.animatorcontroller.SetBool("IsWalking", true);
+            this.animatorcontroller.SetTrigger("Walk");
         }
 
         /// <summary>
@@ -459,7 +462,7 @@ namespace Assets.Scripts
                 this.theobjecttolookat = theResource;
                 this.targetResource = (IResources)theResource.GetComponent(typeof(IResources));
                 this.navagent.SetDestination(theResource.transform.position);
-                this.animatorcontroller.SetBool("IsWalking", true);
+                this.animatorcontroller.SetTrigger("Walk");
                 this.theRecentMineralDeposit = theResource;
                 this.ChangeStates("Harvest");
             }
@@ -478,7 +481,7 @@ namespace Assets.Scripts
                 this.objecttopickup = thepickup;
                 this.theobjecttolookat = this.objecttopickup;
                 this.navagent.SetDestination(thepickup.transform.position);
-                this.animatorcontroller.SetBool("IsWalking", true);
+                this.animatorcontroller.SetTrigger("Walk");
                 this.ChangeStates("PickUp");
             }
         }
@@ -520,13 +523,6 @@ namespace Assets.Scripts
             this.decontime += 1 * Time.deltaTime;
 
             this.UpdateRotation();
-
-            // If the navagent isnt looking for a current path - this helps prevent any lag when the unit is already stopped then starting to move,
-            // if the navagent is within stopping distance and its currently using the walk animation...
-            if (!this.navagent.pathPending && this.navagent.remainingDistance <= this.navagent.stoppingDistance && this.animatorcontroller.GetBool("IsWalking"))
-            {
-                this.animatorcontroller.SetBool("IsWalking", false);
-            }
 
             switch (this.theMinerFsm.CurrentState.Statename)
             {
@@ -571,7 +567,7 @@ namespace Assets.Scripts
             this.mystats.Attackspeed = 3;
             this.mystats.MaxSkillCooldown = 15;
             this.mystats.CurrentSkillCooldown = this.mystats.MaxSkillCooldown;
-            this.mystats.Attackrange = 3.0f;
+            this.mystats.Attackrange = 2.0f;
             this.mystats.Resourcecount = 0;
 
             this.gothitfirst = true;
@@ -711,7 +707,7 @@ namespace Assets.Scripts
                     {
                         this.theobjecttolookat = this.theRecentMineralDeposit;
                         this.navagent.SetDestination(this.theRecentMineralDeposit.transform.position);
-                        this.animatorcontroller.SetBool("IsWalking", true);
+                        this.animatorcontroller.SetTrigger("Walk");
                         this.ChangeStates("Harvest");
                     }
                     else

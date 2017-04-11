@@ -72,6 +72,13 @@ namespace Assets.Scripts
         private Animator enemycontroller;
 
         /// <summary>
+        /// The death prefab reference.
+        /// Reference to a rag doll prefab.
+        /// </summary>
+        [SerializeField]
+        private GameObject deathPrefab;
+
+        /// <summary>
         /// The attack function gives the enemy functionality to attack.
         /// </summary>
         public void Attack()
@@ -140,7 +147,11 @@ namespace Assets.Scripts
         public void OnDeath()
         {
             ObjectiveManager.Instance.TheObjectives[ObjectiveType.Kill].Currentvalue++;
+            Vector3 pos = this.transform.position;
+            Quaternion rot = this.transform.rotation;
+
             Destroy(this.gameObject);
+            Instantiate(this.deathPrefab, pos, rot);
         }
 
         /// <summary>
@@ -183,7 +194,7 @@ namespace Assets.Scripts
         private void Start()
         {
             this.mystats = this.GetComponent<Stats>();
-            this.mystats.Health = 100;
+            this.mystats.Health = 10;
             this.mystats.Maxhealth = 100;
             this.mystats.Strength = 3;
             this.mystats.Defense = 2;

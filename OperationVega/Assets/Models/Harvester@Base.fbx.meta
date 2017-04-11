@@ -1,12 +1,12 @@
 fileFormatVersion: 2
-guid: f4cab692aeaebf146bbfd6a9e88945f1
-timeCreated: 1490196871
+guid: 6f204762d9ce2c746b6c153accd8abb0
+timeCreated: 1491931058
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: pickaxe_outroadkill:RoadKillOut
+    100002: HarvTool:RoadKillOut
     100004: Unit_base_head__TopSHJnt
     100006: Unit_base_l_arm_ClavicleSHJnt
     100008: Unit_base_l_arm_ElbowSHJnt
@@ -49,9 +49,8 @@ ModelImporter:
     100082: Unit_head
     100084: Unit_orb
     100086: Unit_pack
-    100088: MinerTool:RoadKillOut
     400000: //RootNode
-    400002: pickaxe_outroadkill:RoadKillOut
+    400002: HarvTool:RoadKillOut
     400004: Unit_base_head__TopSHJnt
     400006: Unit_base_l_arm_ClavicleSHJnt
     400008: Unit_base_l_arm_ElbowSHJnt
@@ -94,20 +93,18 @@ ModelImporter:
     400082: Unit_head
     400084: Unit_orb
     400086: Unit_pack
-    400088: MinerTool:RoadKillOut
     4300000: Unit_body
     4300002: Unit_head
     4300004: Unit_pack
     4300006: Unit_orb
-    4300008: pickaxe_outroadkill:RoadKillOut
-    4300010: MinerTool:RoadKillOut
+    4300008: HarvTool:RoadKillOut
+    7400000: Take 001
     9500000: //RootNode
-    13700000: pickaxe_outroadkill:RoadKillOut
+    13700000: HarvTool:RoadKillOut
     13700002: Unit_body
     13700004: Unit_head
     13700006: Unit_orb
     13700008: Unit_pack
-    13700010: MinerTool:RoadKillOut
   materials:
     importMaterials: 1
     materialName: 0

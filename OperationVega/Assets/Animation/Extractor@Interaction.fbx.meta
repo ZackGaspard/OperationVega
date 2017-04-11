@@ -1,12 +1,12 @@
 fileFormatVersion: 2
-guid: fb6dd9ad1f3337e46865cf1ac728a9ad
-timeCreated: 1490196863
+guid: a862c43e3e5f54246beb743834c4fc95
+timeCreated: 1491942385
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: pickaxe_outroadkill:RoadKillOut
+    100000: ExtracTool:RoadKillOut
+    100002: //RootNode
     100004: Unit_base_head__TopSHJnt
     100006: Unit_base_l_arm_ClavicleSHJnt
     100008: Unit_base_l_arm_ElbowSHJnt
@@ -49,9 +49,8 @@ ModelImporter:
     100082: Unit_head
     100084: Unit_orb
     100086: Unit_pack
-    100088: MinerTool:RoadKillOut
-    400000: //RootNode
-    400002: pickaxe_outroadkill:RoadKillOut
+    400000: ExtracTool:RoadKillOut
+    400002: //RootNode
     400004: Unit_base_head__TopSHJnt
     400006: Unit_base_l_arm_ClavicleSHJnt
     400008: Unit_base_l_arm_ElbowSHJnt
@@ -94,21 +93,18 @@ ModelImporter:
     400082: Unit_head
     400084: Unit_orb
     400086: Unit_pack
-    400088: MinerTool:RoadKillOut
     4300000: Unit_body
     4300002: Unit_head
     4300004: Unit_pack
     4300006: Unit_orb
-    4300008: pickaxe_outroadkill:RoadKillOut
-    4300010: MinerTool:RoadKillOut
-    7400000: Walk
+    4300008: ExtracTool:RoadKillOut
+    7400000: Interaction
     9500000: //RootNode
-    13700000: pickaxe_outroadkill:RoadKillOut
+    13700000: ExtracTool:RoadKillOut
     13700002: Unit_body
     13700004: Unit_head
     13700006: Unit_orb
     13700008: Unit_pack
-    13700010: MinerTool:RoadKillOut
   materials:
     importMaterials: 1
     materialName: 0
@@ -131,7 +127,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Walk
+      name: Interaction
       takeName: Take 001
       firstFrame: 1
       lastFrame: 24
@@ -235,7 +231,7 @@ ModelImporter:
         weight: 1
       - path: Unit_body
         weight: 1
-      - path: Unit_body/pickaxe_outroadkill:RoadKillOut
+      - path: Unit_body/ExtracTool:RoadKillOut
         weight: 1
       - path: Unit_body/Unit_head
         weight: 1
@@ -269,7 +265,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
   importAnimation: 1
-  copyAvatar: 1
+  copyAvatar: 0
   humanDescription:
     serializedVersion: 2
     human: []
@@ -284,10 +280,9 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 41656d1f0db1b3344937dcff5398d1f6,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
