@@ -233,7 +233,7 @@ namespace Assets.Scripts
 		/// <summary>
 		/// Update is called once per frame
 		/// </summary>
-		private void TestingRocket()
+		private void Update()
 		{
 			this.BuildRocket();
 		}
