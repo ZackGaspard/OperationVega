@@ -408,7 +408,18 @@ public class UICrafting : MonoBehaviour
             }
             ObjectiveManager.Instance.TheObjectives[ObjectiveType.Craft].Currentvalue++;
         }
+        if (Input1.sprite == minerals.sprite && Input2.sprite == minerals.sprite)
+        {
+            Output.sprite = Xbutton.sprite;
+        }
+        if(Input1.sprite == steel.sprite && Input2.sprite == steel.sprite)
+        {
+            Output.sprite = Xbutton.sprite;
+        }
 
+    
+        
+        
 
     }
 
