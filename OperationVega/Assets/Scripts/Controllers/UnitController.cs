@@ -490,11 +490,6 @@ namespace Assets.Scripts.Controllers
             this.ActivateDragScreen();
             this.SelectUnits();
             this.CommandUnits();
-
-            if (Input.GetKeyDown(KeyCode.Alpha9))
-            {
-                this.Harvest();
-            }
         }
 
         /// <summary>
@@ -514,9 +509,6 @@ namespace Assets.Scripts.Controllers
             // If the left mouse button is pressed and its not clicking on a UI element
             if (Input.GetKeyDown(KeyCode.Mouse0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Craft].Currentvalue++;
-                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Kill].Currentvalue++;
-
                 this.ClearSelectedUnits();
                 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

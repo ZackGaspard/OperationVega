@@ -6,7 +6,6 @@ namespace Assets.Scripts
     using UI;
 
     using UnityEngine;
-    using UnityEngine.UI;
     using UnityEngine.AI;
 
     /// <summary>
@@ -98,6 +97,12 @@ namespace Assets.Scripts
         private bool gothitfirst;
 
         /// <summary>
+        /// The walking reference.
+        /// Reference for the unit walking or not.
+        /// </summary>
+        private bool walking;
+
+        /// <summary>
         /// The time between attacks reference.
         /// Stores the reference to the timer between attacks.
         /// </summary>
@@ -172,11 +177,21 @@ namespace Assets.Scripts
         private delegate void RangeHandler(float number);
 
         /// <summary>
+        /// The on death function.
+        /// Provides the functionality on when the enemy dies.
+        /// This function is called in the animator, under events for the death animation.
+        /// </summary>
+        public void OnDeath()
+        {
+            Destroy(this.gameObject);
+        }
+
+        /// <summary>
         /// The harvest function provides functionality of the miner to harvest a resource.
         /// </summary>
         public void Harvest()
         {
-            if (this.harvesttime >= 1.0f)
+            if (this.harvesttime >= 1.0f && this.navagent.velocity == Vector3.zero)
             {
                 Debug.Log("I am harvesting");
                 this.targetResource.Count--;
@@ -196,8 +211,9 @@ namespace Assets.Scripts
                     this.ChangeStates("Stock");
                     GameObject thesilo = GameObject.Find("Silo");
                     Vector3 destination = new Vector3(thesilo.transform.position.x + (this.transform.forward.x * 2), 0.5f, thesilo.transform.position.z + (this.transform.forward.z * 2));
-                    this.navagent.SetDestination(destination);
-                    this.animatorcontroller.SetTrigger("Walk");
+                    this.SetTheMovePosition(destination);
+                    this.walking = true;
+                    return;
                 }
                 else if (this.mystats.Resourcecount == 5 && this.targetResource.Taint)
                 {
@@ -209,9 +225,12 @@ namespace Assets.Scripts
                     this.ChangeStates("Decontaminate");
                     GameObject thedecontaminationbuilding = GameObject.Find("Decontamination");
                     Transform thedoor = thedecontaminationbuilding.transform.Find("FrontDoor");
-                    this.navagent.SetDestination(thedoor.position);
-                    this.animatorcontroller.SetTrigger("Walk");
+                    this.SetTheMovePosition(thedoor.position);
+                    this.walking = true;
+                    return;
                 }
+
+                this.animatorcontroller.SetTrigger("Interact");
             }
         }
 
@@ -294,6 +313,7 @@ namespace Assets.Scripts
                         thesilo.transform.position.z + (this.transform.forward.z * 2));
                     this.navagent.SetDestination(destination);
                     this.animatorcontroller.SetTrigger("Walk");
+                    this.walking = true;
                 }
             }
         }
@@ -303,15 +323,17 @@ namespace Assets.Scripts
         /// </summary>
         public void Attack()
         {
-            
+            if (this.mystats.Health <= 0) return;
+
             if (this.theEnemy == null)
             {
                 this.gothitfirst = true;
                 this.target = null;
                 this.animatorcontroller.SetTrigger("Idle");
+                this.navagent.SetDestination(this.gameObject.transform.position);
                 this.ChangeStates("Idle");
             }
-            else if (this.timebetweenattacks >= this.mystats.Attackspeed)
+            else if (this.timebetweenattacks >= this.mystats.Attackspeed && this.navagent.velocity == Vector3.zero)
             {
                 this.animatorcontroller.SetTrigger("AttackTrigger");
 
@@ -346,13 +368,15 @@ namespace Assets.Scripts
             // Check if unit dies
             if (this.mystats.Health <= 0)
             {
-                Destroy(this.gameObject);
+                // Switch to death animation
+                this.animatorcontroller.SetTrigger("Death");
             }
 
             // If unit is not dead
             if (this.theEnemy != null && this.gothitfirst)
             {
                 this.gothitfirst = false;
+                this.animatorcontroller.SetTrigger("AttackTrigger");
                 this.ChangeStates("Battle");
             }
         }
@@ -366,7 +390,17 @@ namespace Assets.Scripts
         public void SetTheMovePosition(Vector3 targetPos)
         {
             this.navagent.SetDestination(targetPos);
-            this.animatorcontroller.SetTrigger("Walk");
+            if (this.animatorcontroller.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.Idle"))
+            {
+                this.animatorcontroller.SetTrigger("Walk");
+            }
+            else
+            {
+                this.animatorcontroller.SetTrigger("Idle");
+                this.animatorcontroller.SetTrigger("Walk");
+            }
+
+            this.walking = true;
         }
 
         /// <summary>
@@ -463,6 +497,7 @@ namespace Assets.Scripts
                 this.targetResource = (IResources)theResource.GetComponent(typeof(IResources));
                 this.navagent.SetDestination(theResource.transform.position);
                 this.animatorcontroller.SetTrigger("Walk");
+                this.walking = true;
                 this.theRecentMineralDeposit = theResource;
                 this.ChangeStates("Harvest");
             }
@@ -482,6 +517,7 @@ namespace Assets.Scripts
                 this.theobjecttolookat = this.objecttopickup;
                 this.navagent.SetDestination(thepickup.transform.position);
                 this.animatorcontroller.SetTrigger("Walk");
+                this.walking = true;
                 this.ChangeStates("PickUp");
             }
         }
@@ -559,7 +595,7 @@ namespace Assets.Scripts
             this.dangercolor = Color.black;
 
             this.mystats = this.GetComponent<Stats>();
-            this.mystats.Health = 100;
+            this.mystats.Health = 1;
             this.mystats.Maxhealth = 100;
             this.mystats.Strength = 4;
             this.mystats.Defense = 4;
@@ -708,6 +744,7 @@ namespace Assets.Scripts
                         this.theobjecttolookat = this.theRecentMineralDeposit;
                         this.navagent.SetDestination(this.theRecentMineralDeposit.transform.position);
                         this.animatorcontroller.SetTrigger("Walk");
+                        this.walking = true;
                         this.ChangeStates("Harvest");
                     }
                     else
@@ -878,6 +915,14 @@ namespace Assets.Scripts
         {
             UnitController.Self.CheckIfSelected(this.gameObject);
             this.UpdateUnit();
+
+            // If the current state is walking and the navagent has stopped moving and the boolean is set to currently walking
+            // This boolean helps with only calling the trigger for idle once, instead of each frame
+            if (this.animatorcontroller.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.Walk") && this.navagent.velocity == Vector3.zero && this.walking)
+            {
+                this.walking = false;
+                this.animatorcontroller.SetTrigger("Idle");
+            }
 
             if (this.mystats.Health <= this.mystats.Maxhealth / 4)
             {

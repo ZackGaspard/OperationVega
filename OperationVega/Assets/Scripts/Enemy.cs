@@ -148,10 +148,10 @@ namespace Assets.Scripts
         {
             ObjectiveManager.Instance.TheObjectives[ObjectiveType.Kill].Currentvalue++;
             Vector3 pos = this.transform.position;
-            Quaternion rot = this.transform.rotation;
+            Quaternion rot = Quaternion.AngleAxis(70, this.transform.forward);
 
-            Destroy(this.gameObject);
             Instantiate(this.deathPrefab, pos, rot);
+            Destroy(this.gameObject);
         }
 
         /// <summary>
