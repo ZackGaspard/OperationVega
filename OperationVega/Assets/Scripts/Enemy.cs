@@ -172,22 +172,32 @@ namespace Assets.Scripts
         /// </summary>
         public void OnUnitHit()
         {
-            this.enemycontroller.SetTrigger("Idle");
-            this.enemycontroller.SetBool("Walk", false);
-            IUnit u = this.target as IUnit;
-            u.AutoTarget(this.gameObject);
-            this.target.TakeDamage(this.mystats.Strength);
-
-            // If unit is not null
-            if (UnitController.Self.unithit != null && UnitController.Self.unithit.GetComponent<Stats>().Health > 0)
+            if (Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) > this.mystats.Attackrange)
             {
-                // Queue up a text object
-                UnitController.Self.textobjs.Enqueue(UnitController.Self.combattext);
+                Debug.Log("Attack missed");
+                this.enemycontroller.SetBool("Walk", false);
+                this.navagent.SetDestination(this.transform.position);
+                this.enemycontroller.SetTrigger("Idle");
+            }
+            else
+            {
+                this.enemycontroller.SetTrigger("Idle");
+                this.enemycontroller.SetBool("Walk", false);
+                IUnit u = this.target as IUnit;
+                u.AutoTarget(this.gameObject);
+                this.target.TakeDamage(this.mystats.Strength);
 
-                // Start a coroutine to print the text to the screen -
-                // It is a coroutine to assist in helping prevent text objects from
-                // spawning on top one another.
-                this.StartCoroutine(UnitController.Self.CombatText(UnitController.Self.unithit));
+                // If unit is not null
+                if (UnitController.Self.unithit != null && UnitController.Self.unithit.GetComponent<Stats>().Health > 0)
+                {
+                    // Queue up a text object
+                    UnitController.Self.textobjs.Enqueue(UnitController.Self.combattext);
+
+                    // Start a coroutine to print the text to the screen -
+                    // It is a coroutine to assist in helping prevent text objects from
+                    // spawning on top one another.
+                    this.StartCoroutine(UnitController.Self.CombatText(UnitController.Self.unithit));
+                }
             }
         }
 
@@ -262,16 +272,21 @@ namespace Assets.Scripts
                 if (this.Currenttarget == null)
                 {
                     this.target = null;
-                    this.enemycontroller.SetTrigger("Idle");
+                    this.enemycontroller.SetBool("Walk", false);
                     this.navagent.SetDestination(this.transform.position);
+                    this.enemycontroller.SetTrigger("Idle");
                     this.ChangeStates("Idle");
                 }
                 // If unit is alive but out of range
                 else if (Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) > this.GetComponent<EnemyAI>().Radius)
                 {
-                    this.enemycontroller.SetBool("Walk", false);
-                    this.enemycontroller.SetTrigger("Idle");
-                    this.navagent.SetDestination(this.transform.position);
+                    if (!this.enemycontroller.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                    {
+                        this.enemycontroller.SetBool("Walk", false);
+                        this.navagent.SetDestination(this.transform.position);
+                        this.enemycontroller.SetTrigger("Idle");
+                    }
+
                     this.Currenttarget = null;
                     this.target = null;
                     this.ChangeStates("Idle");
