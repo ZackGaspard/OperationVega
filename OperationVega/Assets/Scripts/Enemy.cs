@@ -85,12 +85,12 @@ namespace Assets.Scripts
         {
             if (this.timebetweenattacks >= this.mystats.Attackspeed && Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) <= this.mystats.Attackrange)
             {
-                Debug.Log("Enemy attacked!");
-                IUnit u = this.target as IUnit;
-                u.AutoTarget(this.gameObject);
-                this.target.TakeDamage(this.mystats.Strength);
-
-                this.timebetweenattacks = 0;
+                if (this.navagent.velocity == Vector3.zero)
+                {
+                    Debug.Log("Enemy attacked!");
+                    this.timebetweenattacks = 0;
+                    this.enemycontroller.SetTrigger("AttackTrigger");
+                }
             }
         }
 
@@ -155,6 +155,43 @@ namespace Assets.Scripts
         }
 
         /// <summary>
+        /// The on taint function.
+        /// Provides the functionality on when the enemy taints a resource.
+        /// This function is called in the animator, under events for the taint animation.
+        /// </summary>
+        public void OnTaint()
+        {
+            // Incase the unit was walking before tainting, set it to false
+            this.enemycontroller.SetBool("Walk", false);
+            this.enemycontroller.SetBool("Taint", false);
+        }
+
+        /// <summary>
+        /// The on unit hit function.
+        /// This function is called as an animation event function in the attack animation.
+        /// </summary>
+        public void OnUnitHit()
+        {
+            this.enemycontroller.SetTrigger("Idle");
+            this.enemycontroller.SetBool("Walk", false);
+            IUnit u = this.target as IUnit;
+            u.AutoTarget(this.gameObject);
+            this.target.TakeDamage(this.mystats.Strength);
+
+            // If unit is not null
+            if (UnitController.Self.unithit != null && UnitController.Self.unithit.GetComponent<Stats>().Health > 0)
+            {
+                // Queue up a text object
+                UnitController.Self.textobjs.Enqueue(UnitController.Self.combattext);
+
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(UnitController.Self.unithit));
+            }
+        }
+
+        /// <summary>
         /// The taint function allows the enemy to taint a resource.
         /// </summary>
         public void Taint()
@@ -162,6 +199,7 @@ namespace Assets.Scripts
             if (Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) <= this.mystats.Attackrange && this.timetotaint >= 3)
             {
                 Debug.Log("I Tainted it");
+                this.enemycontroller.SetBool("Taint", true);
                 this.targetResource.Taint = true;
                 this.targetResource = null;
                 this.ChangeStates("Idle");
@@ -204,7 +242,7 @@ namespace Assets.Scripts
             this.mystats.CurrentSkillCooldown = this.mystats.MaxSkillCooldown;
             this.mystats.Attackrange = 2.0f;
 
-            this.timetotaint = 0;
+            this.timetotaint = 3;
             this.timebetweenattacks = this.mystats.Attackspeed;
             this.navagent = this.GetComponent<NavMeshAgent>();
             this.navagent.speed = this.mystats.Speed;
@@ -220,26 +258,28 @@ namespace Assets.Scripts
         {
             if (this.target != null)
             {
-               this.Attack();
-
                 // If the unit has died
                 if (this.Currenttarget == null)
                 {
                     this.target = null;
+                    this.enemycontroller.SetTrigger("Idle");
+                    this.navagent.SetDestination(this.transform.position);
                     this.ChangeStates("Idle");
                 }
                 // If unit is alive but out of range
                 else if (Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) > this.GetComponent<EnemyAI>().Radius)
                 {
-                    this.enemycontroller.SetBool("Attack", false);
+                    this.enemycontroller.SetBool("Walk", false);
+                    this.enemycontroller.SetTrigger("Idle");
+                    this.navagent.SetDestination(this.transform.position);
                     this.Currenttarget = null;
                     this.target = null;
                     this.ChangeStates("Idle");
                     this.GetComponent<EnemyAI>().taunted = false;
                 }
-                else if (Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) > this.mystats.Attackrange && this.enemycontroller.GetBool("Attack"))
+                else
                 {
-                    this.enemycontroller.SetBool("Attack", false);
+                    this.Attack();
                 }
             }
         }

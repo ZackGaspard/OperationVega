@@ -87,25 +87,6 @@ namespace Assets.Scripts
         private float nextcheck;
 
         /// <summary>
-        /// The on unit hit function.
-        /// This function is called as an animation event function in the attack animation.
-        /// </summary>
-        public void OnUnitHit()
-        {
-            // If unit is not null
-            if (UnitController.Self.unithit != null)
-            {
-                // Queue up a text object
-                UnitController.Self.textobjs.Enqueue(UnitController.Self.combattext);
-                
-                // Start a coroutine to print the text to the screen -
-                // It is a coroutine to assist in helping prevent text objects from
-                // spawning on top one another.
-                this.StartCoroutine(UnitController.Self.CombatText(UnitController.Self.unithit));
-            }
-        }
-
-        /// <summary>
         /// The start.
         /// </summary>
         private void Start()
@@ -168,37 +149,17 @@ namespace Assets.Scripts
                 if (this.enemycontroller.GetBool("Walk"))
                 {
                     this.enemycontroller.SetBool("Walk", false);
+                    this.enemycontroller.SetTrigger("WalkTrigger");
                 }
             }
 
-            // If the navagent isnt looking for a current path - this helps prevent any lag when the enemy is already stopped then starting to animating,
-            // if the navagent is within stopping distance...
-            if (!this.mynavagent.pathPending && this.mynavagent.remainingDistance <= this.mynavagent.stoppingDistance)
+            // If in the idle state and moving
+            if (this.enemycontroller.GetCurrentAnimatorStateInfo(0).IsName("Idle")
+                && this.mynavagent.velocity != Vector3.zero && !this.enemycontroller.GetBool("Walk"))
             {
-                // If the enemy is not attacking and the enemy has a target
-                if (!this.enemycontroller.GetBool("Attack") && this.enemyreference.Currenttarget != null)
-                {
-                    // Switch to attack animation
-                    this.enemycontroller.SetBool("Attack", true);
-
-                    // Incase the unit was walking before attacking, set it to false
-                    this.enemycontroller.SetBool("Walk", false);
-
-                    // Incase the unit was idling before attacking, set it to false
-                    this.enemycontroller.SetBool("Idle", false);
-                }
-                // Else if the enemy is attacking and the target has become null
-                else if (this.enemycontroller.GetBool("Attack") && this.enemyreference.Currenttarget == null)
-                {
-                    // Switch to idle
-                    this.enemycontroller.SetBool("Attack", false);
-                }
-                // Else if the enemy is walking and the target has become null
-                else if (this.enemycontroller.GetBool("Walk") && this.enemyreference.Currenttarget == null)
-                {
-                    // Switch to idle
-                    this.enemycontroller.SetBool("Walk", false);
-                }
+                // Activate walk animation
+                this.enemycontroller.SetBool("Walk", true);
+                this.enemycontroller.SetTrigger("WalkTrigger");
             }
         }
 
@@ -231,6 +192,8 @@ namespace Assets.Scripts
         /// </summary>
         private void GoToTarget()
         {
+            if (this.theTargets.Count < 1) return;
+
             if (this.enemyreference.Currenttarget != null)
             {
                 if (this.enemyreference.Currenttarget.GetComponent(typeof(IUnit)))
@@ -243,12 +206,6 @@ namespace Assets.Scripts
                 }
 
                 this.mynavagent.SetDestination(this.enemyreference.Currenttarget.transform.position);
-
-                // Only Set the animator to walk if its not in any other state
-                if (!this.enemycontroller.GetBool("Walk") && !this.enemycontroller.GetBool("Attack"))
-                {
-                    this.enemycontroller.SetBool("Walk", true);
-                }
             }
         }
 

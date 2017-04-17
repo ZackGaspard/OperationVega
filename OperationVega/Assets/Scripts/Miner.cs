@@ -595,7 +595,7 @@ namespace Assets.Scripts
             this.dangercolor = Color.black;
 
             this.mystats = this.GetComponent<Stats>();
-            this.mystats.Health = 1;
+            this.mystats.Health = 6;
             this.mystats.Maxhealth = 100;
             this.mystats.Strength = 4;
             this.mystats.Defense = 4;
