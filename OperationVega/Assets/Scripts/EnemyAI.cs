@@ -2,9 +2,6 @@
 namespace Assets.Scripts
 {
     using System.Collections.Generic;
-
-    using Controllers;
-
     using Interfaces;
 
     using UnityEngine;
@@ -43,6 +40,14 @@ namespace Assets.Scripts
         /// </summary>
         [HideInInspector]
         public bool scared;
+
+        /// <summary>
+        /// The stun timer reference.
+        /// Helps to prevent the idle trigger being called multiple times in the update function when
+        /// the alien is stunned.
+        /// </summary>
+        [HideInInspector]
+        public float Stuntimer;
 
         /// <summary>
         /// The timer reference.
@@ -99,6 +104,7 @@ namespace Assets.Scripts
             this.stunned = false;
             this.taunted = false;
             this.scared = false;
+            this.Stuntimer = 0;
             this.runtimer = 1;
         }
 
@@ -114,43 +120,36 @@ namespace Assets.Scripts
             else if (this.taunted && this.enemyreference.Currenttarget != null)
             {
                 this.mynavagent.SetDestination(this.enemyreference.Currenttarget.transform.position);
-
-                if (!this.enemycontroller.GetBool("Walk"))
-                {
-                    this.enemycontroller.SetBool("Walk", true);
-                }
             }
             else if (this.scared && !this.stunned)
             {
                 this.runtimer += 1 * Time.deltaTime;
 
-                this.mynavagent.SetDestination(this.transform.position * this.runtimer);
-
-                if (!this.enemycontroller.GetBool("Walk"))
-                {
-                    this.enemycontroller.SetBool("Walk", true);
-                }
-
-                // If the enemy has been scared for 5 seconds then the effect wore off
-                if (this.runtimer >= 5.0f)
+                // If the enemy has been scared for 4 seconds then the effect wore off
+                if (this.runtimer >= 4.0f)
                 {
                     this.scared = false;
                     this.runtimer = 1;
                     this.mynavagent.SetDestination(this.transform.position);
-
-                    if (!this.enemycontroller.GetBool("Walk"))
-                    {
-                        this.enemycontroller.SetBool("Walk", true);
-                    }
+                    this.enemycontroller.SetBool("Walk", false);
+                    this.enemycontroller.SetTrigger("Idle");
                 }
+
+                this.mynavagent.SetDestination(this.transform.position * this.runtimer);
             }
             else if (this.stunned)
             {
-                if (this.enemycontroller.GetBool("Walk"))
+                if (this.Stuntimer <= 0.0f)
                 {
+                    if (this.scared) this.scared = false;
+
                     this.enemycontroller.SetBool("Walk", false);
-                    this.enemycontroller.SetTrigger("WalkTrigger");
+                    this.enemycontroller.SetTrigger("Idle");
+                    this.mynavagent.SetDestination(this.transform.position);
                 }
+
+                this.Stuntimer += 1 * Time.deltaTime;
+
             }
 
             // If in the idle state and moving

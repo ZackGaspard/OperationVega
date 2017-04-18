@@ -79,13 +79,20 @@ namespace Assets.Scripts
         private GameObject deathPrefab;
 
         /// <summary>
+        /// The particle system reference.
+        /// The particle system that simulates the taint attack.
+        /// </summary>
+        [SerializeField]
+        private ParticleSystem particlesystem;
+
+        /// <summary>
         /// The attack function gives the enemy functionality to attack.
         /// </summary>
         public void Attack()
         {
             if (this.timebetweenattacks >= this.mystats.Attackspeed && Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) <= this.mystats.Attackrange)
             {
-                if (this.navagent.velocity == Vector3.zero)
+                if (this.navagent.velocity == Vector3.zero && this.mystats.Health > 0)
                 {
                     Debug.Log("Enemy attacked!");
                     this.timebetweenattacks = 0;
@@ -107,7 +114,7 @@ namespace Assets.Scripts
             if (this.mystats.Health <= 0)
             {
                 // Switch to death animation
-                this.enemycontroller.SetBool("Death", true);
+                this.enemycontroller.SetTrigger("Death");
             }
         }
 
@@ -148,7 +155,7 @@ namespace Assets.Scripts
         {
             ObjectiveManager.Instance.TheObjectives[ObjectiveType.Kill].Currentvalue++;
             Vector3 pos = this.transform.position;
-            Quaternion rot = Quaternion.AngleAxis(70, this.transform.forward);
+            Quaternion rot = Quaternion.AngleAxis(-70, this.transform.forward);
 
             Instantiate(this.deathPrefab, pos, rot);
             Destroy(this.gameObject);
@@ -164,6 +171,9 @@ namespace Assets.Scripts
             // Incase the unit was walking before tainting, set it to false
             this.enemycontroller.SetBool("Walk", false);
             this.enemycontroller.SetBool("Taint", false);
+            this.enemycontroller.SetTrigger("Idle");
+            this.particlesystem.Play();
+
         }
 
         /// <summary>
@@ -174,7 +184,6 @@ namespace Assets.Scripts
         {
             if (Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) > this.mystats.Attackrange)
             {
-                Debug.Log("Attack missed");
                 this.enemycontroller.SetBool("Walk", false);
                 this.navagent.SetDestination(this.transform.position);
                 this.enemycontroller.SetTrigger("Idle");
@@ -191,12 +200,12 @@ namespace Assets.Scripts
                 if (UnitController.Self.unithit != null && UnitController.Self.unithit.GetComponent<Stats>().Health > 0)
                 {
                     // Queue up a text object
-                    UnitController.Self.textobjs.Enqueue(UnitController.Self.combattext);
+                    UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
 
                     // Start a coroutine to print the text to the screen -
                     // It is a coroutine to assist in helping prevent text objects from
                     // spawning on top one another.
-                    this.StartCoroutine(UnitController.Self.CombatText(UnitController.Self.unithit));
+                    this.StartCoroutine(UnitController.Self.CombatText(UnitController.Self.unithit, Color.white, null));
                 }
             }
         }
@@ -208,12 +217,15 @@ namespace Assets.Scripts
         {
             if (Vector3.Distance(this.Currenttarget.transform.position, this.transform.position) <= this.mystats.Attackrange && this.timetotaint >= 3)
             {
-                Debug.Log("I Tainted it");
-                this.enemycontroller.SetBool("Taint", true);
-                this.targetResource.Taint = true;
-                this.targetResource = null;
-                this.ChangeStates("Idle");
-                this.timetotaint = 0;
+                if (this.navagent.velocity == Vector3.zero)
+                {
+                    Debug.Log("I Tainted it");
+                    this.enemycontroller.SetBool("Taint", true);
+                    this.targetResource.Taint = true;
+                    this.targetResource = null;
+                    this.ChangeStates("Idle");
+                    this.timetotaint = 0;
+                }
             }
         }
 

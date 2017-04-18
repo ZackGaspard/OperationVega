@@ -1,6 +1,8 @@
 ﻿
 namespace Assets.Scripts
 {
+    using System.Runtime.Remoting.Metadata.W3cXsd2001;
+
     using Controllers;
     using Interfaces;
     using UI;
@@ -177,6 +179,41 @@ namespace Assets.Scripts
         private delegate void RangeHandler(float number);
 
         /// <summary>
+        /// The on enemy hit function.
+        /// Provides the functionality on when the enemy get hit.
+        /// This function is called in the animator, under events for the attack animation.
+        /// </summary>
+        public void OnEnemyHit()
+        {
+            Vector3 thedisplacement = (this.transform.position - this.theEnemy.transform.position).normalized;
+            if (Vector3.Dot(thedisplacement, this.theEnemy.transform.forward) < 0)
+            {
+                Debug.Log("Miner crit hit!");
+                this.target.TakeDamage(this.mystats.Strength * 2);
+            }
+            else
+            {
+                Debug.Log("Miner Attacking for normal damage");
+                this.target.TakeDamage(this.mystats.Strength);
+            }
+
+            // If the enemy is not null
+            if (this.target != null)
+            {
+                if (this.theEnemy.GetComponent<Stats>().Health < 0)
+                    this.theEnemy.GetComponent<Stats>().Health = 0;
+
+                // Queue up a text object
+                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(this.theEnemy, new Color(255f, 0, 180, 0.75f), null));
+            }
+        }
+
+        /// <summary>
         /// The on death function.
         /// Provides the functionality on when the enemy dies.
         /// This function is called in the animator, under events for the death animation.
@@ -193,19 +230,28 @@ namespace Assets.Scripts
         {
             if (this.harvesttime >= 1.0f && this.navagent.velocity == Vector3.zero)
             {
-                Debug.Log("I am harvesting");
+                // Queue up a text object
+                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, Color.white, "Mining.."));
+
                 this.targetResource.Count--;
-                Debug.Log("Resource left: " + this.targetResource.Count);
                 this.mystats.Resourcecount++;
-                Debug.Log("My Resource count " + this.mystats.Resourcecount);
 
                 this.harvesttime = 0;
 
                 if (this.mystats.Resourcecount == 5 && !this.targetResource.Taint)
                 {
                     // Create the clean mineral object and parent it to the front of the miner
-                    var clone = Instantiate(this.cleanmineral, this.transform.position + (this.transform.forward * 0.6f), this.transform.rotation);
+                    Vector3 position = this.transform.position + (this.transform.forward * -0.28f);
+                    position.y = 0.6f;
+
+                    var clone = Instantiate(this.cleanmineral, position, this.transform.rotation);
                     clone.transform.SetParent(this.transform);
+                    clone.transform.localEulerAngles = new Vector3(-45, 90, 0);
                     clone.name = "Minerals";
                     this.mystats.Resourcecount = 0;
                     this.ChangeStates("Stock");
@@ -217,10 +263,15 @@ namespace Assets.Scripts
                 }
                 else if (this.mystats.Resourcecount == 5 && this.targetResource.Taint)
                 {
+                    // Create the clean mineral object and parent it to the front of the miner
+                    Vector3 position = this.transform.position + (this.transform.forward * -0.28f);
+                    position.y = 0.6f;
+
                     // The resource is tainted go to decontamination center
                     // Create the dirty mineral object and parent it to the front of the miner
-                    var clone = Instantiate(this.dirtymineral, this.transform.position + (this.transform.forward * 0.6f), this.transform.rotation);
+                    var clone = Instantiate(this.dirtymineral, position, this.transform.rotation);
                     clone.transform.SetParent(this.transform);
+                    clone.transform.localEulerAngles = new Vector3(-45, 90, 0);
                     clone.name = "MineralsTainted";
                     this.ChangeStates("Decontaminate");
                     GameObject thedecontaminationbuilding = GameObject.Find("Decontamination");
@@ -272,7 +323,14 @@ namespace Assets.Scripts
         {
             if (this.decontime >= 1.0f)
             {
-                Debug.Log("Decontaminating");
+                // Queue up a text object
+                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, Color.white, "Decontaminating..."));
+
                 this.mystats.Resourcecount--;
                 this.decontime = 0;
 
@@ -293,11 +351,13 @@ namespace Assets.Scripts
 
                     for (int i = 0; i < counter; i++)
                     {
-                        var clone = Instantiate(
-                        this.cleanmineral,
-                        this.transform.position + (this.transform.forward * 0.6f),
-                        this.transform.rotation);
+                        // Create the clean mineral object and parent it to the front of the miner
+                        Vector3 position = this.transform.position + (this.transform.forward * -0.28f);
+                        position.y = 0.6f;
+
+                        var clone = Instantiate(this.cleanmineral, position, this.transform.rotation);
                         clone.transform.SetParent(this.transform);
+                        clone.transform.localEulerAngles = new Vector3(-45, 90, 0);
                         clone.name = "Minerals";
                         if (i > 0)
                         {
@@ -335,21 +395,8 @@ namespace Assets.Scripts
             }
             else if (this.timebetweenattacks >= this.mystats.Attackspeed && this.navagent.velocity == Vector3.zero)
             {
+                this.timebetweenattacks = 0;
                 this.animatorcontroller.SetTrigger("AttackTrigger");
-
-                Vector3 thedisplacement = (this.transform.position - this.theEnemy.transform.position).normalized;
-                if (Vector3.Dot(thedisplacement, this.theEnemy.transform.forward) < 0)
-                {
-                    Debug.Log("Miner crit hit!");
-                    this.target.TakeDamage(this.mystats.Strength * 2);
-                    this.timebetweenattacks = 0;
-                }
-                else
-                {
-                    Debug.Log("Miner Attacking for normal damage");
-                    this.target.TakeDamage(this.mystats.Strength);
-                    this.timebetweenattacks = 0;
-                }
             }
         }
 
@@ -595,7 +642,7 @@ namespace Assets.Scripts
             this.dangercolor = Color.black;
 
             this.mystats = this.GetComponent<Stats>();
-            this.mystats.Health = 6;
+            this.mystats.Health = 100;
             this.mystats.Maxhealth = 100;
             this.mystats.Strength = 4;
             this.mystats.Defense = 4;
@@ -615,8 +662,6 @@ namespace Assets.Scripts
             this.navagent = this.GetComponent<NavMeshAgent>();
             this.navagent.speed = this.mystats.Speed;
             this.animatorcontroller = this.GetComponent<Animator>();
-
-            Debug.Log("Miner Initialized");
         }
 
         /// <summary>
@@ -759,12 +804,18 @@ namespace Assets.Scripts
                 {
                     if (this.dropofftime >= 1.0f)
                     {
-                        Debug.Log("Dropping off the goods");
+                        // Queue up a text object
+                        UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                        // Start a coroutine to print the text to the screen -
+                        // It is a coroutine to assist in helping prevent text objects from
+                        // spawning on top one another.
+                        this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, Color.red, "+1 Mineral Stocked"));
                         this.mystats.Resourcecount--;
                         this.alreadystockedcount++;
-                        Debug.Log("My resource count " + this.mystats.Resourcecount);
+
                         User.MineralsCount++;
-                        Debug.Log("I have now stocked " + User.MineralsCount + " minerals");
+
                         this.dropofftime = 0;
                     }
                 }
@@ -784,7 +835,19 @@ namespace Assets.Scripts
 
                 if (mineral == null && mineraltainted == null)
                 {
-                    this.objecttopickup.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                    // Queue up a text object
+                    UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                    // Start a coroutine to print the text to the screen -
+                    // It is a coroutine to assist in helping prevent text objects from
+                    // spawning on top one another.
+                    this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, Color.white, "Picked up.."));
+
+                    Vector3 position = this.transform.position + (this.transform.forward * -0.28f);
+                    position.y = 0.6f;
+
+                    this.objecttopickup.transform.rotation = Quaternion.AngleAxis(45, Vector3.left);
+                    this.objecttopickup.transform.position = position;
                     this.objecttopickup.transform.SetParent(this.transform);
                     if (this.objecttopickup.name == "MineralsTainted")
                     {
@@ -795,7 +858,18 @@ namespace Assets.Scripts
                 {
                     if (mineral != null && mineraltainted == null)
                     {
-                        this.objecttopickup.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                        // Queue up a text object
+                        UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                        // Start a coroutine to print the text to the screen -
+                        // It is a coroutine to assist in helping prevent text objects from
+                        // spawning on top one another.
+                        this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, Color.white, "Picked up.."));
+
+                        Vector3 position = this.transform.position + (this.transform.forward * -0.28f);
+                        position.y = 0.6f;
+                        this.objecttopickup.transform.rotation = Quaternion.AngleAxis(45, Vector3.left);
+                        this.objecttopickup.transform.position = position;
                         this.objecttopickup.transform.SetParent(this.transform);
                         this.objecttopickup.gameObject.SetActive(false);
                     }
@@ -804,12 +878,27 @@ namespace Assets.Scripts
                 {
                     if (mineraltainted != null && mineral == null)
                     {
-                        this.objecttopickup.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                        // Queue up a text object
+                        UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                        // Start a coroutine to print the text to the screen -
+                        // It is a coroutine to assist in helping prevent text objects from
+                        // spawning on top one another.
+                        this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, Color.white, "Picked up.."));
+
+
+                        Vector3 position = this.transform.position + (this.transform.forward * -0.28f);
+                        position.y = 0.6f;
+                        this.objecttopickup.transform.rotation = Quaternion.AngleAxis(45, Vector3.left);
+                        this.objecttopickup.transform.position = position;
                         this.objecttopickup.transform.SetParent(this.transform);
                         this.objecttopickup.gameObject.SetActive(false);
                         this.mystats.Resourcecount = 5;
                     }
                 }
+
+                if (!this.animatorcontroller.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                    this.animatorcontroller.SetTrigger("Idle");
 
                 this.ChangeStates("Idle");
             }

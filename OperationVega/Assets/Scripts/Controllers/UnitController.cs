@@ -448,27 +448,43 @@ namespace Assets.Scripts.Controllers
             Instantiate(theunit, spawnposition, Quaternion.AngleAxis(-180, Vector3.up));
         }
 
-        public Queue<GameObject> textobjs = new Queue<GameObject>();
+        /// <summary>
+        /// The text objs reference.
+        /// Reference to store text objects when damage is to be displayed.
+        /// </summary>
+        public Queue<GameObject> Textobjs = new Queue<GameObject>();
 
         /// <summary>
         /// The combat text function.
         /// <para></para>
         /// <remarks><paramref name="unit"></paramref> -The unit to display is taking damage.</remarks>
+        /// <para></para>
+        /// <remarks><paramref name="textoutline"></paramref> -The color to display as the outline for the text.</remarks>
+        /// <para></para>
+        /// <remarks><paramref name="message"></paramref> -The message to display.</remarks>
         /// </summary>
-        public IEnumerator CombatText(GameObject unit)
+        public IEnumerator CombatText(GameObject unit, Color textoutline, string message)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.25f);
             Stats thestats = unit.GetComponent<Stats>();
             Vector3 spawnposition = unit.transform.position;
             spawnposition.y += 0.5f;
 
-            GameObject textobj = this.textobjs.Dequeue();
+            GameObject textobj = this.Textobjs.Dequeue();
 
             // Create text object to display unit health
             GameObject theTextGo = Instantiate(textobj, Camera.main.WorldToScreenPoint(spawnposition), Quaternion.identity);
             Text thetext = theTextGo.GetComponent<Text>();
+            theTextGo.GetComponent<Outline>().effectColor = textoutline;
             theTextGo.transform.SetParent(UIManager.Self.BackgroundUI.GetComponent<RectTransform>());
-            thetext.text = thestats.Health + "/" + thestats.Maxhealth;
+
+            // If no message then print the stats
+            if(message == null)
+                thetext.text = thestats.Health + "/" + thestats.Maxhealth;
+            else
+            { // Else print the message
+                thetext.text = message;
+            }
         }
 
         /// <summary>
@@ -527,6 +543,24 @@ namespace Assets.Scripts.Controllers
                         UIManager.Self.currentcooldown = this.theselectedobject.GetComponent<Stats>().CurrentSkillCooldown;
                         UIManager.Self.abilityunit = this.theselectedobject;
                         UIManager.Self.CreateUnitButton(this.theselectedobject);
+
+                        // Queue up a text object
+                        this.Textobjs.Enqueue(this.combattext);
+
+                        // Start a coroutine to print the text to the screen -
+                        // It is a coroutine to assist in helping prevent text objects from
+                        // spawning on top one another.
+                        this.StartCoroutine(this.CombatText(hit.transform.gameObject, Color.white, null));
+                    }
+                    else if (hit.transform.GetComponent<Enemy>())
+                    {
+                        // Queue up a text object
+                        this.Textobjs.Enqueue(this.combattext);
+
+                        // Start a coroutine to print the text to the screen -
+                        // It is a coroutine to assist in helping prevent text objects from
+                        // spawning on top one another.
+                        this.StartCoroutine(this.CombatText(hit.transform.gameObject, new Color(255f, 0, 180, 0.75f), null));
                     }
                 }
             }

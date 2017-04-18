@@ -163,6 +163,41 @@ namespace Assets.Scripts
         private delegate void RangeHandler(float number);
 
         /// <summary>
+        /// The on enemy hit function.
+        /// Provides the functionality on when the enemy get hit.
+        /// This function is called in the animator, under events for the attack animation.
+        /// </summary>
+        public void OnEnemyHit()
+        {
+            Vector3 thedisplacement = (this.transform.position - this.theEnemy.transform.position).normalized;
+            if (Vector3.Dot(thedisplacement, this.theEnemy.transform.forward) < 0)
+            {
+                Debug.Log("Harvester crit hit!");
+                this.target.TakeDamage(this.mystats.Strength * 2);
+            }
+            else
+            {
+                Debug.Log("Harvester Attacking for normal damage");
+                this.target.TakeDamage(this.mystats.Strength);
+            }
+
+            // If the enemy is not null
+            if (this.target != null)
+            {
+                if (this.theEnemy.GetComponent<Stats>().Health < 0)
+                    this.theEnemy.GetComponent<Stats>().Health = 0;
+
+                // Queue up a text object
+                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(this.theEnemy, new Color(255f, 0, 180, 0.75f), null));
+            }
+        }
+
+        /// <summary>
         /// The on death function.
         /// Provides the functionality on when the enemy dies.
         /// This function is called in the animator, under events for the death animation.
@@ -179,17 +214,25 @@ namespace Assets.Scripts
         {
             if (this.harvesttime >= 1.0f && this.navagent.velocity == Vector3.zero)
             {
-                Debug.Log("I am harvesting");
+                // Queue up a text object
+                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, Color.white, "Extracting.."));
+
                 this.targetResource.Count--;
-                Debug.Log("Resource left: " + this.targetResource.Count);
                 this.mystats.Resourcecount++;
-                Debug.Log("My Resource count " + this.mystats.Resourcecount);
 
                 this.harvesttime = 0;
                 if (this.mystats.Resourcecount >= 5)
                 { // Create the clean gas object and parent it to the front of the extractor
-                    var clone = Instantiate(this.cleangas, this.transform.position + (this.transform.forward * 0.6f), this.transform.rotation);
+                    Vector3 position = this.transform.position + (this.transform.forward * -0.28f);
+                    position.y = 0.78f;
+                    var clone = Instantiate(this.cleangas, position, this.transform.rotation);
                     clone.transform.SetParent(this.transform);
+                    clone.transform.localEulerAngles = new Vector3(-90, 0, 90);
                     clone.name = "GasTank";
                     this.mystats.Resourcecount = 0;
                     this.ChangeStates("Stock");
@@ -253,21 +296,8 @@ namespace Assets.Scripts
 
             if (this.timebetweenattacks >= this.mystats.Attackspeed && this.navagent.velocity == Vector3.zero)
             {
+                this.timebetweenattacks = 0;
                 this.animatorcontroller.SetTrigger("AttackTrigger");
-
-                Vector3 thedisplacement = (this.transform.position - this.theEnemy.transform.position).normalized;
-                if (Vector3.Dot(thedisplacement, this.theEnemy.transform.forward) < 0)
-                {
-                    Debug.Log("Extractor crit hit!");
-                    this.target.TakeDamage(this.mystats.Strength * 2);
-                    this.timebetweenattacks = 0;
-                }
-                else
-                {
-                    Debug.Log("Extractor Attacked for normal damage");
-                    this.target.TakeDamage(this.mystats.Strength);
-                    this.timebetweenattacks = 0;
-                }
             }
         }
 
@@ -487,7 +517,7 @@ namespace Assets.Scripts
             this.dangercolor = Color.black;
 
             this.mystats = this.GetComponent<Stats>();
-            this.mystats.Health = 1;
+            this.mystats.Health = 100;
             this.mystats.Maxhealth = 100;
             this.mystats.Strength = 4;
             this.mystats.Defense = 7;
@@ -507,7 +537,6 @@ namespace Assets.Scripts
             this.navagent = this.GetComponent<NavMeshAgent>();
             this.navagent.speed = this.mystats.Speed;
             this.animatorcontroller = this.GetComponent<Animator>();
-            Debug.Log("Extractor Initialized");
         }
 
         /// <summary>
@@ -671,12 +700,18 @@ namespace Assets.Scripts
                 {
                     if (this.dropofftime >= 1.0f)
                     {
-                        Debug.Log("Dropping off the goods");
+                        // Queue up a text object
+                        UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                        // Start a coroutine to print the text to the screen -
+                        // It is a coroutine to assist in helping prevent text objects from
+                        // spawning on top one another.
+                        this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, new Color(0f, 0f, 255f, 0.75f), "+1 Gas Stocked"));
                         this.mystats.Resourcecount--;
                         this.alreadystockedcount++;
-                        Debug.Log("My resource count " + this.mystats.Resourcecount);
+
                         User.GasCount++;
-                        Debug.Log("I have now stocked " + User.GasCount + " gas");
+
                         this.dropofftime = 0;
                     }
                 }
@@ -693,13 +728,27 @@ namespace Assets.Scripts
             {
                 Transform gastank = this.transform.Find("GasTank");
 
-                this.objecttopickup.transform.position = this.transform.position + (this.transform.forward * 0.6f);
+                // Queue up a text object
+                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
+
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, Color.white, "Picked up.."));
+
+                Vector3 position = this.transform.position + (this.transform.forward * -0.28f);
+                position.y = 0.78f;
+                this.objecttopickup.transform.position = position;
                 this.objecttopickup.transform.SetParent(this.transform);
+                this.objecttopickup.transform.localEulerAngles = new Vector3(-90, 0, 90);
 
                 if (gastank != null && gastank.gameObject.activeInHierarchy)
                 {
                     this.objecttopickup.gameObject.SetActive(false);
                 }
+
+                if (!this.animatorcontroller.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                    this.animatorcontroller.SetTrigger("Idle");
 
                 this.ChangeStates("Idle");
             }
