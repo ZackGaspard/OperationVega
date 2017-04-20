@@ -234,9 +234,6 @@ namespace UI
         protected void Awake()
         {
 
-            User.FoodCount = 20;
-            User.GasCount = 20;
-            User.MineralsCount = 20;
             //Bool use to manage action tab
             revertactionstab = true;
             //Bool use to manage crafting tab
@@ -1093,6 +1090,7 @@ namespace UI
         private void NewGame()
         {
             SceneManager.LoadScene(1);
+            GameManager.Instance.SetUpNewGame();
             //Function will begin game from main menu
             Debug.Log("New Game");
         }

@@ -58,15 +58,17 @@ namespace Assets.Scripts.Controllers
         /// </summary>
         public GameObject Extractor;
 
-        /// <summary>
-        /// The combat text reference.
-        /// Reference to the combat text prefab.
-        /// </summary>
-        [SerializeField]
-        public GameObject combattext;
+        [HideInInspector]
+        public GameObject Unithit;
 
         [HideInInspector]
-        public GameObject unithit;
+        public GameObject RagDoll
+        {
+            set
+            {
+                this.StartCoroutine(this.DestroyRagDoll(value));
+            }
+        }
 
         /// <summary>
         /// The instance of the class.
@@ -82,6 +84,12 @@ namespace Assets.Scripts.Controllers
         /// The list of units selected by the drag screen.
         /// </summary>
         private readonly List<GameObject> units = new List<GameObject>();
+
+        /// <summary>
+        /// The text objects reference.
+        /// Reference to store text objects when damage is to be displayed.
+        /// </summary>
+        private readonly Queue<GameObject> textobjs = new Queue<GameObject>();
 
         /// <summary>
         /// The trees list.
@@ -100,6 +108,13 @@ namespace Assets.Scripts.Controllers
         /// Reference to every geyser in the scene.
         /// </summary>
         private List<GameObject> geysers = new List<GameObject>();
+
+        /// <summary>
+        /// The combat text reference.
+        /// Reference to the combat text prefab.
+        /// </summary>
+        [SerializeField]
+        private GameObject combattext;
 
         /// <summary>
         /// The click destination of where to send the unit.
@@ -449,12 +464,6 @@ namespace Assets.Scripts.Controllers
         }
 
         /// <summary>
-        /// The text objs reference.
-        /// Reference to store text objects when damage is to be displayed.
-        /// </summary>
-        public Queue<GameObject> Textobjs = new Queue<GameObject>();
-
-        /// <summary>
         /// The combat text function.
         /// <para></para>
         /// <remarks><paramref name="unit"></paramref> -The unit to display is taking damage.</remarks>
@@ -465,22 +474,41 @@ namespace Assets.Scripts.Controllers
         /// </summary>
         public IEnumerator CombatText(GameObject unit, Color textoutline, string message)
         {
-            yield return new WaitForSeconds(0.25f);
-            Stats thestats = unit.GetComponent<Stats>();
-            Vector3 spawnposition = unit.transform.position;
-            spawnposition.y += 0.5f;
+            // Queue up a text object
+            this.textobjs.Enqueue(this.combattext);
 
-            GameObject textobj = this.Textobjs.Dequeue();
+            yield return new WaitForSeconds(0.25f);
+
+            Stats thestats;
+            Vector3 spawnposition;
+
+            // If the unit is null then just display the text at the mouse position
+            if (unit == null)
+            {
+                spawnposition = Input.mousePosition;
+                spawnposition.y += 0.5f;
+            }
+            else
+            {
+                spawnposition = unit.transform.position;
+                spawnposition.y += 0.5f;
+                spawnposition = Camera.main.WorldToScreenPoint(spawnposition);
+            }
+
+            GameObject textobj = this.textobjs.Dequeue();
 
             // Create text object to display unit health
-            GameObject theTextGo = Instantiate(textobj, Camera.main.WorldToScreenPoint(spawnposition), Quaternion.identity);
+            GameObject theTextGo = Instantiate(textobj, spawnposition, Quaternion.identity);
             Text thetext = theTextGo.GetComponent<Text>();
             theTextGo.GetComponent<Outline>().effectColor = textoutline;
             theTextGo.transform.SetParent(UIManager.Self.BackgroundUI.GetComponent<RectTransform>());
 
             // If no message then print the stats
-            if(message == null)
+            if (message == null && unit != null)
+            {
+                thestats = unit.GetComponent<Stats>();
                 thetext.text = thestats.Health + "/" + thestats.Maxhealth;
+            }
             else
             { // Else print the message
                 thetext.text = message;
@@ -492,7 +520,6 @@ namespace Assets.Scripts.Controllers
         /// </summary>
         private void Start()
         {
-            User.FoodCount += 12;
             instance = this;
             this.theBarracks = GameObject.Find("Barracks");
             EventManager.Subscribe("ActivateAbility", this.ActivateAbility);
@@ -514,6 +541,23 @@ namespace Assets.Scripts.Controllers
         private void OnDestroy()
         {
             EventManager.UnSubscribe("ActivateAbility", this.ActivateAbility);
+        }
+
+        /// <summary>
+        /// The destroy rag doll function.
+        /// Destroys the rag doll after a few seconds.
+        /// <para></para>
+        /// <remarks><paramref name="theragdoll"></paramref> -The rag doll object to destroy.</remarks>
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerator"/>.
+        /// </returns>
+        private IEnumerator DestroyRagDoll(GameObject theragdoll)
+        {
+            Debug.Log("Dead");
+            yield return new WaitForSeconds(2.0f);
+            Destroy(theragdoll);
+            Debug.Log("Destroyed");
         }
 
         /// <summary>
@@ -544,9 +588,6 @@ namespace Assets.Scripts.Controllers
                         UIManager.Self.abilityunit = this.theselectedobject;
                         UIManager.Self.CreateUnitButton(this.theselectedobject);
 
-                        // Queue up a text object
-                        this.Textobjs.Enqueue(this.combattext);
-
                         // Start a coroutine to print the text to the screen -
                         // It is a coroutine to assist in helping prevent text objects from
                         // spawning on top one another.
@@ -554,9 +595,6 @@ namespace Assets.Scripts.Controllers
                     }
                     else if (hit.transform.GetComponent<Enemy>())
                     {
-                        // Queue up a text object
-                        this.Textobjs.Enqueue(this.combattext);
-
                         // Start a coroutine to print the text to the screen -
                         // It is a coroutine to assist in helping prevent text objects from
                         // spawning on top one another.

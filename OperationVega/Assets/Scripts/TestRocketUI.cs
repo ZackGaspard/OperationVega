@@ -45,10 +45,6 @@ class TestRocketUI : MonoBehaviour
 
 		EventManager.Subscribe("Build Rocket", rocketFactory.BuildRocket);
 		//EventManager.Subscribe("Build Rocket", Save);
-
-		User.SteelCount = 9000;
-		User.FuelCount = 9000;
-		User.GasCount = 9000;
 	}
 
 	void Save()

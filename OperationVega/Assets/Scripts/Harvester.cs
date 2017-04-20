@@ -207,9 +207,6 @@ namespace Assets.Scripts
                 if (this.theEnemy.GetComponent<Stats>().Health < 0)
                     this.theEnemy.GetComponent<Stats>().Health = 0;
 
-                // Queue up a text object
-                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                 // Start a coroutine to print the text to the screen -
                 // It is a coroutine to assist in helping prevent text objects from
                 // spawning on top one another.
@@ -232,18 +229,20 @@ namespace Assets.Scripts
         /// </summary>
         public void Attack()
         {
+            // If unit died and was about to attack then just return
             if (this.mystats.Health <= 0) return;
 
-            if (this.theEnemy == null)
+            // If enemy died
+            if (this.theEnemy.GetComponent<Stats>().Health <= 0)
             {
+                //this.theEnemy = null;
                 this.gothitfirst = true;
                 this.target = null;
                 this.animatorcontroller.SetTrigger("Idle");
                 this.navagent.SetDestination(this.gameObject.transform.position);
                 this.ChangeStates("Idle");
-            }
-
-            if (this.timebetweenattacks >= this.mystats.Attackspeed && this.navagent.velocity == Vector3.zero)
+            }// Else if its time to attack
+            else if (this.timebetweenattacks >= this.mystats.Attackspeed && this.navagent.velocity == Vector3.zero)
             {
                 this.timebetweenattacks = 0;
                 this.animatorcontroller.SetTrigger("AttackTrigger");
@@ -257,9 +256,6 @@ namespace Assets.Scripts
         {
             if (this.harvesttime >= 1.0f && this.navagent.velocity == Vector3.zero)
             {
-                // Queue up a text object
-                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                 // Start a coroutine to print the text to the screen -
                 // It is a coroutine to assist in helping prevent text objects from
                 // spawning on top one another.
@@ -327,7 +323,11 @@ namespace Assets.Scripts
                     // If its an enemy - Stop them
                     if (c.gameObject.GetComponent<Enemy>())
                     {
-                        Debug.Log("Found An enemy");
+                        // Start a coroutine to print the text to the screen -
+                        // It is a coroutine to assist in helping prevent text objects from
+                        // spawning on top one another.
+                        this.StartCoroutine(UnitController.Self.CombatText(c.gameObject, new Color(255f, 0, 180, 0.75f), "*Stunned* I Can't move!!"));
+
                         NavMeshAgent navagent = c.gameObject.GetComponent<NavMeshAgent>();
                         EnemyAI enemy = c.gameObject.GetComponent<EnemyAI>();
 
@@ -345,13 +345,22 @@ namespace Assets.Scripts
 
                             // If health is greater than max health..set health to max health, else just set it to the current health value.
                             unitstats.Health = unitstats.Health > unitstats.Maxhealth ? unitstats.Maxhealth : unitstats.Health;
+
+                            // Start a coroutine to print the text to the screen -
+                            // It is a coroutine to assist in helping prevent text objects from
+                            // spawning on top one another.
+                            this.StartCoroutine(UnitController.Self.CombatText(c.gameObject, Color.white, "Thanks for the heal!!!"));
                         }
                     }
                 }
 
                 UIManager.Self.currentcooldown = 0;
                 this.mystats.CurrentSkillCooldown = 0;
-                Debug.Log("Harvester Special Ability Activated");
+
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, Color.white, "Take This!!!"));
             }
         }
 
@@ -362,9 +371,6 @@ namespace Assets.Scripts
         {
             if (this.decontime >= 1.0f)
             {
-                // Queue up a text object
-                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                 // Start a coroutine to print the text to the screen -
                 // It is a coroutine to assist in helping prevent text objects from
                 // spawning on top one another.
@@ -445,7 +451,7 @@ namespace Assets.Scripts
         {
             this.mystats.Health -= damage;
 
-            UnitController.Self.unithit = this.gameObject;
+            UnitController.Self.Unithit = this.gameObject;
             this.UpdateOrb();
 
             // Check if unit dies
@@ -638,7 +644,7 @@ namespace Assets.Scripts
             this.dangercolor = Color.black;
 
             this.mystats = this.GetComponent<Stats>();
-            this.mystats.Health = 100;
+            this.mystats.Health = 10;
             this.mystats.Maxhealth = 100;
             this.mystats.Strength = 2;
             this.mystats.Defense = 5;
@@ -825,9 +831,6 @@ namespace Assets.Scripts
                 {
                     if (this.dropofftime >= 1.0f)
                     {
-                        // Queue up a text object
-                        UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                         // Start a coroutine to print the text to the screen -
                         // It is a coroutine to assist in helping prevent text objects from
                         // spawning on top one another.
@@ -858,9 +861,6 @@ namespace Assets.Scripts
 
                 if (food == null && foodtainted == null)
                 {
-                    // Queue up a text object
-                    UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                     // Start a coroutine to print the text to the screen -
                     // It is a coroutine to assist in helping prevent text objects from
                     // spawning on top one another.
@@ -879,9 +879,6 @@ namespace Assets.Scripts
                 {
                     if (food != null && foodtainted == null)
                     {
-                        // Queue up a text object
-                        UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                         // Start a coroutine to print the text to the screen -
                         // It is a coroutine to assist in helping prevent text objects from
                         // spawning on top one another.
@@ -898,9 +895,6 @@ namespace Assets.Scripts
                 {
                     if (foodtainted != null && food == null)
                     {
-                        // Queue up a text object
-                        UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                         // Start a coroutine to print the text to the screen -
                         // It is a coroutine to assist in helping prevent text objects from
                         // spawning on top one another.

@@ -258,7 +258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67518c994ab768d48a46113768dd594e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_defaultCraftSprite: {fileID: 0}
   m_NewGame: {fileID: 556290130}
   m_LoadGame: {fileID: 222600405}
   m_QuitGame: {fileID: 265443341}
@@ -287,6 +286,7 @@ MonoBehaviour:
   m_ObjectiveUI: {fileID: 381127334}
   m_MainUI: {fileID: 1822656630}
   m_AreyousureUI: {fileID: 825184746}
+  Tooltipobjectpanel: {fileID: 0}
   m_MineralsT: {fileID: 528296174}
   m_FoodT: {fileID: 1822280829}
   m_CookedFoodT: {fileID: 1758208809}
@@ -296,6 +296,9 @@ MonoBehaviour:
   m_KillT: {fileID: 1424023815}
   m_CraftT: {fileID: 1424023814}
   m_MainT: {fileID: 1424023813}
+  m_minertext: {fileID: 1424606826}
+  m_extractortext: {fileID: 1774347589}
+  m_harvestertext: {fileID: 1558450620}
   foodinstance: {fileID: 0}
   cookedfoodPrefab: {fileID: 0}
   upgradepanel: {fileID: 912139635}
@@ -312,6 +315,8 @@ MonoBehaviour:
   fuel: {fileID: 0}
   gas: {fileID: 0}
   skillIcon: {fileID: 0}
+  Xbutton: {fileID: 0}
+  tooltiptoggle: {fileID: 0}
   currentcooldown: 0
   contentfield: {fileID: 0}
   unit: {fileID: 0}
@@ -356,6 +361,7 @@ GameObject:
   - component: {fileID: 866674188}
   - component: {fileID: 866674186}
   - component: {fileID: 866674190}
+  - component: {fileID: 866674189}
   m_Layer: 0
   m_Name: EventManager
   m_TagString: Untagged
@@ -399,6 +405,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea5d9e114a32b04e930c2b2eef1323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &866674189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 866674185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6340d2baab1ff174291b3a00c120f655, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TheHarvesters: []
+  HasBuiltShip: 0
 --- !u!114 &866674190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,6 +432,8 @@ MonoBehaviour:
   Harvester: {fileID: 0}
   Miner: {fileID: 0}
   Extractor: {fileID: 0}
+  Unithit: {fileID: 0}
+  combattext: {fileID: 0}
   selectionHighlight: {fileID: 0}
 --- !u!1 &912139635 stripped
 GameObject:
@@ -1070,6 +1091,26 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnCustomRestoreClick
       objectReference: {fileID: 0}
+    - target: {fileID: 114606154943220610, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+        type: 2}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 660983339}
+    - target: {fileID: 114606154943220610, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+        type: 2}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnCameraSpeedSliderClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 114745692318542136, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+        type: 2}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 660983339}
+    - target: {fileID: 114745692318542136, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+        type: 2}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnVolumeSliderClick
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb, type: 2}
   m_IsPrefabParent: 0
@@ -1113,6 +1154,18 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1424023810}
   m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1424606826 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114761794081231500, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 1424023810}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1558450620 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114975641412444608, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 1424023810}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!114 &1560264902 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114058641183889248, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
@@ -1133,6 +1186,12 @@ MonoBehaviour:
 --- !u!114 &1758208809 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114679049388964874, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 1424023810}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1774347589 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114721234628445068, guid: 924c3e0e679a0a04d9ff0f2f7d8572eb,
     type: 2}
   m_PrefabInternal: {fileID: 1424023810}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}

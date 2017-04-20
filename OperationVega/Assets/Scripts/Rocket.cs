@@ -5,6 +5,7 @@ namespace Assets.Scripts
 	using System.Linq;
 
 	using Assets.Scripts.BaseClasses;
+	using Assets.Scripts.Controllers;
 	using Assets.Scripts.Interfaces;
 
 	using UnityEngine;
@@ -233,8 +234,12 @@ namespace Assets.Scripts
 		/// </summary>
 		private void Update()
 		{
-			this.BuildRocket();
-		}
+		    if (Assets.Scripts.Managers.GameManager.Instance.HasBuiltShip)
+		    {
+                moveWings();
+                moveThrusters();
+            }
+        }
 
 		private void BuildParts(IRocketParts thePart, GameObject selectedPart, List<GameObject> building)
 		{
@@ -304,7 +309,14 @@ namespace Assets.Scripts
 			{
 				BuildParts(thePart, selectedPart, builtParts);
 			}
-		}
+			else
+			{
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(null, Color.white, "Not enough resources!"));
+            }
+        }
 
 		public void CreateCockpit1()
 		{
@@ -473,19 +485,18 @@ namespace Assets.Scripts
 
 		public void BuildRocket()
 		{
-			if (this.ShipBuild() == true)
+			if (this.ShipBuild())
 			{
-				moveWings();
-				moveThrusters();
-
-				//Assets.Scripts.Managers.GameManager.Instance.HasBuiltShip = true;
-				//Assets.Scripts.Managers.GameManager.Instance.CheckForWin();
-				Debug.Log("You Win!");
+                Assets.Scripts.Managers.GameManager.Instance.HasBuiltShip = true;
+                Assets.Scripts.Managers.GameManager.Instance.CheckForWin();
 			}
 			else
 			{
-				Debug.Log("Nope");
-			}
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(null, Color.white, "Not enough parts!"));
+            }
 		}
 	}
 }

@@ -6,8 +6,9 @@ namespace Assets.Scripts
 	using UI;
 
 	using UnityEngine;
+	using UnityEngine.EventSystems;
 
-	/// <summary>
+    /// <summary>
 	/// The gas class.
 	/// </summary>
 	public class Gas : MonoBehaviour, IResources
@@ -168,7 +169,8 @@ namespace Assets.Scripts
         /// </summary>
         public void OnMouseEnter()
         {
-            if (ToolTip.Istooltipactive)
+            // If the tooltip is active and the mouse isnt over a UI element then display tooltip
+            if (ToolTip.Istooltipactive && !EventSystem.current.IsPointerOverGameObject())
             {
                 UIManager.Self.Tooltipobjectpanel.gameObject.SetActive(true);
                 ToolTip.Self.Objectdescription = "Geyser.\n This resource provides " +

@@ -187,9 +187,6 @@ namespace Assets.Scripts
                 if (this.theEnemy.GetComponent<Stats>().Health < 0)
                     this.theEnemy.GetComponent<Stats>().Health = 0;
 
-                // Queue up a text object
-                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                 // Start a coroutine to print the text to the screen -
                 // It is a coroutine to assist in helping prevent text objects from
                 // spawning on top one another.
@@ -214,9 +211,6 @@ namespace Assets.Scripts
         {
             if (this.harvesttime >= 1.0f && this.navagent.velocity == Vector3.zero)
             {
-                // Queue up a text object
-                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                 // Start a coroutine to print the text to the screen -
                 // It is a coroutine to assist in helping prevent text objects from
                 // spawning on top one another.
@@ -269,12 +263,21 @@ namespace Assets.Scripts
                         c.gameObject.transform.rotation = Quaternion.Euler(0f, c.transform.forward.y, 0f);
                         c.gameObject.GetComponent<Enemy>().ChangeStates("Idle");
                         c.gameObject.GetComponent<EnemyAI>().scared = true;
+
+                        // Start a coroutine to print the text to the screen -
+                        // It is a coroutine to assist in helping prevent text objects from
+                        // spawning on top one another.
+                        this.StartCoroutine(UnitController.Self.CombatText(c.gameObject, new Color(255f, 0, 180, 0.75f), "Run a wayyyy!!!"));
                     }
                 }
 
                 UIManager.Self.currentcooldown = 0;
                 this.mystats.CurrentSkillCooldown = 0;
-                Debug.Log("Extractor Special Ability Activated");
+
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(this.gameObject, Color.white, "RAWRRRRRRR!!"));
             }
         }
 
@@ -283,18 +286,20 @@ namespace Assets.Scripts
         /// </summary>
         public void Attack()
         {
+            // If unit died and was about to attack then just return
             if (this.mystats.Health <= 0) return;
 
-            if (this.theEnemy == null)
+            // If enemy died
+            if (this.theEnemy.GetComponent<Stats>().Health <= 0)
             {
+                //this.theEnemy = null;
                 this.gothitfirst = true;
                 this.target = null;
                 this.animatorcontroller.SetTrigger("Idle");
                 this.navagent.SetDestination(this.gameObject.transform.position);
                 this.ChangeStates("Idle");
-            }
-
-            if (this.timebetweenattacks >= this.mystats.Attackspeed && this.navagent.velocity == Vector3.zero)
+            }// Else if its time to attack
+            else if (this.timebetweenattacks >= this.mystats.Attackspeed && this.navagent.velocity == Vector3.zero)
             {
                 this.timebetweenattacks = 0;
                 this.animatorcontroller.SetTrigger("AttackTrigger");
@@ -310,7 +315,7 @@ namespace Assets.Scripts
         {
             this.mystats.Health -= damage;
 
-            UnitController.Self.unithit = this.gameObject;
+            UnitController.Self.Unithit = this.gameObject;
             this.UpdateOrb();
 
             // Check if unit dies
@@ -700,9 +705,6 @@ namespace Assets.Scripts
                 {
                     if (this.dropofftime >= 1.0f)
                     {
-                        // Queue up a text object
-                        UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                         // Start a coroutine to print the text to the screen -
                         // It is a coroutine to assist in helping prevent text objects from
                         // spawning on top one another.
@@ -727,9 +729,6 @@ namespace Assets.Scripts
             if (this.navagent.remainingDistance <= this.navagent.stoppingDistance && !this.navagent.pathPending)
             {
                 Transform gastank = this.transform.Find("GasTank");
-
-                // Queue up a text object
-                UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
 
                 // Start a coroutine to print the text to the screen -
                 // It is a coroutine to assist in helping prevent text objects from

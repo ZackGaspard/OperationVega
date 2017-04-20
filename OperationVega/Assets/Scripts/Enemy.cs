@@ -1,6 +1,8 @@
 ﻿
 namespace Assets.Scripts
 {
+    using System.Collections;
+
     using Controllers;
 
     using Interfaces;
@@ -157,7 +159,7 @@ namespace Assets.Scripts
             Vector3 pos = this.transform.position;
             Quaternion rot = Quaternion.AngleAxis(-70, this.transform.forward);
 
-            Instantiate(this.deathPrefab, pos, rot);
+            UnitController.Self.RagDoll = Instantiate(this.deathPrefab, pos, rot);
             Destroy(this.gameObject);
         }
 
@@ -197,15 +199,12 @@ namespace Assets.Scripts
                 this.target.TakeDamage(this.mystats.Strength);
 
                 // If unit is not null
-                if (UnitController.Self.unithit != null && UnitController.Self.unithit.GetComponent<Stats>().Health > 0)
+                if (UnitController.Self.Unithit != null && UnitController.Self.Unithit.GetComponent<Stats>().Health > 0)
                 {
-                    // Queue up a text object
-                    UnitController.Self.Textobjs.Enqueue(UnitController.Self.combattext);
-
                     // Start a coroutine to print the text to the screen -
                     // It is a coroutine to assist in helping prevent text objects from
                     // spawning on top one another.
-                    this.StartCoroutine(UnitController.Self.CombatText(UnitController.Self.unithit, Color.white, null));
+                    this.StartCoroutine(UnitController.Self.CombatText(UnitController.Self.Unithit, Color.white, null));
                 }
             }
         }
