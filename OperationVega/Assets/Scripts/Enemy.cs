@@ -253,7 +253,7 @@ namespace Assets.Scripts
         private void Start()
         {
             this.mystats = this.GetComponent<Stats>();
-            this.mystats.Health = 10;
+            this.mystats.Health = 100;
             this.mystats.Maxhealth = 100;
             this.mystats.Strength = 3;
             this.mystats.Defense = 2;

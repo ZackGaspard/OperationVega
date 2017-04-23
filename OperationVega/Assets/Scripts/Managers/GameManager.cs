@@ -21,7 +21,7 @@ namespace Assets.Scripts.Managers
         /// This stores all the harvesters currently in play.
         /// </summary>
         [HideInInspector]
-        public List<Harvester> TheHarvesters;
+        public List<Harvester> TheHarvesters = new List<Harvester>();
 
         /// <summary>
         /// The has built ship variable.
