@@ -58,15 +58,17 @@ namespace Assets.Scripts.Controllers
         /// </summary>
         public GameObject Extractor;
 
-        /// <summary>
-        /// The combat text reference.
-        /// Reference to the combat text prefab.
-        /// </summary>
-        [SerializeField]
-        public GameObject combattext;
+        [HideInInspector]
+        public GameObject Unithit;
 
         [HideInInspector]
-        public GameObject unithit;
+        public GameObject RagDoll
+        {
+            set
+            {
+                this.StartCoroutine(this.DestroyRagDoll(value));
+            }
+        }
 
         /// <summary>
         /// The instance of the class.
@@ -82,6 +84,12 @@ namespace Assets.Scripts.Controllers
         /// The list of units selected by the drag screen.
         /// </summary>
         private readonly List<GameObject> units = new List<GameObject>();
+
+        /// <summary>
+        /// The text objects reference.
+        /// Reference to store text objects when damage is to be displayed.
+        /// </summary>
+        private readonly Queue<GameObject> textobjs = new Queue<GameObject>();
 
         /// <summary>
         /// The trees list.
@@ -100,6 +108,13 @@ namespace Assets.Scripts.Controllers
         /// Reference to every geyser in the scene.
         /// </summary>
         private List<GameObject> geysers = new List<GameObject>();
+
+        /// <summary>
+        /// The combat text reference.
+        /// Reference to the combat text prefab.
+        /// </summary>
+        [SerializeField]
+        private GameObject combattext;
 
         /// <summary>
         /// The click destination of where to send the unit.
@@ -448,27 +463,56 @@ namespace Assets.Scripts.Controllers
             Instantiate(theunit, spawnposition, Quaternion.AngleAxis(-180, Vector3.up));
         }
 
-        public Queue<GameObject> textobjs = new Queue<GameObject>();
-
         /// <summary>
         /// The combat text function.
         /// <para></para>
         /// <remarks><paramref name="unit"></paramref> -The unit to display is taking damage.</remarks>
+        /// <para></para>
+        /// <remarks><paramref name="textoutline"></paramref> -The color to display as the outline for the text.</remarks>
+        /// <para></para>
+        /// <remarks><paramref name="message"></paramref> -The message to display.</remarks>
         /// </summary>
-        public IEnumerator CombatText(GameObject unit)
+        public IEnumerator CombatText(GameObject unit, Color textoutline, string message)
         {
-            yield return new WaitForSeconds(0.5f);
-            Stats thestats = unit.GetComponent<Stats>();
-            Vector3 spawnposition = unit.transform.position;
-            spawnposition.y += 0.5f;
+            // Queue up a text object
+            this.textobjs.Enqueue(this.combattext);
+
+            yield return new WaitForSeconds(0.25f);
+
+            Stats thestats;
+            Vector3 spawnposition;
+
+            // If the unit is null then just display the text at the mouse position
+            if (unit == null)
+            {
+                spawnposition = Input.mousePosition;
+                spawnposition.y += 0.5f;
+            }
+            else
+            {
+                spawnposition = unit.transform.position;
+                spawnposition.y += 0.5f;
+                spawnposition = Camera.main.WorldToScreenPoint(spawnposition);
+            }
 
             GameObject textobj = this.textobjs.Dequeue();
 
             // Create text object to display unit health
-            GameObject theTextGo = Instantiate(textobj, Camera.main.WorldToScreenPoint(spawnposition), Quaternion.identity);
+            GameObject theTextGo = Instantiate(textobj, spawnposition, Quaternion.identity);
             Text thetext = theTextGo.GetComponent<Text>();
+            theTextGo.GetComponent<Outline>().effectColor = textoutline;
             theTextGo.transform.SetParent(UIManager.Self.BackgroundUI.GetComponent<RectTransform>());
-            thetext.text = thestats.Health + "/" + thestats.Maxhealth;
+
+            // If no message then print the stats
+            if (message == null && unit != null)
+            {
+                thestats = unit.GetComponent<Stats>();
+                thetext.text = thestats.Health + "/" + thestats.Maxhealth;
+            }
+            else
+            { // Else print the message
+                thetext.text = message;
+            }
         }
 
         /// <summary>
@@ -476,7 +520,6 @@ namespace Assets.Scripts.Controllers
         /// </summary>
         private void Start()
         {
-            User.FoodCount += 12;
             instance = this;
             this.theBarracks = GameObject.Find("Barracks");
             EventManager.Subscribe("ActivateAbility", this.ActivateAbility);
@@ -490,11 +533,6 @@ namespace Assets.Scripts.Controllers
             this.ActivateDragScreen();
             this.SelectUnits();
             this.CommandUnits();
-
-            if (Input.GetKeyDown(KeyCode.Alpha9))
-            {
-                this.Harvest();
-            }
         }
 
         /// <summary>
@@ -506,6 +544,23 @@ namespace Assets.Scripts.Controllers
         }
 
         /// <summary>
+        /// The destroy rag doll function.
+        /// Destroys the rag doll after a few seconds.
+        /// <para></para>
+        /// <remarks><paramref name="theragdoll"></paramref> -The rag doll object to destroy.</remarks>
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerator"/>.
+        /// </returns>
+        private IEnumerator DestroyRagDoll(GameObject theragdoll)
+        {
+            Debug.Log("Dead");
+            yield return new WaitForSeconds(2.0f);
+            Destroy(theragdoll);
+            Debug.Log("Destroyed");
+        }
+
+        /// <summary>
         /// The select units function.
         /// This function is used for unit selection.
         /// </summary>
@@ -514,9 +569,6 @@ namespace Assets.Scripts.Controllers
             // If the left mouse button is pressed and its not clicking on a UI element
             if (Input.GetKeyDown(KeyCode.Mouse0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Craft].Currentvalue++;
-                ObjectiveManager.Instance.TheObjectives[ObjectiveType.Kill].Currentvalue++;
-
                 this.ClearSelectedUnits();
                 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -535,6 +587,18 @@ namespace Assets.Scripts.Controllers
                         UIManager.Self.currentcooldown = this.theselectedobject.GetComponent<Stats>().CurrentSkillCooldown;
                         UIManager.Self.abilityunit = this.theselectedobject;
                         UIManager.Self.CreateUnitButton(this.theselectedobject);
+
+                        // Start a coroutine to print the text to the screen -
+                        // It is a coroutine to assist in helping prevent text objects from
+                        // spawning on top one another.
+                        this.StartCoroutine(this.CombatText(hit.transform.gameObject, Color.white, null));
+                    }
+                    else if (hit.transform.GetComponent<Enemy>())
+                    {
+                        // Start a coroutine to print the text to the screen -
+                        // It is a coroutine to assist in helping prevent text objects from
+                        // spawning on top one another.
+                        this.StartCoroutine(this.CombatText(hit.transform.gameObject, new Color(255f, 0, 180, 0.75f), null));
                     }
                 }
             }

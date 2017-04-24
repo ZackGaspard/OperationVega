@@ -1,7 +1,11 @@
 ﻿
 namespace Assets.Scripts.Managers
 {
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
+
+    using Assets.Scripts.Controllers;
 
     using UnityEngine;
     using UnityEngine.SceneManagement;
@@ -17,7 +21,7 @@ namespace Assets.Scripts.Managers
         /// This stores all the harvesters currently in play.
         /// </summary>
         [HideInInspector]
-        public List<Harvester> TheHarvesters;
+        public List<Harvester> TheHarvesters = new List<Harvester>();
 
         /// <summary>
         /// The has built ship variable.
@@ -32,12 +36,11 @@ namespace Assets.Scripts.Managers
         private static GameManager gameManager;
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="GameManager"/> class from being created.
+        /// The start function.
         /// </summary>
-        private GameManager()
+        private void Start()
         {
-            this.TheHarvesters = new List<Harvester>();
-            this.HasBuiltShip = false;
+            gameManager = this;
         }
 
         /// <summary>
@@ -48,9 +51,10 @@ namespace Assets.Scripts.Managers
         {
             get
             {
-                // Set gameManager to the value of gameManager if gameManager is NOT null; otherwise,
-                // if gameManager = null, set gameManager to new gameManager().
-                gameManager = gameManager ?? FindObjectOfType(typeof(GameManager)) as GameManager;
+                // If gameManager is null, set gameManager to new gameManager().
+                if(gameManager == null)
+                    gameManager = FindObjectOfType(typeof(GameManager)) as GameManager;
+
                 return gameManager;
             }
         }
@@ -68,7 +72,11 @@ namespace Assets.Scripts.Managers
             {
                 ObjectiveManager.Instance.TheObjectives[ObjectiveType.Main].Currentvalue++;
 
-                SceneManager.LoadScene(0);
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(null, Color.white, "You win! Thank you for playing!"));
+                this.StartCoroutine(this.GameEnd());
                 return true;
             }
             return false;
@@ -86,10 +94,44 @@ namespace Assets.Scripts.Managers
             // If there are no harvesters left on the map, cant purchase anymore, the ship hasnt been built, and you dont have the rigth parts to build the ship.
             if (this.TheHarvesters.Count == 0 && User.FoodCount < 5 && !this.HasBuiltShip)
             {
-                Debug.Log("Game Over - No more food to purchase harvesters, no more harvesters left on the map and the ship hasnt been built");
+                // Start a coroutine to print the text to the screen -
+                // It is a coroutine to assist in helping prevent text objects from
+                // spawning on top one another.
+                this.StartCoroutine(UnitController.Self.CombatText(null, Color.white, "Game Over!"));
+                this.StartCoroutine(this.GameEnd());
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// The set up new game function.
+        /// This function is used to set up all the data for the user when the game starts new.
+        /// </summary>
+        public void SetUpNewGame()
+        {
+            User.FoodCount = 0;
+            User.FuelCount = 0;
+            User.SteelCount = 0;
+            User.CookedFoodCount = 0;
+            User.GasCount = 0;
+            User.MineralsCount = 0;
+            User.UpgradePoints = 0;
+            this.HasBuiltShip = false;
+            this.TheHarvesters = new List<Harvester>();
+        }
+
+        /// <summary>
+        /// The game end function.
+        /// Gives a delay before switching to the credits scene.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerator"/>.
+        /// </returns>
+        private IEnumerator GameEnd()
+        {
+            yield return new WaitForSeconds(5.0f);
+            SceneManager.LoadScene(2);
         }
     }
 }

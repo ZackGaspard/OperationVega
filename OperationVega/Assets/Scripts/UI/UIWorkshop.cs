@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Assets.Scripts.Managers;
 
 public class UIWorkshop : MonoBehaviour {
 
-
+    [SerializeField]
     private RectTransform m_WorkshopUI;
 
     [SerializeField]
@@ -14,12 +15,58 @@ public class UIWorkshop : MonoBehaviour {
     private RectTransform m_CockpitChoice;
     [SerializeField]
     private RectTransform m_WingChoice;
+    [SerializeField]
+    private Image Xbutton;
 
 
     bool undo1;
     bool undo2;
     bool undo3;
 
+    void Awake()
+    {
+        undo1 = true;
+        undo2 = true;
+        undo3 = true;
+
+        EventManager.Subscribe("Workshop", this.OnWorkShop);
+        EventManager.Subscribe("Close WorkShop", this.CloseWorkShop);
+        EventManager.Subscribe("Build Rocket", this.OnBuild);
+        EventManager.Subscribe("Thrusters", this.OnThrusters);
+        EventManager.Subscribe("Player chose TC1", this.OnTC1);
+        EventManager.Subscribe("Player chose TC2", this.OnTC2);
+        EventManager.Subscribe("Player chose TC3", this.OnTC3);
+        EventManager.Subscribe("Apply Chassis", this.OnChassis);
+        EventManager.Subscribe("Cockpit", this.OnCockpit);
+        EventManager.Subscribe("Player chose CP1", this.OnCP1);
+        EventManager.Subscribe("Player chose CP2", this.OnCP2);
+        EventManager.Subscribe("Player chose CP3", this.OnCP3);
+        EventManager.Subscribe("Apply Wings", this.OnWings);
+        EventManager.Subscribe("Player chose WC1", this.OnWC1);
+        EventManager.Subscribe("Player chose WC2", this.OnWC2);
+        EventManager.Subscribe("Player chose WC3", this.OnWC3);
+
+    }
+
+    void OnDestroy()
+    {
+        EventManager.UnSubscribe("Close WorkShop", this.CloseWorkShop);
+        EventManager.UnSubscribe("Build Rocket", this.OnBuild);
+        EventManager.UnSubscribe("Thrusters", this.OnThrusters);
+        EventManager.UnSubscribe("Player chose TC1", this.OnTC1);
+        EventManager.UnSubscribe("Player chose TC2", this.OnTC2);
+        EventManager.UnSubscribe("Player chose TC2", this.OnTC3);
+        EventManager.UnSubscribe("Apply Chassis", this.OnChassis);
+        EventManager.UnSubscribe("Cockpit", this.OnCockpit);
+        EventManager.UnSubscribe("Player chose CP1", this.OnCP1);
+        EventManager.UnSubscribe("Player chose CP2", this.OnCP2);
+        EventManager.UnSubscribe("Player chose CP3", this.OnCP3);
+        EventManager.UnSubscribe("Apply Wings", this.OnWings);
+        EventManager.UnSubscribe("WingChoice1", this.OnWC1);
+        EventManager.UnSubscribe("WingChoice2", this.OnWC2);
+        EventManager.UnSubscribe("WingChoice3", this.OnWC2);
+
+    }
     // Use this for initialization
     void Start () {
 		
@@ -185,5 +232,28 @@ public class UIWorkshop : MonoBehaviour {
     private void OnTC3()
     {
         Debug.Log("Player chose Thrust3");
+    }
+
+    public void OnWorkShopClick()
+    {
+        EventManager.Publish("Workshop");
+    }
+    private void OnWorkShop()
+    {
+        m_WorkshopUI.gameObject.SetActive(true);
+        //This function will bring up the workshop within the game.
+        Debug.Log("Workshop");
+    }
+
+    public void CloseWorkShopClick()
+    {
+        EventManager.Publish("Close WorkShop");
+    }
+    private void CloseWorkShop()
+    {
+        //This function will close work shop menu
+        m_WorkshopUI.gameObject.SetActive(false);
+        Debug.Log("Close Workshop Menu");
+
     }
 }

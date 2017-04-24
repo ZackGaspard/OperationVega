@@ -49,6 +49,8 @@ ModelImporter:
     100082: Unit_head
     100084: Unit_orb
     100086: Unit_pack
+    100088: ExtracTool:RoadKillOut
+    100090: Unit_base_SHJntGrp
     400000: //RootNode
     400002: Extractortool
     400004: Unit_base_head__TopSHJnt
@@ -93,11 +95,14 @@ ModelImporter:
     400082: Unit_head
     400084: Unit_orb
     400086: Unit_pack
+    400088: ExtracTool:RoadKillOut
+    400090: Unit_base_SHJntGrp
     4300000: Unit_body
     4300002: Unit_head
     4300004: Unit_pack
     4300006: Unit_orb
     4300008: Extractortool
+    4300010: ExtracTool:RoadKillOut
     7400000: Walk
     9500000: //RootNode
     13700000: Extractortool
@@ -105,6 +110,7 @@ ModelImporter:
     13700004: Unit_head
     13700006: Unit_orb
     13700008: Unit_pack
+    13700010: ExtracTool:RoadKillOut
   materials:
     importMaterials: 1
     materialName: 0

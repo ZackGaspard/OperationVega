@@ -1,15 +1,22 @@
 fileFormatVersion: 2
-guid: 75562bc843cecc64681dec2a77d5fa43
-timeCreated: 1486482042
+guid: 13214cdd2447f994f979a510dd4df4dd
+timeCreated: 1491942292
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: GasTank
+    100000: GasGlass
+    100002: GasMetal
+    100004: //RootNode
+    400000: GasGlass
+    400002: GasMetal
+    400004: //RootNode
+    2300000: GasGlass
+    2300002: GasMetal
+    3300000: GasGlass
+    3300002: GasMetal
+    4300000: GasGlass
+    4300002: GasMetal
     9500000: //RootNode
   materials:
     importMaterials: 1

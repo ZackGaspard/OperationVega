@@ -1,0 +1,398 @@
+fileFormatVersion: 2
+guid: 6bebec8cb08507347a00007f9f2a32cb
+timeCreated: 1491939313
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: alien_rig_head_TopSHJnt
+    100004: alien_rig_l_arm_ClavicleSHJnt
+    100006: alien_rig_l_arm_ElbowSHJnt
+    100008: alien_rig_l_arm_ShoulderSHJnt
+    100010: alien_rig_l_arm_WristSHJnt
+    100012: alien_rig_l_claw_01_01SHJnt
+    100014: alien_rig_l_claw_01_02SHJnt
+    100016: alien_rig_l_claw_01_03SHJnt
+    100018: alien_rig_l_claw_02_01SHJnt
+    100020: alien_rig_l_claw_02_02SHJnt
+    100022: alien_rig_l_claw_02_03SHJnt
+    100024: alien_rig_l_claw_03_01SHJnt
+    100026: alien_rig_l_claw_03_02SHJnt
+    100028: alien_rig_l_claw_03_03SHJnt
+    100030: alien_rig_l_ears_01_01SHJnt
+    100032: alien_rig_l_ears_01_02SHJnt
+    100034: alien_rig_l_ears_01_03SHJnt
+    100036: alien_rig_l_eye_01SHJnt
+    100038: alien_rig_l_leg_AnkleSHJnt
+    100040: alien_rig_l_leg_BallSHJnt
+    100042: alien_rig_l_leg_HipSHJnt
+    100044: alien_rig_l_leg_Knee1SHJnt
+    100046: alien_rig_l_leg_Knee2SHJnt
+    100048: alien_rig_l_leg_ToeSHJnt
+    100050: alien_rig_l_whiskers_01_01SHJnt
+    100052: alien_rig_l_whiskers_01_02SHJnt
+    100054: alien_rig_l_whiskers_02_01SHJnt
+    100056: alien_rig_l_whiskers_02_02SHJnt
+    100058: alien_rig_neck_01SHJnt
+    100060: alien_rig_neck_TopSHJnt
+    100062: alien_rig_r_arm_ClavicleSHJnt
+    100064: alien_rig_r_arm_ElbowSHJnt
+    100066: alien_rig_r_arm_ShoulderSHJnt
+    100068: alien_rig_r_arm_WristSHJnt
+    100070: alien_rig_r_claw_01_01SHJnt
+    100072: alien_rig_r_claw_01_02SHJnt
+    100074: alien_rig_r_claw_01_03SHJnt
+    100076: alien_rig_r_claw_02_01SHJnt
+    100078: alien_rig_r_claw_02_02SHJnt
+    100080: alien_rig_r_claw_02_03SHJnt
+    100082: alien_rig_r_claw_03_01SHJnt
+    100084: alien_rig_r_claw_03_02SHJnt
+    100086: alien_rig_r_claw_03_03SHJnt
+    100088: alien_rig_r_ears_01_01SHJnt
+    100090: alien_rig_r_ears_01_02SHJnt
+    100092: alien_rig_r_ears_01_03SHJnt
+    100094: alien_rig_r_eye_01SHJnt
+    100096: alien_rig_r_leg_AnkleSHJnt
+    100098: alien_rig_r_leg_BallSHJnt
+    100100: alien_rig_r_leg_HipSHJnt
+    100102: alien_rig_r_leg_Knee1SHJnt
+    100104: alien_rig_r_leg_Knee2SHJnt
+    100106: alien_rig_r_leg_ToeSHJnt
+    100108: alien_rig_r_whiskers_01_01SHJnt
+    100110: alien_rig_r_whiskers_01_02SHJnt
+    100112: alien_rig_r_whiskers_02_01SHJnt
+    100114: alien_rig_r_whiskers_02_02SHJnt
+    100116: alien_rig_ROOTSHJnt
+    100118: alien_rig_spine_01SHJnt
+    100120: alien_rig_spine_02SHJnt
+    100122: alien_rig_spine_TopSHJnt
+    100124: alien_rig_tail_01_01SHJnt
+    100126: alien_rig_tail_01_02SHJnt
+    100128: alien_rig_tail_01_03SHJnt
+    100130: alien_rig_tail_01_04SHJnt
+    100132: alien_rig_tail_01_05SHJnt
+    100134: polySurface2
+    100136: polySurface3
+    100138: polySurface4
+    400000: //RootNode
+    400002: alien_rig_head_TopSHJnt
+    400004: alien_rig_l_arm_ClavicleSHJnt
+    400006: alien_rig_l_arm_ElbowSHJnt
+    400008: alien_rig_l_arm_ShoulderSHJnt
+    400010: alien_rig_l_arm_WristSHJnt
+    400012: alien_rig_l_claw_01_01SHJnt
+    400014: alien_rig_l_claw_01_02SHJnt
+    400016: alien_rig_l_claw_01_03SHJnt
+    400018: alien_rig_l_claw_02_01SHJnt
+    400020: alien_rig_l_claw_02_02SHJnt
+    400022: alien_rig_l_claw_02_03SHJnt
+    400024: alien_rig_l_claw_03_01SHJnt
+    400026: alien_rig_l_claw_03_02SHJnt
+    400028: alien_rig_l_claw_03_03SHJnt
+    400030: alien_rig_l_ears_01_01SHJnt
+    400032: alien_rig_l_ears_01_02SHJnt
+    400034: alien_rig_l_ears_01_03SHJnt
+    400036: alien_rig_l_eye_01SHJnt
+    400038: alien_rig_l_leg_AnkleSHJnt
+    400040: alien_rig_l_leg_BallSHJnt
+    400042: alien_rig_l_leg_HipSHJnt
+    400044: alien_rig_l_leg_Knee1SHJnt
+    400046: alien_rig_l_leg_Knee2SHJnt
+    400048: alien_rig_l_leg_ToeSHJnt
+    400050: alien_rig_l_whiskers_01_01SHJnt
+    400052: alien_rig_l_whiskers_01_02SHJnt
+    400054: alien_rig_l_whiskers_02_01SHJnt
+    400056: alien_rig_l_whiskers_02_02SHJnt
+    400058: alien_rig_neck_01SHJnt
+    400060: alien_rig_neck_TopSHJnt
+    400062: alien_rig_r_arm_ClavicleSHJnt
+    400064: alien_rig_r_arm_ElbowSHJnt
+    400066: alien_rig_r_arm_ShoulderSHJnt
+    400068: alien_rig_r_arm_WristSHJnt
+    400070: alien_rig_r_claw_01_01SHJnt
+    400072: alien_rig_r_claw_01_02SHJnt
+    400074: alien_rig_r_claw_01_03SHJnt
+    400076: alien_rig_r_claw_02_01SHJnt
+    400078: alien_rig_r_claw_02_02SHJnt
+    400080: alien_rig_r_claw_02_03SHJnt
+    400082: alien_rig_r_claw_03_01SHJnt
+    400084: alien_rig_r_claw_03_02SHJnt
+    400086: alien_rig_r_claw_03_03SHJnt
+    400088: alien_rig_r_ears_01_01SHJnt
+    400090: alien_rig_r_ears_01_02SHJnt
+    400092: alien_rig_r_ears_01_03SHJnt
+    400094: alien_rig_r_eye_01SHJnt
+    400096: alien_rig_r_leg_AnkleSHJnt
+    400098: alien_rig_r_leg_BallSHJnt
+    400100: alien_rig_r_leg_HipSHJnt
+    400102: alien_rig_r_leg_Knee1SHJnt
+    400104: alien_rig_r_leg_Knee2SHJnt
+    400106: alien_rig_r_leg_ToeSHJnt
+    400108: alien_rig_r_whiskers_01_01SHJnt
+    400110: alien_rig_r_whiskers_01_02SHJnt
+    400112: alien_rig_r_whiskers_02_01SHJnt
+    400114: alien_rig_r_whiskers_02_02SHJnt
+    400116: alien_rig_ROOTSHJnt
+    400118: alien_rig_spine_01SHJnt
+    400120: alien_rig_spine_02SHJnt
+    400122: alien_rig_spine_TopSHJnt
+    400124: alien_rig_tail_01_01SHJnt
+    400126: alien_rig_tail_01_02SHJnt
+    400128: alien_rig_tail_01_03SHJnt
+    400130: alien_rig_tail_01_04SHJnt
+    400132: alien_rig_tail_01_05SHJnt
+    400134: polySurface2
+    400136: polySurface3
+    400138: polySurface4
+    4300000: polySurface2
+    4300002: polySurface3
+    4300004: polySurface4
+    7400000: Taint
+    9500000: //RootNode
+    13700000: polySurface2
+    13700002: polySurface3
+    13700004: polySurface4
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Taint
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 32
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.75000006
+        functionName: OnTaint
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alien_rig_ROOTSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_l_leg_HipSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_l_leg_HipSHJnt/alien_rig_l_leg_Knee1SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_l_leg_HipSHJnt/alien_rig_l_leg_Knee1SHJnt/alien_rig_l_leg_Knee2SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_l_leg_HipSHJnt/alien_rig_l_leg_Knee1SHJnt/alien_rig_l_leg_Knee2SHJnt/alien_rig_l_leg_AnkleSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_l_leg_HipSHJnt/alien_rig_l_leg_Knee1SHJnt/alien_rig_l_leg_Knee2SHJnt/alien_rig_l_leg_AnkleSHJnt/alien_rig_l_leg_BallSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_l_leg_HipSHJnt/alien_rig_l_leg_Knee1SHJnt/alien_rig_l_leg_Knee2SHJnt/alien_rig_l_leg_AnkleSHJnt/alien_rig_l_leg_BallSHJnt/alien_rig_l_leg_ToeSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_r_leg_HipSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_r_leg_HipSHJnt/alien_rig_r_leg_Knee1SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_r_leg_HipSHJnt/alien_rig_r_leg_Knee1SHJnt/alien_rig_r_leg_Knee2SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_r_leg_HipSHJnt/alien_rig_r_leg_Knee1SHJnt/alien_rig_r_leg_Knee2SHJnt/alien_rig_r_leg_AnkleSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_r_leg_HipSHJnt/alien_rig_r_leg_Knee1SHJnt/alien_rig_r_leg_Knee2SHJnt/alien_rig_r_leg_AnkleSHJnt/alien_rig_r_leg_BallSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_r_leg_HipSHJnt/alien_rig_r_leg_Knee1SHJnt/alien_rig_r_leg_Knee2SHJnt/alien_rig_r_leg_AnkleSHJnt/alien_rig_r_leg_BallSHJnt/alien_rig_r_leg_ToeSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt/alien_rig_l_arm_WristSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt/alien_rig_l_arm_WristSHJnt/alien_rig_l_claw_01_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt/alien_rig_l_arm_WristSHJnt/alien_rig_l_claw_01_01SHJnt/alien_rig_l_claw_01_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt/alien_rig_l_arm_WristSHJnt/alien_rig_l_claw_01_01SHJnt/alien_rig_l_claw_01_02SHJnt/alien_rig_l_claw_01_03SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt/alien_rig_l_arm_WristSHJnt/alien_rig_l_claw_02_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt/alien_rig_l_arm_WristSHJnt/alien_rig_l_claw_02_01SHJnt/alien_rig_l_claw_02_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt/alien_rig_l_arm_WristSHJnt/alien_rig_l_claw_02_01SHJnt/alien_rig_l_claw_02_02SHJnt/alien_rig_l_claw_02_03SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt/alien_rig_l_arm_WristSHJnt/alien_rig_l_claw_03_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt/alien_rig_l_arm_WristSHJnt/alien_rig_l_claw_03_01SHJnt/alien_rig_l_claw_03_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_l_arm_ClavicleSHJnt/alien_rig_l_arm_ShoulderSHJnt/alien_rig_l_arm_ElbowSHJnt/alien_rig_l_arm_WristSHJnt/alien_rig_l_claw_03_01SHJnt/alien_rig_l_claw_03_02SHJnt/alien_rig_l_claw_03_03SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_l_ears_01_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_l_ears_01_01SHJnt/alien_rig_l_ears_01_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_l_ears_01_01SHJnt/alien_rig_l_ears_01_02SHJnt/alien_rig_l_ears_01_03SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_l_eye_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_l_whiskers_01_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_l_whiskers_01_01SHJnt/alien_rig_l_whiskers_01_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_l_whiskers_02_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_l_whiskers_02_01SHJnt/alien_rig_l_whiskers_02_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_r_ears_01_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_r_ears_01_01SHJnt/alien_rig_r_ears_01_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_r_ears_01_01SHJnt/alien_rig_r_ears_01_02SHJnt/alien_rig_r_ears_01_03SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_r_eye_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_r_whiskers_01_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_r_whiskers_01_01SHJnt/alien_rig_r_whiskers_01_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_r_whiskers_02_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_neck_01SHJnt/alien_rig_neck_TopSHJnt/alien_rig_head_TopSHJnt/alien_rig_r_whiskers_02_01SHJnt/alien_rig_r_whiskers_02_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt/alien_rig_r_arm_WristSHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt/alien_rig_r_arm_WristSHJnt/alien_rig_r_claw_01_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt/alien_rig_r_arm_WristSHJnt/alien_rig_r_claw_01_01SHJnt/alien_rig_r_claw_01_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt/alien_rig_r_arm_WristSHJnt/alien_rig_r_claw_01_01SHJnt/alien_rig_r_claw_01_02SHJnt/alien_rig_r_claw_01_03SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt/alien_rig_r_arm_WristSHJnt/alien_rig_r_claw_02_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt/alien_rig_r_arm_WristSHJnt/alien_rig_r_claw_02_01SHJnt/alien_rig_r_claw_02_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt/alien_rig_r_arm_WristSHJnt/alien_rig_r_claw_02_01SHJnt/alien_rig_r_claw_02_02SHJnt/alien_rig_r_claw_02_03SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt/alien_rig_r_arm_WristSHJnt/alien_rig_r_claw_03_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt/alien_rig_r_arm_WristSHJnt/alien_rig_r_claw_03_01SHJnt/alien_rig_r_claw_03_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_spine_01SHJnt/alien_rig_spine_02SHJnt/alien_rig_spine_TopSHJnt/alien_rig_r_arm_ClavicleSHJnt/alien_rig_r_arm_ShoulderSHJnt/alien_rig_r_arm_ElbowSHJnt/alien_rig_r_arm_WristSHJnt/alien_rig_r_claw_03_01SHJnt/alien_rig_r_claw_03_02SHJnt/alien_rig_r_claw_03_03SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_tail_01_01SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_tail_01_01SHJnt/alien_rig_tail_01_02SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_tail_01_01SHJnt/alien_rig_tail_01_02SHJnt/alien_rig_tail_01_03SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_tail_01_01SHJnt/alien_rig_tail_01_02SHJnt/alien_rig_tail_01_03SHJnt/alien_rig_tail_01_04SHJnt
+        weight: 1
+      - path: alien_rig_ROOTSHJnt/alien_rig_tail_01_01SHJnt/alien_rig_tail_01_02SHJnt/alien_rig_tail_01_03SHJnt/alien_rig_tail_01_04SHJnt/alien_rig_tail_01_05SHJnt
+        weight: 1
+      - path: polySurface2
+        weight: 1
+      - path: polySurface3
+        weight: 1
+      - path: polySurface4
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
